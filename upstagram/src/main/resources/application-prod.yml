@@ -1,0 +1,36 @@
+server:
+  port: 8090
+
+spring:
+  ## MySQL 접속정보
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/upstagram?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: upstagram #ENC(9n8E0nUSDuIUuagawbGIY0jwIItivkDg)
+    password: up7sta7gram #ENC(MhLMhBdGGKfjXjsA8/siWGdxironRVct)
+
+  ## JPA Setting Info
+  jpa:
+    show-sql: true # true 설정 시 JPA 쿼리문 확인 가능
+    hibernate:
+      ddl-auto: none  # option type: create, create-drop, update, validate, none
+    properties:
+      hibernate:
+        format_sql: true  # # JPA의 구현체인 Hibernate가 동작하면서 발생한 SQL의 가독성을 높여준다.
+        use_sql_comments: true  # sql 쿼리의 추가정보를 보여줍니다.
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace  # query의 ?에 어떤 값이 들어가는지 추적할 수 있는 설정입니다. TRACE Log에 값을 보여줍니다.
+
+
+## Jasypt 암호화
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
