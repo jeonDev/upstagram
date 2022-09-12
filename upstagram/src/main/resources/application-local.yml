@@ -6,8 +6,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/upstagram?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
-    username: upstagram #ENC(9n8E0nUSDuIUuagawbGIY0jwIItivkDg)
-    password: up7sta7gram #ENC(MhLMhBdGGKfjXjsA8/siWGdxironRVct)
+    username: ENC(9n8E0nUSDuIUuagawbGIY0jwIItivkDg)
+    password: ENC(MhLMhBdGGKfjXjsA8/siWGdxironRVct)
 
   ## JPA Setting Info
   jpa:
