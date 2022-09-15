@@ -1,4 +1,4 @@
-package com.api.upstagram.config;
+package com.api.upstagram.common.config;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
