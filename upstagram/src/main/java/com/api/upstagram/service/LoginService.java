@@ -2,9 +2,11 @@ package com.api.upstagram.service;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.api.upstagram.common.vo.UserSession;
 import com.api.upstagram.entity.memberInfo.MemberInfoEntity;
 import com.api.upstagram.repository.MemberInfoRepository;
 import com.api.upstagram.vo.MemberInfoPVO;
@@ -19,6 +21,39 @@ public class LoginService {
     
     private final MemberInfoRepository memberInfoRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
+
+    /* 로그인 */
+    public UserSession login(MemberInfoPVO pvo) throws IllegalAccessException {
+
+        // 파라미터 검증
+        if(pvo.getId() == null || "".equals(pvo.getId()) ) throw new IllegalArgumentException("아이디를 입력해주세요.");
+        if(pvo.getPassword() == null || "".equals(pvo.getPassword()) ) throw new IllegalArgumentException("패스워드를 입력해주세요.");
+
+        MemberInfoEntity entity = memberInfoRepository.findByIdAndUseYn(pvo.getId(), "Y");
+
+        if(entity == null) throw new IllegalAccessException("가입하지 않은 사용자입니다.");
+        
+        String password = entity.getPassword();
+
+        if(encoder.matches(pvo.getPassword(), password)) {
+            UserSession user = UserSession.builder()
+                                .id(entity.getId())
+                                .name(entity.getName())
+                                .sex(entity.getSex())
+                                .tel(entity.getTel())
+                                .role(entity.getRole())
+                                .build();
+
+            return user;
+        } else {
+            throw new IllegalAccessException("비밀번호가 틀렸습니다.");
+        }
+        
+    }
+    
     /*
      * 회원가입
      */
@@ -45,6 +80,7 @@ public class LoginService {
         return memberInfo;
     }
 
+    /* 회원가입 검증 */
     public void validateIdCheck(MemberInfoPVO member) {
         log.info("회원가입 검증 시작");
 
@@ -52,7 +88,6 @@ public class LoginService {
         if(member.getId() == null) throw new IllegalArgumentException("아이디를 입력해주세요.");
 
         // 패스워드 검증 & 암호화 처리
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if(member.getPassword() == null) throw new IllegalArgumentException("패스워드를 입력해주세요.");
         else member.setPassword(encoder.encode(member.getPassword()));
 
@@ -72,4 +107,5 @@ public class LoginService {
         }
         log.info("회원가입 검증 종료");
     }
+
 }

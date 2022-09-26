@@ -44,6 +44,8 @@ public class MemberInfoEntity {
 
     private Date passwordChgDttm;
 
+    private String useYn;
+
     /*
      * MemberInfo 생성
      */
@@ -51,16 +53,17 @@ public class MemberInfoEntity {
     private MemberInfoEntity(String id, String oauthNo, String password, String name, String sex
         , String tel, String role, String pushViewYn, String tagAllowYn){
             this.id = id;
-            this.oauthNo = oauthNo != null ? oauthNo : "ROLE_USER" ;
-            this.password = password;       // 패스워드 암호화 필요!
+            this.oauthNo = oauthNo != null ? oauthNo : "" ;
+            this.password = password;
             this.name = name;
             this.sex = sex;
             this.tel = tel;
-            this.role = role;
-            this.pushViewYn = pushViewYn;
-            this.tagAllowYn = tagAllowYn;
+            this.role = role != null ? role : "ROLE_USER";
+            this.pushViewYn = pushViewYn != null ? pushViewYn : "Y";
+            this.tagAllowYn = tagAllowYn != null ? tagAllowYn : "Y";
             this.JoinDttm = new Date();
             this.wrongPasswordNumber = 0;
             this.passwordChgDttm = new Date();
+            this.useYn = "Y";
     }
 }

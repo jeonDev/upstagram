@@ -7,5 +7,5 @@ import com.api.upstagram.entity.memberInfo.MemberInfoEntity;
 
 @Repository
 public interface MemberInfoRepository extends JpaRepository<MemberInfoEntity, String> {
-    
+    MemberInfoEntity findByIdAndUseYn(String id, String useYn);
 }
