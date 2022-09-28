@@ -29,6 +29,9 @@ dependencies {
 	// Jasypt
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
 
+	// Oauth2-client
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'

@@ -1,4 +1,4 @@
-package com.api.upstagram.common.config;
+package com.api.upstagram.common.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
     
+    private final CustomOAuth2UserService customOAuth2UserService;
+    
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -26,18 +28,22 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .httpBasic().disable()
-                .csrf().disable()
-                .cors()
-                .and()
-                .headers().frameOptions().disable()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/*")
-                .permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .build();
+        httpSecurity
+            .httpBasic().disable()
+            .csrf().disable()
+            .cors()
+            .and()
+            .headers().frameOptions().disable()
+            .and()
+            .authorizeRequests()
+            .antMatchers("/*")
+            .permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .oauth2Login()
+            .userInfoEndpoint()
+            .userService(customOAuth2UserService);
+
+        return httpSecurity.build();
     }
 }
