@@ -1,8 +1,8 @@
 //import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import GoogleOauthLogin from './oauth/GoogleOauthLogin';
 import Login from './views/Login/Login';
+import OAuth2CallbackGoogle from './oauth/OAuth2CallbackGoogle';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/login' element={<Login/>}/>
-          <Route path='/oauth/google' element={<GoogleOauthLogin/>}/>
+          <Route path='/login/callback/' element={<OAuth2CallbackGoogle/>}/>
         </Routes>
       </BrowserRouter>
     </div>
