@@ -59,7 +59,7 @@ public class LoginController {
 
         ResponseVO r = new ResponseVO<MemberInfoRVO>();
 
-        UserSession user = loginService.login(pvo);
+        UserSession user = loginService.login(pvo, request);
 
         r.setData(user);
 

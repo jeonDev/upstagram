@@ -1,6 +1,9 @@
 package com.api.upstagram.service;
 
+import java.util.Date;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,7 +29,7 @@ public class LoginService {
 
 
     /* 로그인 */
-    public UserSession login(MemberInfoPVO pvo) throws IllegalAccessException {
+    public UserSession login(MemberInfoPVO pvo, HttpServletRequest request) throws IllegalAccessException {
 
         // 파라미터 검증
         if(pvo.getId() == null || "".equals(pvo.getId()) ) throw new IllegalArgumentException("아이디를 입력해주세요.");
@@ -47,8 +50,37 @@ public class LoginService {
                                 .role(entity.getRole())
                                 .build();
 
+            if(user != null) {
+                log.info("LOGIN Success(" + entity.getId() + ")");
+
+                MemberInfoEntity loginEntity = MemberInfoEntity.builder()
+                                                .id(entity.getId())
+                                                .oauthNo(entity.getOauthNo())
+                                                .name(entity.getName())
+                                                .password(entity.getPassword())
+                                                .wrongPasswordNumber(0)
+                                                .lastLoginDttm(new Date())
+                                                .build();
+
+                memberInfoRepository.save(loginEntity);
+
+                // TODO: JWT 토큰 생성
+            }
+
             return user;
         } else {
+            log.info("LOGIN Failed(" + entity.getId() + ")");
+
+            MemberInfoEntity loginEntity = MemberInfoEntity.builder()
+                                            .id(entity.getId())
+                                            .oauthNo(entity.getOauthNo())
+                                            .name(entity.getName())
+                                            .password(entity.getPassword())
+                                            .wrongPasswordNumber(entity.getWrongPasswordNumber() + 1)
+                                            .build();
+            
+            memberInfoRepository.save(loginEntity);
+            
             throw new IllegalAccessException("비밀번호가 틀렸습니다.");
         }
         
@@ -72,6 +104,9 @@ public class LoginService {
                                     .role("ROLE_USER")
                                     .tagAllowYn("Y")
                                     .pushViewYn("Y")
+                                    .joinDttm(new Date())
+                                    .wrongPasswordNumber(0)
+                                    .passwordChgDttm(new Date())
                                     .build();
         
 

@@ -6,12 +6,17 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@DynamicInsert
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
 @Table(name = "MEMBER_INFO")
 @Entity
@@ -51,7 +56,8 @@ public class MemberInfoEntity {
      */
     @Builder
     private MemberInfoEntity(String id, String oauthNo, String password, String name, String sex
-        , String tel, String role, String pushViewYn, String tagAllowYn){
+        , String tel, String role, String pushViewYn, String tagAllowYn, Date joinDttm, int wrongPasswordNumber
+        , Date passwordChgDttm, Date lastLoginDttm){
             this.id = id;
             this.oauthNo = oauthNo != null ? oauthNo : "" ;
             this.password = password;
@@ -61,9 +67,11 @@ public class MemberInfoEntity {
             this.role = role != null ? role : "ROLE_USER";
             this.pushViewYn = pushViewYn != null ? pushViewYn : "Y";
             this.tagAllowYn = tagAllowYn != null ? tagAllowYn : "Y";
-            this.JoinDttm = new Date();
-            this.wrongPasswordNumber = 0;
-            this.passwordChgDttm = new Date();
+            this.JoinDttm = joinDttm;
+            this.wrongPasswordNumber = wrongPasswordNumber;
+            this.passwordChgDttm = passwordChgDttm;
             this.useYn = "Y";
+            this.lastLoginDttm = lastLoginDttm;
     }
+    
 }

@@ -1,3 +1,4 @@
+import httpRequest from "../config/httpRequest";
 
 const OAuth2CallbackGoogle = () => {
     const params = new URLSearchParams(window.location.hash.substring(1));
@@ -7,6 +8,21 @@ const OAuth2CallbackGoogle = () => {
     console.log("Callback 호출!");
     console.log("access Token : " + accessToken);
 
+    const accessTokenServerGet = async() => {
+        await httpRequest.post('http://localhost:8090/oauth/google',{
+            data: accessToken
+        })
+        .then(response => {
+            console.log('fetch 1');
+            console.log(response);
+        })
+        .then(response => {
+            console.log('fetch 2');
+            console.log(response);
+        });
+    }
+    
+    accessTokenServerGet();
 
     return (
         <div>
