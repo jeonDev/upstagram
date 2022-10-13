@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.api.upstagram.common.vo.BaseEntity;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
 @Table(name = "MEMBER_INFO")
 @Entity
-public class MemberInfoEntity {
+public class MemberInfoEntity extends BaseEntity{
 
     @Id
     private String id;
@@ -56,22 +58,30 @@ public class MemberInfoEntity {
      */
     @Builder
     private MemberInfoEntity(String id, String oauthNo, String password, String name, String sex
-        , String tel, String role, String pushViewYn, String tagAllowYn, Date joinDttm, int wrongPasswordNumber
-        , Date passwordChgDttm, Date lastLoginDttm){
+        , String tel, String role, String pushViewYn, String tagAllowYn, Date joinDttm, String useYn){
             this.id = id;
-            this.oauthNo = oauthNo != null ? oauthNo : "" ;
+            this.oauthNo = oauthNo;
             this.password = password;
             this.name = name;
             this.sex = sex;
             this.tel = tel;
-            this.role = role != null ? role : "ROLE_USER";
-            this.pushViewYn = pushViewYn != null ? pushViewYn : "Y";
-            this.tagAllowYn = tagAllowYn != null ? tagAllowYn : "Y";
+            this.role = role;
+            this.pushViewYn = pushViewYn;
+            this.tagAllowYn = tagAllowYn;
             this.JoinDttm = joinDttm;
-            this.wrongPasswordNumber = wrongPasswordNumber;
-            this.passwordChgDttm = passwordChgDttm;
-            this.useYn = "Y";
-            this.lastLoginDttm = lastLoginDttm;
+            this.useYn = useYn;
     }
-    
+
+    /* 로그인 성공 */
+    public MemberInfoEntity loginSuccess(int wrongPasswordNumber, Date lastLoginDttm) {
+        this.wrongPasswordNumber = wrongPasswordNumber;
+        this.lastLoginDttm = lastLoginDttm;
+        return this;
+    }
+
+    /* 로그인 실패 */
+    public MemberInfoEntity loginFalse(int wrongPasswordNumber) {
+        this.wrongPasswordNumber = wrongPasswordNumber;
+        return this;
+    }
 }
