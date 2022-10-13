@@ -42,6 +42,13 @@ public class LoginService {
         String password = entity.getPassword();
 
         if(encoder.matches(pvo.getPassword(), password)) {
+
+            // 패스워드 틀린횟수 체크
+            if(entity.getWrongPasswordNumber() >= 5) {
+                log.info("패스워드 5회 이상 틀린 사용자 로그인 시도(" + entity.getId() + ")");
+                throw new IllegalAccessException("패스워드 5회 이상 틀리셨습니다.\n고객센터에 문의바랍니다.");
+            }
+
             UserSession user = UserSession.builder()
                                 .id(entity.getId())
                                 .name(entity.getName())
@@ -50,19 +57,13 @@ public class LoginService {
                                 .role(entity.getRole())
                                 .build();
 
+            // 로그인 성공 시
             if(user != null) {
                 log.info("LOGIN Success(" + entity.getId() + ")");
 
-                MemberInfoEntity loginEntity = MemberInfoEntity.builder()
-                                                .id(entity.getId())
-                                                .oauthNo(entity.getOauthNo())
-                                                .name(entity.getName())
-                                                .password(entity.getPassword())
-                                                .wrongPasswordNumber(0)
-                                                .lastLoginDttm(new Date())
-                                                .build();
+                entity.loginSuccess( 0, new Date());
 
-                memberInfoRepository.save(loginEntity);
+                memberInfoRepository.save(entity);
 
                 // TODO: JWT 토큰 생성
             }
@@ -71,15 +72,9 @@ public class LoginService {
         } else {
             log.info("LOGIN Failed(" + entity.getId() + ")");
 
-            MemberInfoEntity loginEntity = MemberInfoEntity.builder()
-                                            .id(entity.getId())
-                                            .oauthNo(entity.getOauthNo())
-                                            .name(entity.getName())
-                                            .password(entity.getPassword())
-                                            .wrongPasswordNumber(entity.getWrongPasswordNumber() + 1)
-                                            .build();
-            
-            memberInfoRepository.save(loginEntity);
+            entity.loginFalse(entity.getWrongPasswordNumber() + 1);
+
+            memberInfoRepository.save(entity);
             
             throw new IllegalAccessException("비밀번호가 틀렸습니다.");
         }
@@ -105,8 +100,7 @@ public class LoginService {
                                     .tagAllowYn("Y")
                                     .pushViewYn("Y")
                                     .joinDttm(new Date())
-                                    .wrongPasswordNumber(0)
-                                    .passwordChgDttm(new Date())
+                                    .useYn("Y")
                                     .build();
         
 
