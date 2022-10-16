@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.upstagram.common.vo.ResponseVO;
-import com.api.upstagram.common.vo.UserSession;
+import com.api.upstagram.common.vo.Token;
 import com.api.upstagram.entity.memberInfo.MemberInfoEntity;
 import com.api.upstagram.service.LoginService;
-import com.api.upstagram.vo.MemberInfoPVO;
-import com.api.upstagram.vo.MemberInfoRVO;
+import com.api.upstagram.vo.MemberInfo.MemberInfoPVO;
+import com.api.upstagram.vo.MemberInfo.MemberInfoRVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,18 +53,14 @@ public class LoginController {
      * 로그인
      */
     @PostMapping("/login")
-    public ResponseVO<MemberInfoRVO> login(HttpServletRequest request,
-            @RequestBody MemberInfoPVO pvo) throws IllegalAccessException{
+    public ResponseVO<MemberInfoRVO> login(@RequestBody MemberInfoPVO pvo) throws IllegalAccessException{
         log.info(this.getClass().getName() + " ==> login");
 
         ResponseVO r = new ResponseVO<MemberInfoRVO>();
 
-        UserSession user = loginService.login(pvo, request);
+        Token token = loginService.login(pvo);
 
-        r.setData(user);
-
-        HttpSession session = request.getSession();
-        session.setAttribute("user", user);
+        r.setData(token);
         
         return r;
     }

@@ -1,4 +1,4 @@
-package com.api.upstagram.entity.memberInfo;
+package com.api.upstagram.entity.LoginHistory;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -24,7 +24,7 @@ public class LoginHistoryEntity implements Serializable {
     private String id;                  // 아이디
 
     @Id
-    private Date loginDttm;              // 로그인접속시간
+    private Date loginDttm;             // 로그인접속시간
 
     private String loginUri;            // 접속경로
 

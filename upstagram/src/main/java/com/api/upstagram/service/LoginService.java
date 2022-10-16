@@ -1,18 +1,19 @@
 package com.api.upstagram.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.api.upstagram.common.vo.UserSession;
+import com.api.upstagram.common.security.JwtTokenProvider;
+import com.api.upstagram.common.vo.Token;
 import com.api.upstagram.entity.memberInfo.MemberInfoEntity;
 import com.api.upstagram.repository.MemberInfoRepository;
-import com.api.upstagram.vo.MemberInfoPVO;
+import com.api.upstagram.vo.MemberInfo.MemberInfoPVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +25,13 @@ public class LoginService {
     
     private final MemberInfoRepository memberInfoRepository;
 
+    //private final JwtTokenProvider jwtTokenProvider;
+
     @Autowired
     private BCryptPasswordEncoder encoder;
 
-
     /* 로그인 */
-    public UserSession login(MemberInfoPVO pvo, HttpServletRequest request) throws IllegalAccessException {
+    public Token login(MemberInfoPVO pvo) throws IllegalAccessException {
 
         // 파라미터 검증
         if(pvo.getId() == null || "".equals(pvo.getId()) ) throw new IllegalArgumentException("아이디를 입력해주세요.");
@@ -49,26 +51,21 @@ public class LoginService {
                 throw new IllegalAccessException("패스워드 5회 이상 틀리셨습니다.\n고객센터에 문의바랍니다.");
             }
 
-            UserSession user = UserSession.builder()
-                                .id(entity.getId())
-                                .name(entity.getName())
-                                .sex(entity.getSex())
-                                .tel(entity.getTel())
-                                .role(entity.getRole())
-                                .build();
 
             // 로그인 성공 시
-            if(user != null) {
-                log.info("LOGIN Success(" + entity.getId() + ")");
+            log.info("LOGIN Success(" + entity.getId() + ")");
 
-                entity.loginSuccess( 0, new Date());
+            entity.loginSuccess( 0, new Date());
 
-                memberInfoRepository.save(entity);
+            memberInfoRepository.save(entity);
 
-                // TODO: JWT 토큰 생성
-            }
+            // Jwt Token 생성
+            List<String> roles = new ArrayList<String>();
+            roles.add(entity.getRole());
+            //Token token = jwtTokenProvider.generateAccessToken(entity.getId(), roles);
 
-            return user;
+            //return token;
+            return null;
         } else {
             log.info("LOGIN Failed(" + entity.getId() + ")");
 
