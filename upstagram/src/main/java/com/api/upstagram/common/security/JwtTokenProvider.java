@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class JwtTokenProvider {
 
+    private static final String BEARER_TYPE = "bearer";
     private static long ACCESS_TOKEN_VALID_TIME = 30 * 60 * 1000L;
 	private static long REFRESH_TOKEN_VALID_TIME = 7 * 24 * 60 * 60 * 1000L;
     private final Key secretkey;
@@ -63,6 +64,7 @@ public class JwtTokenProvider {
                 .compact();
 
         return Token.builder()
+            .grantType(BEARER_TYPE)
             .accessToken(accessToken)
             .refreshToken(refreshToken)
             .key(userId)
