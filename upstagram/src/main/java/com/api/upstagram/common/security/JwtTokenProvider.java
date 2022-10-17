@@ -4,6 +4,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -30,10 +30,8 @@ public class JwtTokenProvider {
 	private static long REFRESH_TOKEN_VALID_TIME = 7 * 24 * 60 * 60 * 1000L;
     private final Key secretkey;
 
-    @Value("${jwt.secret}")
-    private String secret;
-    
-    public JwtTokenProvider() {
+    @Autowired
+    public JwtTokenProvider(@Value("${jwt.secret}") String secret) {
         log.info("JWT Secret Key Decode!" + secret);
         byte[] keyBytes = Decoders.BASE64.decode(secret);
 
