@@ -25,7 +25,7 @@ public class LoginService {
     
     private final MemberInfoRepository memberInfoRepository;
 
-    //private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     private BCryptPasswordEncoder encoder;
@@ -62,10 +62,9 @@ public class LoginService {
             // Jwt Token 생성
             List<String> roles = new ArrayList<String>();
             roles.add(entity.getRole());
-            //Token token = jwtTokenProvider.generateAccessToken(entity.getId(), roles);
+            Token token = jwtTokenProvider.generateAccessToken(entity.getId(), roles);
 
-            //return token;
-            return null;
+            return token;
         } else {
             log.info("LOGIN Failed(" + entity.getId() + ")");
 

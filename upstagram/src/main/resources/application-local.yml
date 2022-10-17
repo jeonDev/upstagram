@@ -47,5 +47,5 @@ jasypt:
 
 ## JWT Key
 jwt:
-  accessSecretKey: accessKey123
-  refreshSecretKey: refreshKey123
+  #JwtSecretKeyUpstagramProjectGeneratedTokenDtoAccessTokenAndRefreshTokenKey07261111
+  secret: ENC(4X9uavEdPIcfHqfzoJ+K7iblsBALlb5r)

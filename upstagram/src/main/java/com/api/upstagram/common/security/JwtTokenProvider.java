@@ -23,55 +23,51 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
 
-    private static long accessTokenValidTime = 30 * 60 * 1000L;
-	private static long refreshTokenValidTime = 7 * 24 * 60 * 60 * 1000L;
+    private static long ACCESS_TOKEN_VALID_TIME = 30 * 60 * 1000L;
+	private static long REFRESH_TOKEN_VALID_TIME = 7 * 24 * 60 * 60 * 1000L;
+    private final Key secretkey;
 
-    private final Key accessSecretkey;
-    private final Key refreshSecretkey;
+    @Value("${jwt.secret}")
+    private String secret;
     
-    public JwtTokenProvider(@Value("${jwt.secret}") String accessSecretkey
-        , @Value("${jwt.secret") String refreshSecretkey) {
-            
-        log.info("JWT Secret Key Decode!");
-        byte[] accessKeyBytes = Decoders.BASE64.decode(accessSecretkey);
-        byte[] refreshKeyBytes = Decoders.BASE64.decode(refreshSecretkey);
+    public JwtTokenProvider() {
+        log.info("JWT Secret Key Decode!" + secret);
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
 
-        this.accessSecretkey = Keys.hmacShaKeyFor(accessKeyBytes);
-        this.refreshSecretkey = Keys.hmacShaKeyFor(refreshKeyBytes);
+        this.secretkey = Keys.hmacShaKeyFor(keyBytes);
     }
 
     /*
      * JWT Token 생성 
      */
-    public Token generateAccessToken(String userEmail, List<String> roles) {
+    public Token generateAccessToken(String userId, List<String> roles) {
 
-        log.info("JWT Token Generate!");
-        Claims claims = Jwts.claims().setSubject(userEmail);
+        log.info("JWT Token Generate!" + userId);
+        Claims claims = Jwts.claims().setSubject(userId);
         claims.put("roles", roles);
         Date now = new Date();
 
         String accessToken = Jwts.builder()
                 .setClaims(claims)      // 정보저장
                 .setIssuedAt(now)       // 토큰 발행시간 정보
-                .setExpiration(new Date(now.getTime() + accessTokenValidTime))  // 토큰 유효시간 정보
-                .signWith(accessSecretkey, SignatureAlgorithm.HS512)    // 암호화 알고리즘
+                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_TIME))  // 토큰 유효시간 정보
+                .signWith(secretkey, SignatureAlgorithm.HS512)    // 암호화 알고리즘
                 .compact();
 
         String refreshToken = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + refreshTokenValidTime))
-                .signWith(refreshSecretkey, SignatureAlgorithm.HS512)
+                .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME))
+                .signWith(secretkey, SignatureAlgorithm.HS512)
                 .compact();
 
         return Token.builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken)
-            .key(userEmail)
+            .key(userId)
             .build();
     }
 
@@ -81,7 +77,7 @@ public class JwtTokenProvider {
     public boolean validDateToken(String token) {
         try{
             log.info("Token ValidDate Check!");
-            Jwts.parserBuilder().setSigningKey(accessSecretkey).build().parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(secretkey).build().parseClaimsJws(token);
             return true;
         } catch(SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
@@ -108,7 +104,7 @@ public class JwtTokenProvider {
      */
     private Claims parseClaims(String accessToken) {
         try{
-            return Jwts.parserBuilder().setSigningKey(accessSecretkey).build().parseClaimsJws(accessToken).getBody();
+            return Jwts.parserBuilder().setSigningKey(secretkey).build().parseClaimsJws(accessToken).getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
