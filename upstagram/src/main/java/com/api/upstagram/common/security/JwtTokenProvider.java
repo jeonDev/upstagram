@@ -4,6 +4,8 @@ import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -96,6 +98,21 @@ public class JwtTokenProvider {
      */
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
+        // TODO: 인증
+        // Claims claims = parseClaims(accessToken);
+
+        // if (claims.get(AUTHORITIES_KEY) == null) {
+        //     throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        // }
+
+        // Collection<? extends GrantedAuthority> authorities =
+        //         Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+        //                 .map(SimpleGrantedAuthority::new)
+        //                 .collect(Collectors.toList());
+
+        // UserDetails principal = new User(claims.getSubject(), "", authorities);
+
+        // return new UsernamePasswordAuthenticationToken(principal, "", authorities);
         return null;
     }
 
@@ -108,5 +125,12 @@ public class JwtTokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    /* 
+     * Request의 Header에서 Token 값 추출. "Authrization" : "TOKEN값"
+     */
+    public String resolveAccessToken(HttpServletRequest request) {
+        return request.getHeader("Authorization");
     }
 }

@@ -17,14 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Slf4j
 public class LoginController {
-    
+
     @Autowired
     private LoginService loginService;
 
     /**
      * 회원가입
-     * @param pvo
-     * @return
      */
     @PostMapping("/join")
     public ResponseVO<MemberInfoRVO> join(@RequestBody MemberInfoPVO pvo) {

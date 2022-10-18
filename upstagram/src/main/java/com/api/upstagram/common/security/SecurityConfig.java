@@ -5,8 +5,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
     
-    private final CustomOAuth2UserService customOAuth2UserService;
+//    private final CustomOAuth2UserService customOAuth2UserService;
+
+    private final JwtTokenProvider jwtTokenProvider;
     
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -28,22 +32,22 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf().disable();
+        
         httpSecurity
             .httpBasic().disable()
-            .csrf().disable()
-            .cors()
-            .and()
-            .headers().frameOptions().disable()
-            .and()
             .authorizeRequests()
-            .antMatchers("/*")
-            .permitAll()
-            .anyRequest().authenticated()
+            .antMatchers("/user/**").hasRole("USER")
+            .antMatchers("/admin/**").hasAnyRole("ADMIN", "USER")
+            .anyRequest().permitAll()
+            // .oauth2Login()
+            // .userInfoEndpoint()
+            // .userService(customOAuth2UserService)
             .and()
-            .oauth2Login()
-            .userInfoEndpoint()
-            .userService(customOAuth2UserService);
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                UsernamePasswordAuthenticationFilter.class);
 
+        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return httpSecurity.build();
     }
 }
