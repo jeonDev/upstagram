@@ -2,6 +2,7 @@ package com.api.upstagram.entity.memberInfo;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -22,15 +23,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
 @Table(name = "MEMBER_INFO")
 @Entity
-public class MemberInfoEntity extends BaseEntity{
+public class MemberInfoEntity extends BaseEntity {
 
     @Id
     private String id;
 
+    @Column(nullable = false)
     private String oauthNo;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String name;
 
     private String sex;

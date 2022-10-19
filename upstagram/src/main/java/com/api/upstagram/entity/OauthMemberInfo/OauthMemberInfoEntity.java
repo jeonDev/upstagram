@@ -1,10 +1,12 @@
-package com.api.upstagram.common.vo;
+package com.api.upstagram.entity.OauthMemberInfo;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.api.upstagram.common.vo.Role;
 
 import lombok.AccessLevel;
 import lombok.Builder;

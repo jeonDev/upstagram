@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.api.upstagram.common.security.JwtTokenProvider;
+import com.api.upstagram.common.vo.Role;
 import com.api.upstagram.common.vo.Token;
 import com.api.upstagram.entity.memberInfo.MemberInfoEntity;
 import com.api.upstagram.repository.MemberInfoRepository;
@@ -37,9 +38,8 @@ public class LoginService {
         if(pvo.getId() == null || "".equals(pvo.getId()) ) throw new IllegalArgumentException("아이디를 입력해주세요.");
         if(pvo.getPassword() == null || "".equals(pvo.getPassword()) ) throw new IllegalArgumentException("패스워드를 입력해주세요.");
 
-        MemberInfoEntity entity = memberInfoRepository.findByIdAndUseYn(pvo.getId(), "Y");
-
-        if(entity == null) throw new IllegalAccessException("가입하지 않은 사용자입니다.");
+        MemberInfoEntity entity = memberInfoRepository.findByIdAndUseYn(pvo.getId(), "Y")
+                .orElseThrow(() -> new IllegalAccessException("가입하지 않은 사용자입니다."));
         
         String password = entity.getPassword();
 
@@ -60,7 +60,7 @@ public class LoginService {
             memberInfoRepository.save(entity);
 
             // Jwt Token 생성
-            List<String> roles = new ArrayList<String>();
+            List<String> roles = new ArrayList<>();
             roles.add(entity.getRole());
             Token token = jwtTokenProvider.generateAccessToken(entity.getId(), roles);
 
@@ -92,7 +92,7 @@ public class LoginService {
                                     .name(pvo.getName())
                                     .sex(pvo.getSex())
                                     .tel(pvo.getTel())
-                                    .role("ROLE_USER")
+                                    .role(Role.USER.getKey())
                                     .tagAllowYn("Y")
                                     .pushViewYn("Y")
                                     .joinDttm(new Date())

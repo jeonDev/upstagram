@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.api.upstagram.common.vo.Token;
@@ -32,6 +34,9 @@ public class JwtTokenProvider {
     private static long ACCESS_TOKEN_VALID_TIME = 30 * 60 * 1000L;
 	private static long REFRESH_TOKEN_VALID_TIME = 7 * 24 * 60 * 60 * 1000L;
     private final Key secretkey;
+
+    @Autowired
+    private CustomUserDetailService userDetailService;
 
     @Autowired
     public JwtTokenProvider(@Value("${jwt.secret}") String secret) {
@@ -97,23 +102,8 @@ public class JwtTokenProvider {
      * 토큰에서 Authentication 정보 추출
      */
     public Authentication getAuthentication(String accessToken) {
-        Claims claims = parseClaims(accessToken);
-        // TODO: 인증
-        // Claims claims = parseClaims(accessToken);
-
-        // if (claims.get(AUTHORITIES_KEY) == null) {
-        //     throw new RuntimeException("권한 정보가 없는 토큰입니다.");
-        // }
-
-        // Collection<? extends GrantedAuthority> authorities =
-        //         Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-        //                 .map(SimpleGrantedAuthority::new)
-        //                 .collect(Collectors.toList());
-
-        // UserDetails principal = new User(claims.getSubject(), "", authorities);
-
-        // return new UsernamePasswordAuthenticationToken(principal, "", authorities);
-        return null;
+        UserDetails userDetails = userDetailService.loadUserByUsername(this.parseClaims(accessToken).getSubject());
+        return new UsernamePasswordAuthenticationToken(userDetails,"", userDetails.getAuthorities());
     }
 
     /*

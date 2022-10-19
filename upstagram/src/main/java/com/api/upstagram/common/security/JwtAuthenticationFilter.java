@@ -28,6 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         log.info("ACCESS TOKEN : " + accessToken);
 
         if(accessToken != null && jwtTokenProvider.validDateToken(accessToken)) {
+            log.info("Token To SecurityContextHolder");
             Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
