@@ -1,4 +1,4 @@
-package com.api.upstagram.common.security;
+package com.api.upstagram.common.security.Jwt;
 
 import java.io.IOException;
 

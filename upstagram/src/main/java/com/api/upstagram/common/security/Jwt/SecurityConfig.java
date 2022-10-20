@@ -1,4 +1,4 @@
-package com.api.upstagram.common.security;
+package com.api.upstagram.common.security.Jwt;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;

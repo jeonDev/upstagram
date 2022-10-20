@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.api.upstagram.common.security.JwtTokenProvider;
+import com.api.upstagram.common.security.Jwt.JwtTokenProvider;
 import com.api.upstagram.common.vo.Role;
 import com.api.upstagram.common.vo.Token;
 import com.api.upstagram.entity.memberInfo.MemberInfoEntity;
