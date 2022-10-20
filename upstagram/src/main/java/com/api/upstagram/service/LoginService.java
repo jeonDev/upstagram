@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.api.upstagram.common.security.Jwt.JwtTokenProvider;
+import com.api.upstagram.common.util.StringUtils;
 import com.api.upstagram.common.vo.Role;
 import com.api.upstagram.common.vo.Token;
 import com.api.upstagram.entity.memberInfo.MemberInfoEntity;
@@ -35,8 +36,8 @@ public class LoginService {
     public Token login(MemberInfoPVO pvo) throws IllegalAccessException {
 
         // 파라미터 검증
-        if(pvo.getId() == null || "".equals(pvo.getId()) ) throw new IllegalArgumentException("아이디를 입력해주세요.");
-        if(pvo.getPassword() == null || "".equals(pvo.getPassword()) ) throw new IllegalArgumentException("패스워드를 입력해주세요.");
+        if(StringUtils.isNotEmpty(pvo.getId())) throw new IllegalArgumentException("아이디를 입력해주세요.");
+        if(StringUtils.isNotEmpty(pvo.getPassword())) throw new IllegalArgumentException("패스워드를 입력해주세요.");
 
         MemberInfoEntity entity = memberInfoRepository.findByIdAndUseYn(pvo.getId(), "Y")
                 .orElseThrow(() -> new IllegalAccessException("가입하지 않은 사용자입니다."));
@@ -62,7 +63,7 @@ public class LoginService {
             // Jwt Token 생성
             List<String> roles = new ArrayList<>();
             roles.add(entity.getRole());
-            Token token = jwtTokenProvider.generateAccessToken(entity.getId(), roles);
+            Token token = jwtTokenProvider.generateJwtToken(entity.getId(), roles);
 
             return token;
         } else {
@@ -110,20 +111,20 @@ public class LoginService {
         log.info("회원가입 검증 시작");
 
         // 아이디 검증
-        if(member.getId() == null) throw new IllegalArgumentException("아이디를 입력해주세요.");
+        if(StringUtils.isNotEmpty(member.getId())) throw new IllegalArgumentException("아이디를 입력해주세요.");
 
         // 패스워드 검증 & 암호화 처리
-        if(member.getPassword() == null) throw new IllegalArgumentException("패스워드를 입력해주세요.");
+        if(StringUtils.isNotEmpty(member.getPassword())) throw new IllegalArgumentException("패스워드를 입력해주세요.");
         else member.setPassword(encoder.encode(member.getPassword()));
 
         // 전화번호 검증
-        if(member.getTel() == null) throw new IllegalArgumentException("전화번호를 입력해주세요.");
+        if(StringUtils.isNotEmpty(member.getTel())) throw new IllegalArgumentException("전화번호를 입력해주세요.");
         else {
             member.setTel(member.getTel().replaceAll("-", ""));
             if(member.getTel().length() != 11) throw new IllegalArgumentException("입력한 전화번호를 확인해주세요.");
         }
 
-        if(member.getSex() == null) throw new IllegalArgumentException("성별을 입력해주세요.");
+        if(StringUtils.isNotEmpty(member.getSex())) throw new IllegalArgumentException("성별을 입력해주세요.");
 
         Optional<MemberInfoEntity> entity = memberInfoRepository.findById(member.getId());
 

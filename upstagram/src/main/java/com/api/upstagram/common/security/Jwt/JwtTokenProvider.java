@@ -49,26 +49,12 @@ public class JwtTokenProvider {
     /*
      * JWT Token 생성 
      */
-    public Token generateAccessToken(String userId, List<String> roles) {
+    public Token generateJwtToken(String userId, List<String> roles) {
 
         log.info("JWT Token Generate!" + userId);
-        Claims claims = Jwts.claims().setSubject(userId);
-        claims.put("roles", roles);
-        Date now = new Date();
 
-        String accessToken = Jwts.builder()
-                .setClaims(claims)      // 정보저장
-                .setIssuedAt(now)       // 토큰 발행시간 정보
-                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_TIME))  // 토큰 유효시간 정보
-                .signWith(secretkey, SignatureAlgorithm.HS512)    // 암호화 알고리즘
-                .compact();
-
-        String refreshToken = Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME))
-                .signWith(secretkey, SignatureAlgorithm.HS512)
-                .compact();
+        String accessToken = this.accessTokenGenerate(userId, roles);
+        String refreshToken = this.refreshTokenGenerate(userId);
 
         return Token.builder()
             .grantType(BEARER_TYPE)
@@ -78,6 +64,38 @@ public class JwtTokenProvider {
             .build();
     }
 
+    /*
+     * Access Token 발급
+     */
+    public String accessTokenGenerate(String userId, List<String> roles){
+        log.info("JWT Access Token Generate!" + userId);
+        Claims claims = Jwts.claims().setSubject(userId);
+        claims.put("roles", roles);
+        Date now = new Date();
+
+        return Jwts.builder()
+                .setClaims(claims)      // 정보저장
+                .setIssuedAt(now)       // 토큰 발행시간 정보
+                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_TIME))  // 토큰 유효시간 정보
+                .signWith(secretkey, SignatureAlgorithm.HS512)    // 암호화 알고리즘
+                .compact();
+    }
+
+    /*
+     * Access Token 발급
+     */
+    public String refreshTokenGenerate(String userId){
+        log.info("JWT Refresh Token Generate!" + userId);
+        Claims claims = Jwts.claims().setSubject(userId);
+        Date now = new Date();
+
+        return Jwts.builder()
+                .setClaims(claims)      // 정보저장
+                .setIssuedAt(now)       // 토큰 발행시간 정보
+                .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME))  // 토큰 유효시간 정보
+                .signWith(secretkey, SignatureAlgorithm.HS512)    // 암호화 알고리즘
+                .compact();
+    }
     /*
      * 토큰 유효시간 체크
      */
