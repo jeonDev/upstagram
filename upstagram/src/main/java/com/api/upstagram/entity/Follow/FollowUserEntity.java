@@ -14,8 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-//@NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
 @Table(name = "FOLLOW_USER")
 @Entity
 public class FollowUserEntity extends BaseEntity{
@@ -24,4 +23,10 @@ public class FollowUserEntity extends BaseEntity{
     private Long followNo;
     private String id;
     private String followId;
+
+    @Builder
+    private FollowUserEntity(String id, String followId) {
+        this.id = id;
+        this.followId = followId;
+    }
 }
