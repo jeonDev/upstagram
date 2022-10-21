@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @DynamicInsert
 @DynamicUpdate
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
 @Table(name = "MEMBER_INFO")
 @Entity
