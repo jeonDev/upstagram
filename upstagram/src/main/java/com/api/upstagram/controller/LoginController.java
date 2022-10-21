@@ -28,7 +28,7 @@ public class LoginController {
     public ResponseVO<MemberInfoRVO> join(@RequestBody MemberInfoPVO pvo) {
         log.info(this.getClass().getName() + " ==> join");
 
-        ResponseVO r = new ResponseVO<MemberInfoRVO>();
+        ResponseVO<MemberInfoRVO> r = new ResponseVO<MemberInfoRVO>();
 
         MemberInfoEntity entity = loginService.join(pvo);
         MemberInfoRVO rvo = MemberInfoRVO.builder()
@@ -48,10 +48,10 @@ public class LoginController {
      * 로그인
      */
     @PostMapping("/login")
-    public ResponseVO<MemberInfoRVO> login(@RequestBody MemberInfoPVO pvo) throws IllegalAccessException{
+    public ResponseVO<Token> login(@RequestBody MemberInfoPVO pvo) throws IllegalAccessException{
         log.info(this.getClass().getName() + " ==> login");
 
-        ResponseVO r = new ResponseVO<MemberInfoRVO>();
+        ResponseVO<Token> r = new ResponseVO<Token>();
 
         Token token = loginService.login(pvo);
 
