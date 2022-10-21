@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.api.upstagram.common.security.CustomUserDetailService;
 import com.api.upstagram.common.vo.Token;
 
 import io.jsonwebtoken.Claims;

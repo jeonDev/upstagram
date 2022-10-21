@@ -11,33 +11,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
-import com.api.upstagram.common.vo.User;
-import com.api.upstagram.entity.Follow.FollowUserEntity;
-import com.api.upstagram.service.FollowService;
-import com.api.upstagram.vo.Follow.FollowPVO;
-import com.api.upstagram.vo.Follow.FollowRVO;
+import com.api.upstagram.entity.FollowUser.FollowUserEntity;
+import com.api.upstagram.service.FollowUserService;
+import com.api.upstagram.vo.FollowUser.FollowUserPVO;
+import com.api.upstagram.vo.FollowUser.FollowUserRVO;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-public class FollowController {
+public class FollowUserController {
     
     @Autowired
-    private FollowService followService;
+    private FollowUserService followService;
     
     /*
      * 팔로우 요청
      */
     @PostMapping("/user/add/follow")
-    public ResponseVO<FollowRVO> requestFollow(@RequestBody FollowPVO pvo) {
+    public ResponseVO<FollowUserRVO> requestFollow(@RequestBody FollowUserPVO pvo) {
         log.info("User Follow Request!");
         ResponseVO r = new ResponseVO<Object>();
         
         pvo.setId(CommonUtils.getUserId());
 
         FollowUserEntity entity = followService.requestFollow(pvo);
-        FollowRVO rvo = new FollowRVO(entity.getFollowNo(), entity.getId(), entity.getFollowId());
+        FollowUserRVO rvo = FollowUserRVO.builder()
+                                .followNo(entity.getFollowNo())
+                                .id(entity.getId())
+                                .followId(entity.getFollowId())
+                                .build();
 
         r.setData(rvo);
         
@@ -48,15 +51,19 @@ public class FollowController {
      * Follow 리스트 조회
      */
     @GetMapping("/user/follow/list")
-    public ResponseVO<List<FollowRVO>> getFollowList() {
+    public ResponseVO<List<FollowUserRVO>> getFollowList() {
         log.info("User Get FollowL ist!");
         ResponseVO r = new ResponseVO<Object>();
 
-        FollowPVO pvo = new FollowPVO();
+        FollowUserPVO pvo = new FollowUserPVO();
         pvo.setId(CommonUtils.getUserId());
 
-        List<FollowRVO> rvo = followService.getFollowList(pvo).stream()
-                                .map(m -> new FollowRVO(m.getFollowNo(), m.getId(), m.getFollowId()))
+        List<FollowUserRVO> rvo = followService.getFollowList(pvo).stream()
+                                .map(m -> FollowUserRVO.builder()
+                                            .followNo(m.getFollowNo())
+                                            .id(m.getId())
+                                            .followId(m.getFollowId())
+                                            .build())
                                 .collect(Collectors.toList());
 
         r.setData(rvo);

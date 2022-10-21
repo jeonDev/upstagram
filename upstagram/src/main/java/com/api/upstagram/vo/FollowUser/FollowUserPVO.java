@@ -1,9 +1,9 @@
-package com.api.upstagram.vo.Follow;
+package com.api.upstagram.vo.FollowUser;
 
 import lombok.Data;
 
 @Data
-public class FollowPVO {
+public class FollowUserPVO {
     private String id;
     private String followId;
 }

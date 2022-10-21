@@ -39,39 +39,39 @@ public class LoginService {
         if(StringUtils.isNotEmpty(pvo.getId())) throw new IllegalArgumentException("아이디를 입력해주세요.");
         if(StringUtils.isNotEmpty(pvo.getPassword())) throw new IllegalArgumentException("패스워드를 입력해주세요.");
 
-        MemberInfoEntity entity = memberInfoRepository.findByIdAndUseYn(pvo.getId(), "Y")
+        MemberInfoEntity loginEntity = memberInfoRepository.findByIdAndUseYn(pvo.getId(), "Y")
                 .orElseThrow(() -> new IllegalAccessException("가입하지 않은 사용자입니다."));
         
-        String password = entity.getPassword();
+        String password = loginEntity.getPassword();
 
         if(encoder.matches(pvo.getPassword(), password)) {
 
             // 패스워드 틀린횟수 체크
-            if(entity.getWrongPasswordNumber() >= 5) {
-                log.info("패스워드 5회 이상 틀린 사용자 로그인 시도(" + entity.getId() + ")");
+            if(loginEntity.getWrongPasswordNumber() >= 5) {
+                log.info("패스워드 5회 이상 틀린 사용자 로그인 시도(" + loginEntity.getId() + ")");
                 throw new IllegalAccessException("패스워드 5회 이상 틀리셨습니다.\n고객센터에 문의바랍니다.");
             }
 
 
             // 로그인 성공 시
-            log.info("LOGIN Success(" + entity.getId() + ")");
+            log.info("LOGIN Success(" + loginEntity.getId() + ")");
 
-            entity.loginSuccess( 0, new Date());
+            loginEntity.loginSuccess( 0, new Date());
 
-            memberInfoRepository.save(entity);
+            memberInfoRepository.save(loginEntity);
 
             // Jwt Token 생성
             List<String> roles = new ArrayList<>();
-            roles.add(entity.getRole());
-            Token token = jwtTokenProvider.generateJwtToken(entity.getId(), roles);
+            roles.add(loginEntity.getRole());
+            Token token = jwtTokenProvider.generateJwtToken(loginEntity.getId(), roles);
 
             return token;
         } else {
-            log.info("LOGIN Failed(" + entity.getId() + ")");
+            log.info("LOGIN Failed(" + loginEntity.getId() + ")");
 
-            entity.loginFalse(entity.getWrongPasswordNumber() + 1);
+            loginEntity.loginFalse(loginEntity.getWrongPasswordNumber() + 1);
 
-            memberInfoRepository.save(entity);
+            memberInfoRepository.save(loginEntity);
             
             throw new IllegalAccessException("비밀번호가 틀렸습니다.");
         }

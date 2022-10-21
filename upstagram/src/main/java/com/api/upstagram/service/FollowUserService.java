@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.api.upstagram.entity.Follow.FollowUserEntity;
-import com.api.upstagram.repository.FollowRepository;
-import com.api.upstagram.vo.Follow.FollowPVO;
+import com.api.upstagram.entity.FollowUser.FollowUserEntity;
+import com.api.upstagram.repository.FollowUserRepository;
+import com.api.upstagram.vo.FollowUser.FollowUserPVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,14 +14,14 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class FollowService {
+public class FollowUserService {
     
-    private final FollowRepository followRepository;
+    private final FollowUserRepository followRepository;
 
     /*
      * 팔로우 요청
      */
-    public FollowUserEntity requestFollow(FollowPVO pvo){
+    public FollowUserEntity requestFollow(FollowUserPVO pvo){
         log.info(this.getClass().getName() + " ==> Request Follow");
 
         FollowUserEntity followUserEntity = FollowUserEntity.builder()
@@ -35,7 +35,7 @@ public class FollowService {
     /*
      * 팔로우 리스트 조회
      */
-    public List<FollowUserEntity> getFollowList(FollowPVO pvo) {
+    public List<FollowUserEntity> getFollowList(FollowUserPVO pvo) {
         log.info(this.getClass().getName() + " ==> Get Follow List");
 
         List<FollowUserEntity> followUserEntityList = followRepository.findById(pvo.getId());

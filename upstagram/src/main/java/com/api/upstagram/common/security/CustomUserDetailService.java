@@ -1,4 +1,4 @@
-package com.api.upstagram.common.security.Jwt;
+package com.api.upstagram.common.security;
 
 import java.util.ArrayList;
 import java.util.List;

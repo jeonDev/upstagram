@@ -1,4 +1,4 @@
-package com.api.upstagram.entity.Follow;
+package com.api.upstagram.entity.FollowUser;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,8 +25,10 @@ public class FollowUserEntity extends BaseEntity{
     private String followId;
 
     @Builder
-    private FollowUserEntity(String id, String followId) {
+    public FollowUserEntity(Long followNo, String id, String followId) {
+        this.followNo = followNo;
         this.id = id;
         this.followId = followId;
     }
+    
 }

@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.api.upstagram.entity.Follow.FollowUserEntity;
+import com.api.upstagram.entity.FollowUser.FollowUserEntity;
 
-public interface FollowRepository extends JpaRepository<FollowUserEntity, Long> {
+public interface FollowUserRepository extends JpaRepository<FollowUserEntity, Long> {
     List<FollowUserEntity> findById(String id);
 }

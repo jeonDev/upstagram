@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @DynamicInsert
 @DynamicUpdate
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
 @Table(name = "MEMBER_INFO")
 @Entity
@@ -47,7 +48,7 @@ public class MemberInfoEntity extends BaseEntity {
 
     private String tagAllowYn;
 
-    private Date JoinDttm;
+    private Date joinDttm;
 
     private Date lastLoginDttm;
 
@@ -61,21 +62,25 @@ public class MemberInfoEntity extends BaseEntity {
      * MemberInfo 생성
      */
     @Builder
-    private MemberInfoEntity(String id, String oauthNo, String password, String name, String sex
-        , String tel, String role, String pushViewYn, String tagAllowYn, Date joinDttm, String useYn){
-            this.id = id;
-            this.oauthNo = oauthNo;
-            this.password = password;
-            this.name = name;
-            this.sex = sex;
-            this.tel = tel;
-            this.role = role;
-            this.pushViewYn = pushViewYn;
-            this.tagAllowYn = tagAllowYn;
-            this.JoinDttm = joinDttm;
-            this.useYn = useYn;
+    public MemberInfoEntity(String id, String oauthNo, String password, String name, String sex, String tel,
+            String role, String pushViewYn, String tagAllowYn, Date joinDttm, Date lastLoginDttm,
+            int wrongPasswordNumber, Date passwordChgDttm, String useYn) {
+        this.id = id;
+        this.oauthNo = oauthNo;
+        this.password = password;
+        this.name = name;
+        this.sex = sex;
+        this.tel = tel;
+        this.role = role;
+        this.pushViewYn = pushViewYn;
+        this.tagAllowYn = tagAllowYn;
+        this.joinDttm = joinDttm;
+        this.lastLoginDttm = lastLoginDttm;
+        this.wrongPasswordNumber = wrongPasswordNumber;
+        this.passwordChgDttm = passwordChgDttm;
+        this.useYn = useYn;
     }
-
+    
     /* 로그인 성공 */
     public MemberInfoEntity loginSuccess(int wrongPasswordNumber, Date lastLoginDttm) {
         this.wrongPasswordNumber = wrongPasswordNumber;
