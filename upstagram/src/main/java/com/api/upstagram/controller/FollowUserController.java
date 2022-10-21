@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FollowUserController {
     
     @Autowired
-    private FollowUserService followService;
+    private FollowUserService followUserService;
     
     /*
      * 팔로우 요청
@@ -31,19 +31,29 @@ public class FollowUserController {
     @PostMapping("/user/add/follow")
     public ResponseVO<FollowUserRVO> requestFollow(@RequestBody FollowUserPVO pvo) {
         log.info("User Follow Request!");
-        ResponseVO r = new ResponseVO<Object>();
+        ResponseVO<FollowUserRVO> r = new ResponseVO<FollowUserRVO>();
         
         pvo.setId(CommonUtils.getUserId());
 
-        FollowUserEntity entity = followService.requestFollow(pvo);
+        FollowUserEntity entity = followUserService.requestFollowUser(pvo);
         FollowUserRVO rvo = FollowUserRVO.builder()
                                 .followNo(entity.getFollowNo())
                                 .id(entity.getId())
                                 .followId(entity.getFollowId())
                                 .build();
-
+        
         r.setData(rvo);
         
+        return r;
+    }
+
+    @PostMapping("/user/delete/follow")
+    public ResponseVO<FollowUserRVO> deleteFollow(@RequestBody FollowUserPVO pvo) {
+        log.info("User Follow Delete Request");
+        ResponseVO<FollowUserRVO> r = new ResponseVO<FollowUserRVO>();
+        
+        followUserService.deleteFollowUser(pvo);
+
         return r;
     }
 
@@ -53,12 +63,12 @@ public class FollowUserController {
     @GetMapping("/user/follow/list")
     public ResponseVO<List<FollowUserRVO>> getFollowList() {
         log.info("User Get FollowL ist!");
-        ResponseVO r = new ResponseVO<Object>();
+        ResponseVO<List<FollowUserRVO>> r = new ResponseVO<List<FollowUserRVO>>();
 
         FollowUserPVO pvo = new FollowUserPVO();
         pvo.setId(CommonUtils.getUserId());
 
-        List<FollowUserRVO> rvo = followService.getFollowList(pvo).stream()
+        List<FollowUserRVO> rvo = followUserService.getFollowUserList(pvo).stream()
                                 .map(m -> FollowUserRVO.builder()
                                             .followNo(m.getFollowNo())
                                             .id(m.getId())
