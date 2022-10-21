@@ -1,11 +1,15 @@
 package com.api.upstagram.service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.NestedServletException;
 
 import com.api.upstagram.common.Exception.CustomException;
+import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.entity.FollowUser.FollowUserEntity;
 import com.api.upstagram.repository.FollowUserRepository;
 import com.api.upstagram.vo.FollowUser.FollowUserPVO;
@@ -26,12 +30,23 @@ public class FollowUserService {
     public FollowUserEntity requestFollowUser(FollowUserPVO pvo){
         log.info(this.getClass().getName() + " ==> Request Follow User");
 
+        // 입력값 검증 (1. 팔로우 ID와 내 ID 비교)
+        if(pvo.getId().equals(pvo.getFollowId())) {
+            throw new CustomException(Response.FOLLOW_ERROR.getCode(), Response.FOLLOW_ERROR.getMessage());
+        }
+
         FollowUserEntity followUserEntity = FollowUserEntity.builder()
                                         .id(pvo.getId())
                                         .followId(pvo.getFollowId())
                                         .build();
-
-        return followUserRepository.save(followUserEntity);
+        
+        try {
+            followUserRepository.save(followUserEntity);
+        } catch (DataIntegrityViolationException e) {
+            throw new CustomException(Response.FOLLOW_ERROR.getCode(), Response.FOLLOW_ERROR.getMessage());
+        }
+        log.info(followUserEntity.toString());
+        return followUserEntity;
     }
 
     /*
@@ -44,7 +59,7 @@ public class FollowUserService {
         if(followUserEntity.isPresent()) {
             followUserRepository.delete(followUserEntity.get());
         } else {
-            throw new CustomException("99", "삭제할 데이터가 존재하지 않습니다.");
+            throw new CustomException(Response.DELETE_ERROR.getCode(), Response.DELETE_ERROR.getMessage());
         }
         
     }
