@@ -3,17 +3,12 @@ package com.api.upstagram.common.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.api.upstagram.common.security.Jwt.JwtTokenProvider;
 import com.api.upstagram.common.vo.User;
 
 public class CommonUtils {
-    
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
     
     public static String dateToYmdString(Date time) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
