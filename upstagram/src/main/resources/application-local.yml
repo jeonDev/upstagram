@@ -29,6 +29,13 @@ spring:
             client-id: 826917971572-k2repj07adcidd5d4cdgm3cic7f396je.apps.googleusercontent.com
             client-secret: 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
             scope: profile, email
+  ## File Upload
+  servlet:
+    multipart:
+      location: static/images
+      max-file-size: 100MB
+      max-request-size: 1KB
+        
 logging:
   level:
     org:
