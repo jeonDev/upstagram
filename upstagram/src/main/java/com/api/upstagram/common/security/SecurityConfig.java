@@ -9,6 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 
 import com.api.upstagram.common.security.Jwt.JwtAuthenticationFilter;
 import com.api.upstagram.common.security.Jwt.JwtTokenProvider;
@@ -40,6 +41,7 @@ public class SecurityConfig {
         httpSecurity
             .httpBasic().disable()
             .authorizeRequests()
+            //.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
             .antMatchers("/user/**").hasRole("USER")
             .antMatchers("/admin/**").hasAnyRole("ADMIN", "USER")
             .anyRequest().permitAll()

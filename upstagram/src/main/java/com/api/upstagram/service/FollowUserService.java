@@ -1,12 +1,10 @@
 package com.api.upstagram.service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.NestedServletException;
 
 import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.vo.Response;

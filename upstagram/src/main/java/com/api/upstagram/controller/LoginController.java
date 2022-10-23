@@ -25,7 +25,7 @@ public class LoginController {
      * 회원가입
      */
     @PostMapping("/join")
-    public ResponseVO<MemberInfoRVO> join(@RequestBody MemberInfoPVO pvo) {
+    public ResponseVO<MemberInfoRVO> join(@RequestBody(required = false) MemberInfoPVO pvo) {
         log.info(this.getClass().getName() + " ==> join");
 
         ResponseVO<MemberInfoRVO> r = new ResponseVO<MemberInfoRVO>();

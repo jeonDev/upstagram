@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.security.Jwt.JwtTokenProvider;
 import com.api.upstagram.common.util.StringUtils;
+import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.common.vo.Role;
 import com.api.upstagram.common.vo.Token;
 import com.api.upstagram.entity.memberInfo.MemberInfoEntity;
@@ -36,8 +38,8 @@ public class LoginService {
     public Token login(MemberInfoPVO pvo) throws IllegalAccessException {
 
         // 파라미터 검증
-        if(StringUtils.isNotEmpty(pvo.getId())) throw new IllegalArgumentException("아이디를 입력해주세요.");
-        if(StringUtils.isNotEmpty(pvo.getPassword())) throw new IllegalArgumentException("패스워드를 입력해주세요.");
+        if(StringUtils.isNotEmpty(pvo.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"아이디를 입력해주세요.");
+        if(StringUtils.isNotEmpty(pvo.getPassword())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"패스워드를 입력해주세요.");
 
         MemberInfoEntity loginEntity = memberInfoRepository.findByIdAndUseYn(pvo.getId(), "Y")
                 .orElseThrow(() -> new IllegalAccessException("가입하지 않은 사용자입니다."));
@@ -111,25 +113,25 @@ public class LoginService {
         log.info("회원가입 검증 시작");
 
         // 아이디 검증
-        if(StringUtils.isNotEmpty(member.getId())) throw new IllegalArgumentException("아이디를 입력해주세요.");
+        if(StringUtils.isNotEmpty(member.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"아이디를 입력해주세요.");
 
         // 패스워드 검증 & 암호화 처리
-        if(StringUtils.isNotEmpty(member.getPassword())) throw new IllegalArgumentException("패스워드를 입력해주세요.");
+        if(StringUtils.isNotEmpty(member.getPassword())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"패스워드를 입력해주세요.");
         else member.setPassword(encoder.encode(member.getPassword()));
 
         // 전화번호 검증
-        if(StringUtils.isNotEmpty(member.getTel())) throw new IllegalArgumentException("전화번호를 입력해주세요.");
+        if(StringUtils.isNotEmpty(member.getTel())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"전화번호를 입력해주세요.");
         else {
             member.setTel(member.getTel().replaceAll("-", ""));
-            if(member.getTel().length() != 11) throw new IllegalArgumentException("입력한 전화번호를 확인해주세요.");
+            if(member.getTel().length() != 11) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"입력한 전화번호를 확인해주세요.");
         }
 
-        if(StringUtils.isNotEmpty(member.getSex())) throw new IllegalArgumentException("성별을 입력해주세요.");
+        if(StringUtils.isNotEmpty(member.getSex())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "성별을 입력해주세요.");
 
         Optional<MemberInfoEntity> entity = memberInfoRepository.findById(member.getId());
 
         if(entity.isPresent()) {
-            throw new IllegalArgumentException("이미 등록된 사용자입니다.");
+            throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"이미 등록된 사용자입니다.");
         }
         log.info("회원가입 검증 종료");
     }
