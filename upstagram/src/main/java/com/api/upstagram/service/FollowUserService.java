@@ -42,6 +42,8 @@ public class FollowUserService {
         
         try {
             followUserRepository.save(followUserEntity);
+            
+            // TODO: Push & History 저장
         } catch (DataIntegrityViolationException e) {
             throw new CustomException(Response.FOLLOW_ERROR.getCode(), Response.FOLLOW_ERROR.getMessage());
         }
