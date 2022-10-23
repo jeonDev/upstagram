@@ -41,7 +41,7 @@ public class SecurityConfig {
         httpSecurity
             .httpBasic().disable()
             .authorizeRequests()
-            //.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+            .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
             .antMatchers("/user/**").hasRole("USER")
             .antMatchers("/admin/**").hasAnyRole("ADMIN", "USER")
             .anyRequest().permitAll()
