@@ -93,6 +93,7 @@ public class LoginService {
                                     .password(pvo.getPassword())
                                     .oauthNo("")        // TODO: OAuth 여부 체크
                                     .name(pvo.getName())
+                                    .nickname(pvo.getNickname())
                                     .sex(pvo.getSex())
                                     .tel(pvo.getTel())
                                     .role(Role.USER.getKey())
@@ -126,7 +127,10 @@ public class LoginService {
             if(member.getTel().length() != 11) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"입력한 전화번호를 확인해주세요.");
         }
 
+        // 성별 검증 & 닉네임검증
         if(StringUtils.isNotEmpty(member.getSex())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "성별을 입력해주세요.");
+        if(StringUtils.isNotEmpty(member.getNickname())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "닉네임을 입력해주세요.");
+        /* TODO: 닉네임 검증(영어 + 특수문자? 기준 정해서 추가.) */
 
         Optional<MemberInfoEntity> entity = memberInfoRepository.findById(member.getId());
 

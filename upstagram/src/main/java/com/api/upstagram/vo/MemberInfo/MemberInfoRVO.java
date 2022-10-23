@@ -8,6 +8,7 @@ import lombok.Data;
 public class MemberInfoRVO {
     private String id;
     private String name;
+    private String nickName;
     private String sex;
     private String tel;
     private String oauthNo;

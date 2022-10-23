@@ -37,6 +37,9 @@ public class MemberInfoEntity extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String nickname;
+    
     private String sex;
     
     private String tel;
@@ -61,13 +64,14 @@ public class MemberInfoEntity extends BaseEntity {
      * MemberInfo 생성
      */
     @Builder
-    public MemberInfoEntity(String id, String oauthNo, String password, String name, String sex, String tel,
-            String role, String pushViewYn, String tagAllowYn, Date joinDttm, Date lastLoginDttm,
+    public MemberInfoEntity(String id, String oauthNo, String password, String name, String nickname, String sex,
+            String tel, String role, String pushViewYn, String tagAllowYn, Date joinDttm, Date lastLoginDttm,
             int wrongPasswordNumber, Date passwordChgDttm, String useYn) {
         this.id = id;
         this.oauthNo = oauthNo;
         this.password = password;
         this.name = name;
+        this.nickname = nickname;
         this.sex = sex;
         this.tel = tel;
         this.role = role;

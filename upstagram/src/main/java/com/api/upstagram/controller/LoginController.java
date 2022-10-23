@@ -34,6 +34,7 @@ public class LoginController {
         MemberInfoRVO rvo = MemberInfoRVO.builder()
                                 .id(entity.getId())
                                 .name(entity.getName())
+                                .nickName(entity.getNickname())
                                 .sex(entity.getSex())
                                 .tel(entity.getTel())
                                 .oauthNo(entity.getOauthNo())

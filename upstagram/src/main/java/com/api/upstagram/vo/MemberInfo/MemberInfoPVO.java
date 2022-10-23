@@ -7,6 +7,7 @@ public class MemberInfoPVO {
     private String id;
     private String password;
     private String name;
+    private String nickname;
     private String sex;
     private String tel;
 }
