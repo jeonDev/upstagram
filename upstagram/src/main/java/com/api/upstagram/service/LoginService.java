@@ -16,6 +16,8 @@ import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.common.vo.Role;
 import com.api.upstagram.common.vo.Token;
 import com.api.upstagram.entity.memberInfo.MemberInfoEntity;
+import com.api.upstagram.entity.memberInfo.MemberInfoHistoryEntity;
+import com.api.upstagram.repository.MemberInfoHistoryRepository;
 import com.api.upstagram.repository.MemberInfoRepository;
 import com.api.upstagram.vo.MemberInfo.MemberInfoPVO;
 
@@ -28,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 public class LoginService {
     
     private final MemberInfoRepository memberInfoRepository;
+
+    private final MemberInfoHistoryRepository memberInfoHistoryRepository;
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -57,8 +61,28 @@ public class LoginService {
                                     .useYn("Y")
                                     .build();
         
-
         memberInfoRepository.save(memberInfo);
+
+        MemberInfoHistoryEntity historyEntity = MemberInfoHistoryEntity.builder()
+                                                .id(memberInfo.getId())
+                                                .oauthNo(memberInfo.getOauthNo())
+                                                .password(memberInfo.getPassword())
+                                                .name(memberInfo.getName())
+                                                .nickname(memberInfo.getNickname())
+                                                .sex(memberInfo.getSex())
+                                                .tel(memberInfo.getTel())
+                                                .role(memberInfo.getRole())
+                                                .pushViewYn(memberInfo.getPushViewYn())
+                                                .tagAllowYn(memberInfo.getTagAllowYn())
+                                                .joinDttm(memberInfo.getJoinDttm())
+                                                .lastLoginDttm(memberInfo.getLastLoginDttm())
+                                                .wrongPasswordNumber(memberInfo.getWrongPasswordNumber())
+                                                .passwordChgDttm(memberInfo.getPasswordChgDttm())
+                                                .useYn(memberInfo.getUseYn())
+                                                .regDttm(memberInfo.getRegDttm())
+                                                .build();
+        
+        memberInfoHistoryRepository.save(historyEntity);
 
         return memberInfo;
     }
@@ -140,5 +164,5 @@ public class LoginService {
             throw new IllegalAccessException("비밀번호가 틀렸습니다.");
         }
     }
-    
+
 }
