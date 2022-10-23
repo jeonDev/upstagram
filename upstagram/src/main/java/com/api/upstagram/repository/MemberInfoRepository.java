@@ -8,4 +8,5 @@ import com.api.upstagram.entity.memberInfo.MemberInfoEntity;
 
 public interface MemberInfoRepository extends JpaRepository<MemberInfoEntity, String> {
     Optional<MemberInfoEntity> findByIdAndUseYn(String id, String useYn);
+    Optional<MemberInfoEntity> findByNickname(String nickname);
 }

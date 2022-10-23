@@ -10,6 +10,7 @@ public enum Response {
     SUCCESS("200", "정상 처리되었습니다."),
     ERROR("99", "처리 중 오류가 발생하였습니다."),
     ARGUMNET_ERROR("97", "입력값이 제대로 입력되지 않았습니다."),
+    DUPLICATION_ERROR("81", "이미 값이 존재합니다."),
     DELETE_ERROR("91", "삭제할 데이터가 존재하지 않습니다."),
     FOLLOW_ERROR("21", "팔로우 할 수 없는 대상입니다.")
     ;

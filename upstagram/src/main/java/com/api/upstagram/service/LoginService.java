@@ -34,6 +34,68 @@ public class LoginService {
     @Autowired
     private BCryptPasswordEncoder encoder;
 
+    /*
+     * 회원가입
+     */
+    public MemberInfoEntity join(MemberInfoPVO pvo) {
+        log.info(this.getClass().getName() + " => join");
+
+        this.validateIdCheck(pvo);
+
+        MemberInfoEntity memberInfo = MemberInfoEntity.builder()
+                                    .id(pvo.getId())
+                                    .password(pvo.getPassword())
+                                    .oauthNo("")        // TODO: OAuth 여부 체크
+                                    .name(pvo.getName())
+                                    .nickname(pvo.getNickname())
+                                    .sex(pvo.getSex())
+                                    .tel(pvo.getTel())
+                                    .role(Role.USER.getKey())
+                                    .tagAllowYn("Y")
+                                    .pushViewYn("Y")
+                                    .joinDttm(new Date())
+                                    .useYn("Y")
+                                    .build();
+        
+
+        memberInfoRepository.save(memberInfo);
+
+        return memberInfo;
+    }
+
+    /* 회원가입 검증 */
+    public void validateIdCheck(MemberInfoPVO member) {
+        log.info("============== 회원가입 검증 시작 ==============");
+
+        // 아이디 검증
+        if(StringUtils.isNotEmpty(member.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"아이디를 입력해주세요.");
+
+        // 패스워드 검증 & 암호화 처리
+        if(StringUtils.isNotEmpty(member.getPassword())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"패스워드를 입력해주세요.");
+        else member.setPassword(encoder.encode(member.getPassword()));
+
+        // 전화번호 검증
+        if(StringUtils.isNotEmpty(member.getTel())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"전화번호를 입력해주세요.");
+        else {
+            member.setTel(member.getTel().replaceAll("-", ""));
+            if(member.getTel().length() != 11) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"입력한 전화번호를 확인해주세요.");
+        }
+
+        // 성별 검증 & 닉네임검증
+        if(StringUtils.isNotEmpty(member.getSex())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "성별을 입력해주세요.");
+        if(StringUtils.isNotEmpty(member.getNickname())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "닉네임을 입력해주세요.");
+        /* TODO: 닉네임 검증(영어 + 특수문자? 기준 정해서 추가.) */
+
+        Optional<MemberInfoEntity> nicknameCheck = memberInfoRepository.findByNickname(member.getNickname());
+        if(nicknameCheck.isPresent()) throw new CustomException(Response.DUPLICATION_ERROR.getCode(), "이미 사용중인 닉네임입니다.");
+
+        Optional<MemberInfoEntity> entity = memberInfoRepository.findById(member.getId());
+
+        if(entity.isPresent()) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"이미 등록된 사용자입니다.");
+
+        log.info("============== 회원가입 검증 종료 ==============");
+    }
+
     /* 로그인 */
     public Token login(MemberInfoPVO pvo) throws IllegalAccessException {
 
@@ -77,67 +139,6 @@ public class LoginService {
             
             throw new IllegalAccessException("비밀번호가 틀렸습니다.");
         }
-        
     }
     
-    /*
-     * 회원가입
-     */
-    public MemberInfoEntity join(MemberInfoPVO pvo) {
-        log.info(this.getClass().getName() + " => join");
-
-        this.validateIdCheck(pvo);
-
-        MemberInfoEntity memberInfo = MemberInfoEntity.builder()
-                                    .id(pvo.getId())
-                                    .password(pvo.getPassword())
-                                    .oauthNo("")        // TODO: OAuth 여부 체크
-                                    .name(pvo.getName())
-                                    .nickname(pvo.getNickname())
-                                    .sex(pvo.getSex())
-                                    .tel(pvo.getTel())
-                                    .role(Role.USER.getKey())
-                                    .tagAllowYn("Y")
-                                    .pushViewYn("Y")
-                                    .joinDttm(new Date())
-                                    .useYn("Y")
-                                    .build();
-        
-
-        memberInfoRepository.save(memberInfo);
-
-        return memberInfo;
-    }
-
-    /* 회원가입 검증 */
-    public void validateIdCheck(MemberInfoPVO member) {
-        log.info("회원가입 검증 시작");
-
-        // 아이디 검증
-        if(StringUtils.isNotEmpty(member.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"아이디를 입력해주세요.");
-
-        // 패스워드 검증 & 암호화 처리
-        if(StringUtils.isNotEmpty(member.getPassword())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"패스워드를 입력해주세요.");
-        else member.setPassword(encoder.encode(member.getPassword()));
-
-        // 전화번호 검증
-        if(StringUtils.isNotEmpty(member.getTel())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"전화번호를 입력해주세요.");
-        else {
-            member.setTel(member.getTel().replaceAll("-", ""));
-            if(member.getTel().length() != 11) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"입력한 전화번호를 확인해주세요.");
-        }
-
-        // 성별 검증 & 닉네임검증
-        if(StringUtils.isNotEmpty(member.getSex())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "성별을 입력해주세요.");
-        if(StringUtils.isNotEmpty(member.getNickname())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "닉네임을 입력해주세요.");
-        /* TODO: 닉네임 검증(영어 + 특수문자? 기준 정해서 추가.) */
-
-        Optional<MemberInfoEntity> entity = memberInfoRepository.findById(member.getId());
-
-        if(entity.isPresent()) {
-            throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"이미 등록된 사용자입니다.");
-        }
-        log.info("회원가입 검증 종료");
-    }
-
 }
