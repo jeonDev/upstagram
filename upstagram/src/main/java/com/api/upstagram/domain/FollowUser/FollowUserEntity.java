@@ -1,4 +1,4 @@
-package com.api.upstagram.entity.FollowUser;
+package com.api.upstagram.domain.FollowUser;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

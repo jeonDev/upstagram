@@ -3,11 +3,11 @@ package com.api.upstagram.service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.api.upstagram.entity.Story.StoryEntity;
-import com.api.upstagram.entity.Story.StoryReactionEntity;
-import com.api.upstagram.entity.Story.StoryWatchingEntity;
-import com.api.upstagram.repository.StoryReactionRepository;
-import com.api.upstagram.repository.StoryRepository;
+import com.api.upstagram.domain.Story.StoryEntity;
+import com.api.upstagram.domain.Story.StoryReactionEntity;
+import com.api.upstagram.domain.Story.StoryReactionRepository;
+import com.api.upstagram.domain.Story.StoryRepository;
+import com.api.upstagram.domain.Story.StoryWatchingEntity;
 import com.api.upstagram.vo.Story.StoryPVO;
 import com.api.upstagram.vo.Story.StoryReactionPVO;
 import com.api.upstagram.vo.Story.StoryWatchingPVO;

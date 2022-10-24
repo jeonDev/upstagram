@@ -15,10 +15,10 @@ import com.api.upstagram.common.util.StringUtils;
 import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.common.vo.Role;
 import com.api.upstagram.common.vo.Token;
-import com.api.upstagram.entity.memberInfo.MemberInfoEntity;
-import com.api.upstagram.entity.memberInfo.MemberInfoHistoryEntity;
-import com.api.upstagram.repository.MemberInfoHistoryRepository;
-import com.api.upstagram.repository.MemberInfoRepository;
+import com.api.upstagram.domain.memberInfo.MemberInfoEntity;
+import com.api.upstagram.domain.memberInfo.MemberInfoHistoryEntity;
+import com.api.upstagram.domain.memberInfo.MemberInfoHistoryRepository;
+import com.api.upstagram.domain.memberInfo.MemberInfoRepository;
 import com.api.upstagram.vo.MemberInfo.MemberInfoPVO;
 
 import lombok.RequiredArgsConstructor;

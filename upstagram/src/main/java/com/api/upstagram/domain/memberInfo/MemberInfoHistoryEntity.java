@@ -1,4 +1,4 @@
-package com.api.upstagram.entity.memberInfo;
+package com.api.upstagram.domain.memberInfo;
 
 import java.time.LocalDateTime;
 import java.util.Date;

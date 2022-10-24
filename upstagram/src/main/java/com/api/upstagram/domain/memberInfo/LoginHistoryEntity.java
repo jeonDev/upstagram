@@ -1,4 +1,4 @@
-package com.api.upstagram.entity.LoginHistory;
+package com.api.upstagram.domain.memberInfo;
 
 import java.io.Serializable;
 import java.util.Date;

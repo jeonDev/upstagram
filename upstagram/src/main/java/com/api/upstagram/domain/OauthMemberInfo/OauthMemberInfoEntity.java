@@ -1,4 +1,4 @@
-package com.api.upstagram.entity.OauthMemberInfo;
+package com.api.upstagram.domain.OauthMemberInfo;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

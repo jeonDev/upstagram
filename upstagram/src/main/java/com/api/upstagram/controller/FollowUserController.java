@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
-import com.api.upstagram.entity.FollowUser.FollowUserEntity;
+import com.api.upstagram.domain.FollowUser.FollowUserEntity;
 import com.api.upstagram.service.FollowUserService;
 import com.api.upstagram.vo.FollowUser.FollowUserPVO;
 import com.api.upstagram.vo.FollowUser.FollowUserRVO;

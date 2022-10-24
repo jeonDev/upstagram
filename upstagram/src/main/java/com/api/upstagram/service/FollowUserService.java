@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.vo.Response;
-import com.api.upstagram.entity.FollowUser.FollowUserEntity;
-import com.api.upstagram.repository.FollowUserRepository;
+import com.api.upstagram.domain.FollowUser.FollowUserEntity;
+import com.api.upstagram.domain.FollowUser.FollowUserRepository;
 import com.api.upstagram.vo.FollowUser.FollowUserPVO;
 
 import lombok.RequiredArgsConstructor;

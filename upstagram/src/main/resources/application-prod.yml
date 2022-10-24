@@ -44,3 +44,6 @@ jasypt:
 ## JWT Key
 jwt:
   secret: JwtSecretKeyUpstagramProjectGeneratedTokenDtoAccessTokenAndRefreshTokenKey07261111abcdefghijklmn
+
+cors:
+  url: http://localhost:8098

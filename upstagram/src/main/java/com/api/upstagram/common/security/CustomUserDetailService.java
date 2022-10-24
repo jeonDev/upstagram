@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.api.upstagram.common.vo.User;
-import com.api.upstagram.entity.memberInfo.MemberInfoEntity;
-import com.api.upstagram.repository.MemberInfoRepository;
+import com.api.upstagram.domain.memberInfo.MemberInfoEntity;
+import com.api.upstagram.domain.memberInfo.MemberInfoRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
