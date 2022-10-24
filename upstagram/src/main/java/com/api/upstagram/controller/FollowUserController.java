@@ -15,7 +15,6 @@ import com.api.upstagram.domain.FollowUser.FollowUserEntity;
 import com.api.upstagram.service.FollowUserService;
 import com.api.upstagram.vo.FollowUser.FollowUserPVO;
 import com.api.upstagram.vo.FollowUser.FollowUserRVO;
-import com.api.upstagram.vo.MemberInfo.MemberInfoRVO;
 
 import lombok.extern.slf4j.Slf4j;
 
