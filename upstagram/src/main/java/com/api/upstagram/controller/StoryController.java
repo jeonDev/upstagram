@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
@@ -30,11 +29,13 @@ public class StoryController {
      * 스토리 등록
      */
     @PostMapping("/user/story/regist")
-    public ResponseVO<StoryRVO> registStory(@RequestBody StoryPVO pvo, @RequestPart MultipartFile file){
+    public ResponseVO<StoryRVO> registStory(@RequestBody StoryPVO pvo){
         log.info(this.getClass().getName() + " ==> Story Register!");
         ResponseVO<StoryRVO> r = new ResponseVO<StoryRVO>();
 
-        storyService.registStory(pvo, file);
+        pvo.setId(CommonUtils.getUserId());
+        
+        storyService.registStory(pvo);
 
         return r;
     }
