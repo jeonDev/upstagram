@@ -4,9 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.api.upstagram.common.vo.BaseEntity;
+import com.api.upstagram.domain.memberInfo.MemberInfoEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,14 +24,20 @@ public class FollowUserEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long followNo;
-    private String id;
-    private String followId;
+    
+    @ManyToOne
+    @JoinColumn(name = "ID")
+    private MemberInfoEntity idMember;
+
+    @ManyToOne
+    @JoinColumn(name = "FOLLOW_ID")
+    private MemberInfoEntity followMember;
 
     @Builder
-    public FollowUserEntity(Long followNo, String id, String followId) {
+    public FollowUserEntity(Long followNo, MemberInfoEntity idMember, MemberInfoEntity followMember) {
         this.followNo = followNo;
-        this.id = id;
-        this.followId = followId;
+        this.idMember = idMember;
+        this.followMember = followMember;
     }
     
 }

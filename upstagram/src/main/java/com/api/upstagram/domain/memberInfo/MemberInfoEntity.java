@@ -11,6 +11,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.api.upstagram.common.vo.BaseEntity;
+import com.api.upstagram.vo.MemberInfo.MemberInfoRVO;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -95,5 +96,16 @@ public class MemberInfoEntity extends BaseEntity {
     public MemberInfoEntity loginFalse(int wrongPasswordNumber) {
         this.wrongPasswordNumber = wrongPasswordNumber;
         return this;
+    }
+
+    public MemberInfoRVO memberEntityToRVO() {
+        return MemberInfoRVO.builder()
+                .id(this.getId())
+                .name(this.getName())
+                .nickName(this.getNickname())
+                .oauthNo(this.getOauthNo())
+                .sex(this.getSex())
+                .tel(this.getTel())
+                .build();
     }
 }
