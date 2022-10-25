@@ -28,7 +28,7 @@ public class FollowUserController {
     /*
      * 팔로우 요청
      */
-    @PostMapping("/user/add/follow")
+    @PostMapping("/user/follow/add")
     public ResponseVO<FollowUserRVO> requestFollow(@RequestBody FollowUserPVO pvo) {
         log.info("User Follow Request!");
         ResponseVO<FollowUserRVO> r = new ResponseVO<FollowUserRVO>();
@@ -48,7 +48,7 @@ public class FollowUserController {
         return r;
     }
 
-    @PostMapping("/user/delete/follow")
+    @PostMapping("/user/follow/delete")
     public ResponseVO<FollowUserRVO> deleteFollow(@RequestBody FollowUserPVO pvo) {
         log.info("User Follow Delete Request");
         ResponseVO<FollowUserRVO> r = new ResponseVO<FollowUserRVO>();
