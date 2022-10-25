@@ -1,10 +1,15 @@
 package com.api.upstagram.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
@@ -29,13 +34,13 @@ public class StoryController {
      * 스토리 등록
      */
     @PostMapping("/user/story/regist")
-    public ResponseVO<StoryRVO> registStory(@RequestBody StoryPVO pvo){
+    public ResponseVO<StoryRVO> registStory(@RequestPart StoryPVO pvo, @RequestPart MultipartFile file) {
         log.info(this.getClass().getName() + " ==> Story Register!");
         ResponseVO<StoryRVO> r = new ResponseVO<StoryRVO>();
-
+        
         pvo.setId(CommonUtils.getUserId());
         
-        storyService.registStory(pvo);
+        storyService.registStory(pvo, file);
 
         return r;
     }
@@ -67,4 +72,33 @@ public class StoryController {
 
         return r;
     }
+
+    /*
+     * 스토리 조회
+     */
+    @GetMapping("/user/story/list")
+    public ResponseVO<List<StoryRVO>> getStoryList() {
+        log.info(this.getClass().getName() + " ==> Story Watching Update!");
+        ResponseVO<List<StoryRVO>> r = new ResponseVO<List<StoryRVO>>();
+        
+        StoryPVO pvo = new StoryPVO();
+        pvo.setId(CommonUtils.getUserId());
+        
+        List<StoryRVO> rvo = storyService.getStoryList(pvo).stream()
+                            .map(m -> StoryRVO.builder()
+                                    .storyNo(m.getStoryNo())
+                                    .id(m.getId())
+                                    .storyTime(m.getStoryTime())
+                                    .storyFileName(m.getStoryFileName())
+                                    .showYn(m.getShowYn())
+                                    .keepYn(m.getKeepYn())
+                                    .member(null)
+                                    .build())
+                            .collect(Collectors.toList());
+        
+        r.setData(rvo);
+
+        return r;
+    }
+
 }

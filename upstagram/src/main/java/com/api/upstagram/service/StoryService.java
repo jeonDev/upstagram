@@ -1,6 +1,7 @@
 package com.api.upstagram.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class StoryService {
     /*
      * 스토리 등록
      */
-    public StoryEntity registStory(StoryPVO pvo) {
+    public StoryEntity registStory(StoryPVO pvo, MultipartFile file) {
         log.info(this.getClass().getName() + " => Story Register!");
 
         /*
@@ -49,29 +50,36 @@ public class StoryService {
          */
         // 1. 파라미터 검증
         if(StringUtils.isNotEmpty(pvo.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "로그인 후에 이용해주세요.");
-        if(pvo.getFile() == null || pvo.getFile().isEmpty()) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "동영상 or 이미지를 등록해주세요.");
+        if(file == null || file.isEmpty()) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "동영상 or 이미지를 등록해주세요.");
 
-        String[] exts = {"image/png", "image/jpg", "image/jpeg", "image/gif"};
+        String[] exts = {"image/png", "image/jpg", "image/jpeg", ".mp4", ".avi"};
+        String fileName;
 
         try{
+            // TODO: 파일이 이미지일 경우, storyTime setting
+
             // 파일 업로드
-            pvo.setStoryFileName( CommonUtils.uploadFile(pvo.getFile(), filePath, exts) );
+            fileName = CommonUtils.uploadFile(file, filePath, exts);
+            pvo.setStoryFileName(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        String showYn = pvo.getShowYn() != null ? pvo.getShowYn() : "Y";    // 표시여부
+        String keepYn = pvo.getKeepYn() != null ? pvo.getKeepYn() : "N";    // 보관여부
         
         StoryEntity storyEntity = StoryEntity.builder()
                                     .id(pvo.getId())
                                     .storyFileName(pvo.getStoryFileName())
                                     .storyTime("")
-                                    .showYn(pvo.getShowYn())
-                                    .keepYn(pvo.getKeepYn())
+                                    .showYn(showYn)
+                                    .keepYn(keepYn)
                                     .build();
         
         storyRepository.save(storyEntity);
 
 
-        return null;
+        return storyEntity;
     }
 
     /*
@@ -101,5 +109,19 @@ public class StoryService {
          * 2. save (insert & update - LAST_DTTM)
          */
         return null;
+    }
+
+    /*
+     * 스토리 조회
+     */
+    public List<StoryEntity> getStoryList(StoryPVO pvo) {
+        /*
+         * param : FOLLOW_USER.ID 
+         * WHERE STORY.ID IN FOLLOW_USER.FOLLOW_ID -> MEMBER_INFO.USE_YN : Y
+         *   AND SHOW_YN
+         *   AND REG_DTTM > DATE_ADD(NOW(), INTERVAL - 1 DAY)
+         */
+        List<StoryEntity> list = storyRepository.findAll();
+        return list;
     }
 }
