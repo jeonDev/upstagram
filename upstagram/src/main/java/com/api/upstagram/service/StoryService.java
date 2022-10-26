@@ -52,7 +52,7 @@ public class StoryService {
         if(StringUtils.isNotEmpty(pvo.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "로그인 후에 이용해주세요.");
         if(file == null || file.isEmpty()) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "동영상 or 이미지를 등록해주세요.");
 
-        String[] exts = {"image/png", "image/jpg", "image/jpeg", ".mp4", ".avi"};
+        String[] exts = {"image/png", "image/jpg", "image/jpeg", ".video/mp4", ".video/avi"};
         String fileName;
 
         try{
