@@ -1,5 +1,6 @@
 package com.api.upstagram.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ public class StoryController {
      * 스토리 등록
      */
     @PostMapping("/user/story/regist")
-    public ResponseVO<StoryRVO> registStory(@RequestPart StoryPVO pvo, @RequestPart MultipartFile file) {
+    public ResponseVO<StoryRVO> registStory(@RequestPart("pvo") StoryPVO pvo, @RequestPart MultipartFile file) throws IOException{
         log.info(this.getClass().getName() + " ==> Story Register!");
         ResponseVO<StoryRVO> r = new ResponseVO<StoryRVO>();
         

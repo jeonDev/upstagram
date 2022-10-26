@@ -38,7 +38,7 @@ public class StoryService {
     /*
      * 스토리 등록
      */
-    public StoryEntity registStory(StoryPVO pvo, MultipartFile file) {
+    public StoryEntity registStory(StoryPVO pvo, MultipartFile file) throws IOException {
         log.info(this.getClass().getName() + " => Story Register!");
 
         /*
@@ -52,18 +52,12 @@ public class StoryService {
         if(StringUtils.isNotEmpty(pvo.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "로그인 후에 이용해주세요.");
         if(file == null || file.isEmpty()) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "동영상 or 이미지를 등록해주세요.");
 
-        String[] exts = {"image/png", "image/jpg", "image/jpeg", ".mp4", ".avi"};
+        String[] exts = {"video/mp4", "video/avi"};
         String fileName;
 
-        try{
-            // TODO: 파일이 이미지일 경우, storyTime setting
-
-            // 파일 업로드
-            fileName = CommonUtils.uploadFile(file, filePath, exts);
-            pvo.setStoryFileName(fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // 파일 업로드
+        fileName = CommonUtils.uploadFile(file, filePath, exts);
+        pvo.setStoryFileName(fileName);
 
         String showYn = pvo.getShowYn() != null ? pvo.getShowYn() : "Y";    // 표시여부
         String keepYn = pvo.getKeepYn() != null ? pvo.getKeepYn() : "N";    // 보관여부
