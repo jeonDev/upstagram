@@ -58,5 +58,5 @@ jwt:
 cors:
   url: http://localhost:8098
 
-upload-path: /upload/**
-resource-path: C:/project/upload/
+upload-path: /upstagram-upload/**
+resource-path: C:/project/upstagram-upload/
