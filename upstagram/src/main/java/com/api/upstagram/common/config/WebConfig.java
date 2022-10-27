@@ -3,14 +3,24 @@ package com.api.upstagram.common.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer{
 
     @Value("${cors.url}")
-    private String allowOrigins;
+    private String allowOrigins;    // cors 허용 url
 
+    @Value("${upload-path}")
+    private String uploadPath;      // 외부파일 접근 경로
+
+    @Value("${resource-path")
+    private String resourePath;     // 외부파일 접근 경로
+
+    /*
+     * CORS 허용
+     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         
@@ -20,4 +30,13 @@ public class WebConfig implements WebMvcConfigurer{
             .allowCredentials(true);
     }
     
+    /*
+     * 외부 파일접근 허용
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler(uploadPath)
+                .addResourceLocations(resourePath);
+    }
+
 }

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
+import com.api.upstagram.domain.Story.StoryEntity;
 import com.api.upstagram.service.StoryService;
 import com.api.upstagram.vo.Story.StoryPVO;
 import com.api.upstagram.vo.Story.StoryRVO;
@@ -35,13 +36,23 @@ public class StoryController {
      * 스토리 등록
      */
     @PostMapping("/user/story/regist")
-    public ResponseVO<StoryRVO> registStory(@RequestPart("pvo") StoryPVO pvo, @RequestPart MultipartFile file) throws IOException{
+    public ResponseVO<StoryRVO> registStory(@RequestPart StoryPVO pvo, @RequestPart MultipartFile file) throws IOException{
         log.info(this.getClass().getName() + " ==> Story Register!");
         ResponseVO<StoryRVO> r = new ResponseVO<StoryRVO>();
         
         pvo.setId(CommonUtils.getUserId());
         
-        storyService.registStory(pvo, file);
+        StoryEntity entity = storyService.registStory(pvo, file);
+        StoryRVO rvo = StoryRVO.builder()
+                        .storyNo(entity.getStoryNo())
+                        .id(entity.getId())
+                        .storyFileName(entity.getStoryFileName())
+                        .storyTime(entity.getStoryTime())
+                        .showYn(entity.getShowYn())
+                        .keepYn(entity.getKeepYn())
+                        .build();
+
+        r.setData(rvo);
 
         return r;
     }

@@ -32,8 +32,8 @@ public class StoryService {
 
     private final StoryReactionRepository storyReactionRepository;
 
-    @Value("${spring.servlet.multipart.location}")
-    String filePath;
+    @Value("${resource-path}")
+    private String resourePath;
 
     /*
      * 스토리 등록
@@ -41,36 +41,30 @@ public class StoryService {
     public StoryEntity registStory(StoryPVO pvo, MultipartFile file) throws IOException {
         log.info(this.getClass().getName() + " => Story Register!");
 
-        /*
-         * 1. 파라미터 검증
-         * 2. 파일 업로드
-         *  2-1. 동영상 : 용량체크 / 시간체크 -> storyTime
-         *  2-2. 이미지 : 이미지 to 동영상 -> 5초
-         * 3. 스토리 등록
-         */
         // 1. 파라미터 검증
         if(StringUtils.isNotEmpty(pvo.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "로그인 후에 이용해주세요.");
         if(file == null || file.isEmpty()) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "동영상 or 이미지를 등록해주세요.");
 
-        String[] exts = {"video/mp4", "video/avi"};
+        // 2. 파일 업로드
+        String[] exts = {"image/png", "image/jpg", "image/jpeg", "video/mp4", "video/avi"};
         String fileName;
 
-        // 파일 업로드
-        fileName = CommonUtils.uploadFile(file, filePath, exts);
+        fileName = CommonUtils.uploadFile(file, resourePath, exts);
         pvo.setStoryFileName(fileName);
 
+        // 3. Story 등록
         String showYn = pvo.getShowYn() != null ? pvo.getShowYn() : "Y";    // 표시여부
         String keepYn = pvo.getKeepYn() != null ? pvo.getKeepYn() : "N";    // 보관여부
         
         StoryEntity storyEntity = StoryEntity.builder()
                                     .id(pvo.getId())
                                     .storyFileName(pvo.getStoryFileName())
-                                    .storyTime("")
+                                    .storyTime(pvo.getStoryTime())
                                     .showYn(showYn)
                                     .keepYn(keepYn)
                                     .build();
         
-        storyRepository.save(storyEntity);
+        storyEntity = storyRepository.save(storyEntity);
 
 
         return storyEntity;

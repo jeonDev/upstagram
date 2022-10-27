@@ -32,7 +32,6 @@ spring:
   ## File Upload
   servlet:
     multipart:
-      location: static/images
       max-file-size: 100MB
       max-request-size: 1GB
         
@@ -58,3 +57,6 @@ jwt:
 
 cors:
   url: http://localhost:8098
+
+upload-path: /upload/**
+resource-path: C:/project/upload/
