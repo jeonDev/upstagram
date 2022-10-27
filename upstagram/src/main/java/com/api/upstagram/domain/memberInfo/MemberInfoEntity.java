@@ -1,6 +1,6 @@
 package com.api.upstagram.domain.memberInfo;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,13 +51,13 @@ public class MemberInfoEntity extends BaseEntity {
 
     private String tagAllowYn;
 
-    private Date joinDttm;
+    private LocalDateTime joinDttm;
 
-    private Date lastLoginDttm;
+    private LocalDateTime lastLoginDttm;
 
     private int wrongPasswordNumber;
 
-    private Date passwordChgDttm;
+    private LocalDateTime passwordChgDttm;
 
     private String useYn;
 
@@ -66,8 +66,8 @@ public class MemberInfoEntity extends BaseEntity {
      */
     @Builder
     public MemberInfoEntity(String id, String oauthNo, String password, String name, String nickname, String sex,
-            String tel, String role, String pushViewYn, String tagAllowYn, Date joinDttm, Date lastLoginDttm,
-            int wrongPasswordNumber, Date passwordChgDttm, String useYn) {
+            String tel, String role, String pushViewYn, String tagAllowYn, LocalDateTime joinDttm, LocalDateTime lastLoginDttm,
+            int wrongPasswordNumber, LocalDateTime passwordChgDttm, String useYn) {
         this.id = id;
         this.oauthNo = oauthNo;
         this.password = password;
@@ -86,7 +86,7 @@ public class MemberInfoEntity extends BaseEntity {
     }
     
     /* 로그인 성공 */
-    public MemberInfoEntity loginSuccess(int wrongPasswordNumber, Date lastLoginDttm) {
+    public MemberInfoEntity loginSuccess(int wrongPasswordNumber, LocalDateTime lastLoginDttm) {
         this.wrongPasswordNumber = wrongPasswordNumber;
         this.lastLoginDttm = lastLoginDttm;
         return this;

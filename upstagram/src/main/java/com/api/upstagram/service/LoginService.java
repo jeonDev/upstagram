@@ -1,7 +1,7 @@
 package com.api.upstagram.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,7 +57,7 @@ public class LoginService {
                                     .role(Role.USER.getKey())
                                     .tagAllowYn("Y")
                                     .pushViewYn("Y")
-                                    .joinDttm(new Date())
+                                    .joinDttm(LocalDateTime.now())
                                     .useYn("Y")
                                     .build();
         
@@ -144,7 +144,7 @@ public class LoginService {
             // 로그인 성공 시
             log.info("LOGIN Success(" + loginEntity.getId() + ")");
 
-            loginEntity.loginSuccess( 0, new Date());
+            loginEntity.loginSuccess( 0, LocalDateTime.now());
 
             memberInfoRepository.save(loginEntity);
 

@@ -1,7 +1,7 @@
 package com.api.upstagram.domain.memberInfo;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,7 +24,7 @@ public class LoginHistoryEntity implements Serializable {
     private String id;                  // 아이디
 
     @Id
-    private Date loginDttm;             // 로그인접속시간
+    private LocalDateTime loginDttm;             // 로그인접속시간
 
     private String loginUri;            // 접속경로
 
@@ -40,7 +40,7 @@ public class LoginHistoryEntity implements Serializable {
         , String loginIp){
             this.id = id;
             this.loginUri = loginUri;
-            this.loginDttm = new Date();
+            this.loginDttm = LocalDateTime.now();
             this.loginNowUrl = loginNowUrl;
             this.loginIp = loginIp;
     }

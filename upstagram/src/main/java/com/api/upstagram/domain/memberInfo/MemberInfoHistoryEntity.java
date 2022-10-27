@@ -1,7 +1,6 @@
 package com.api.upstagram.domain.memberInfo;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -49,13 +48,13 @@ public class MemberInfoHistoryEntity {
 
     private String tagAllowYn;
 
-    private Date joinDttm;
+    private LocalDateTime joinDttm;
 
-    private Date lastLoginDttm;
+    private LocalDateTime lastLoginDttm;
 
     private int wrongPasswordNumber;
 
-    private Date passwordChgDttm;
+    private LocalDateTime passwordChgDttm;
 
     private String useYn;
 
@@ -63,8 +62,8 @@ public class MemberInfoHistoryEntity {
 
     @Builder
     public MemberInfoHistoryEntity(Long historyNo, String id, String oauthNo, String password, String name,
-            String nickname, String sex, String tel, String role, String pushViewYn, String tagAllowYn, Date joinDttm,
-            Date lastLoginDttm, int wrongPasswordNumber, Date passwordChgDttm, String useYn, LocalDateTime regDttm) {
+            String nickname, String sex, String tel, String role, String pushViewYn, String tagAllowYn, LocalDateTime joinDttm,
+            LocalDateTime lastLoginDttm, int wrongPasswordNumber, LocalDateTime passwordChgDttm, String useYn, LocalDateTime regDttm) {
         this.historyNo = historyNo;
         this.id = id;
         this.oauthNo = oauthNo;
