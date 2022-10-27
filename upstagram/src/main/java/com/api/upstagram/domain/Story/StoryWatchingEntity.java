@@ -12,6 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import com.api.upstagram.common.vo.BaseEntity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,4 +30,11 @@ public class StoryWatchingEntity extends BaseEntity{
     
     private Long storyNo;
     private String id;
+
+    @Builder
+    public StoryWatchingEntity(Long storyWatchingNo, Long storyNo, String id) {
+        this.storyWatchingNo = storyWatchingNo;
+        this.storyNo = storyNo;
+        this.id = id;
+    }
 }

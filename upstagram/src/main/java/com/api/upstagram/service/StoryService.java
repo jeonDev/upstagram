@@ -1,7 +1,9 @@
 package com.api.upstagram.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import com.api.upstagram.domain.Story.StoryReactionEntity;
 import com.api.upstagram.domain.Story.StoryReactionRepository;
 import com.api.upstagram.domain.Story.StoryRepository;
 import com.api.upstagram.domain.Story.StoryWatchingEntity;
+import com.api.upstagram.domain.Story.StoryWatchingRepository;
 import com.api.upstagram.vo.Story.StoryPVO;
 import com.api.upstagram.vo.Story.StoryReactionPVO;
 import com.api.upstagram.vo.Story.StoryWatchingPVO;
@@ -31,6 +34,8 @@ public class StoryService {
     private final StoryRepository storyRepository;
 
     private final StoryReactionRepository storyReactionRepository;
+
+    private final StoryWatchingRepository storyWatchingRepository;
 
     @Value("${resource-path}")
     private String resourePath;
@@ -91,12 +96,27 @@ public class StoryService {
     public StoryWatchingEntity storyWatchingHistory(StoryWatchingPVO pvo) {
         log.info(this.getClass().getName() + " => Story Watching Update!");
 
-        /*
-         * 1. 파라미터 검증
-         *  1-1. 스토리 존재여부 체크
-         * 2. save (insert & update - LAST_DTTM)
-         */
-        return null;
+        Optional<StoryWatchingEntity> storyWatchingEntity = storyWatchingRepository.findByStoryNoAndId(pvo.getStoryNo(), pvo.getId());
+
+        // 시청내역이 있을 경우 최종수정일만 Update
+        if(storyWatchingEntity.isPresent()) {
+            StoryWatchingEntity entity = storyWatchingEntity.get();
+            entity.setLastDttm(LocalDateTime.now());
+
+            entity = storyWatchingRepository.save(entity);
+
+            return entity;
+            
+        // 시청내역이 없을 경우 시청내역 Insert
+        } else {
+            StoryWatchingEntity entity = StoryWatchingEntity.builder()
+                                        .storyNo(pvo.getStoryNo())
+                                        .id(pvo.getId())
+                                        .build();
+
+            entity = storyWatchingRepository.save(entity);
+            return entity;
+        }
     }
 
     /*

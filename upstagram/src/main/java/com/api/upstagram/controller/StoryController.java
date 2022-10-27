@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
 import com.api.upstagram.domain.Story.StoryEntity;
+import com.api.upstagram.domain.Story.StoryWatchingEntity;
 import com.api.upstagram.service.StoryService;
 import com.api.upstagram.vo.Story.StoryPVO;
 import com.api.upstagram.vo.Story.StoryRVO;
@@ -73,14 +74,23 @@ public class StoryController {
      /*
       * 스토리 시청기록 등록
       */
-    @PostMapping("/user/story/history")
+    @PostMapping("/user/story/watch")
     public ResponseVO<StoryWatchingRVO> storyWatchingHistory(@RequestBody StoryWatchingPVO pvo){
         log.info(this.getClass().getName() + " ==> Story Watching Update!");
         ResponseVO<StoryWatchingRVO> r = new ResponseVO<StoryWatchingRVO>();
 
         pvo.setId(CommonUtils.getUserId());
 
-        storyService.storyWatchingHistory(pvo);
+        StoryWatchingEntity entity = storyService.storyWatchingHistory(pvo);
+        StoryWatchingRVO rvo = StoryWatchingRVO.builder()
+                                .storyWatchingNo(entity.getStoryWatchingNo())
+                                .storyNo(entity.getStoryNo())
+                                .id(entity.getId())
+                                .firstWatchingDttm(entity.getRegDttm())
+                                .lastWatchingDttm(entity.getLastDttm())
+                                .build();
+
+        r.setData(rvo);
 
         return r;
     }
@@ -108,6 +118,7 @@ public class StoryController {
                                     .build())
                             .collect(Collectors.toList());
         
+        // TODO: 시청일자 형식 재 정의 : LocalDateTime or String
         r.setData(rvo);
 
         return r;

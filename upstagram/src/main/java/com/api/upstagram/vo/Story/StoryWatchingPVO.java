@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @Data
 public class StoryWatchingPVO {
+    private Long storyNo;
     private Long followNo;
     private String id;
 }
