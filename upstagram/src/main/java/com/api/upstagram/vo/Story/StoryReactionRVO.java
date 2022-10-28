@@ -20,3 +20,6 @@ public class StoryReactionRVO {
         this.id = id;
         this.storyLoveYn = storyLoveYn;
         this.storyViewDate = storyViewDate;
+    }
+
+}
