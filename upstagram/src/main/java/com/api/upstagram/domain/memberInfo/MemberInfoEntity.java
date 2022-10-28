@@ -86,15 +86,15 @@ public class MemberInfoEntity extends BaseEntity {
     }
     
     /* 로그인 성공 */
-    public MemberInfoEntity loginSuccess(int wrongPasswordNumber, LocalDateTime lastLoginDttm) {
-        this.wrongPasswordNumber = wrongPasswordNumber;
-        this.lastLoginDttm = lastLoginDttm;
+    public MemberInfoEntity loginSuccess() {
+        this.wrongPasswordNumber = 0;
+        this.lastLoginDttm = LocalDateTime.now();
         return this;
     }
 
     /* 로그인 실패 */
-    public MemberInfoEntity loginFalse(int wrongPasswordNumber) {
-        this.wrongPasswordNumber = wrongPasswordNumber;
+    public MemberInfoEntity loginFalse() {
+        this.wrongPasswordNumber+= 1;
         return this;
     }
 
