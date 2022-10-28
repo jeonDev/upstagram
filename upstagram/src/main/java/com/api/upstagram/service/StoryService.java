@@ -69,10 +69,7 @@ public class StoryService {
                                     .keepYn(keepYn)
                                     .build();
         
-        storyEntity = storyRepository.save(storyEntity);
-
-
-        return storyEntity;
+        return storyRepository.save(storyEntity);
     }
 
     /*
@@ -94,25 +91,19 @@ public class StoryService {
 
         // 3-1. 이전내역이 없을 경우, 좋아요 표시.
         if(!storyReaction.isPresent()) {
-            StoryReactionEntity reactionEntity = StoryReactionEntity.builder()
+            return storyReactionRepository.save(StoryReactionEntity.builder()
                     .story(story)
                     .id(pvo.getId())
                     .storyLoveYn("Y")
                     .storyViewDate(LocalDateTime.now())
-                    .build();
-
-            return storyReactionRepository.save(reactionEntity);
+                    .build());
 
         // 3-2. 이전내역이 있을 경우, 좋아요 취소 표시.
         } else {
-            StoryReactionEntity reactionEntity = StoryReactionEntity.builder()
-                    .story(story)
-                    .id(pvo.getId())
-                    .storyLoveYn("N")
-                    .storyViewDate(LocalDateTime.now())
-                    .build();
+            StoryReactionEntity entity = storyReaction.get();
+            String storyLoveYn = "N".equals(entity.getStoryLoveYn()) ? "Y" : "N";
 
-            return storyReactionRepository.save(reactionEntity);
+            return storyReactionRepository.save(entity.updateStoryReaction(storyLoveYn));
         }
 
 
@@ -131,20 +122,13 @@ public class StoryService {
         if(storyWatchingEntity.isPresent()) {
             StoryWatchingEntity entity = storyWatchingEntity.get();
             entity.setLastDttm(LocalDateTime.now());
-
-            entity = storyWatchingRepository.save(entity);
-
-            return entity;
-            
+            return storyWatchingRepository.save(entity);
         // 시청내역이 없을 경우 시청내역 Insert
         } else {
-            StoryWatchingEntity entity = StoryWatchingEntity.builder()
-                                        .storyNo(pvo.getStoryNo())
-                                        .id(pvo.getId())
-                                        .build();
-
-            entity = storyWatchingRepository.save(entity);
-            return entity;
+            return storyWatchingRepository.save(StoryWatchingEntity.builder()
+                    .storyNo(pvo.getStoryNo())
+                    .id(pvo.getId())
+                    .build());
         }
     }
 
@@ -152,6 +136,20 @@ public class StoryService {
      * 스토리 조회
      */
     public List<StoryEntity> getStoryList(StoryPVO pvo) {
+        /*
+         * param : FOLLOW_USER.ID 
+         * WHERE STORY.ID IN FOLLOW_USER.FOLLOW_ID -> MEMBER_INFO.USE_YN : Y
+         *   AND SHOW_YN
+         *   AND REG_DTTM > DATE_ADD(NOW(), INTERVAL - 1 DAY)
+         */
+        List<StoryEntity> list = storyRepository.findAll();
+        return list;
+    }
+
+    /*
+     * 스토리 조회 (마이페이지)
+     */
+    public List<StoryEntity> getMyStoryList(StoryPVO pvo) {
         /*
          * param : FOLLOW_USER.ID 
          * WHERE STORY.ID IN FOLLOW_USER.FOLLOW_ID -> MEMBER_INFO.USE_YN : Y

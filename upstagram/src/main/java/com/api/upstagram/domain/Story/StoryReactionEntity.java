@@ -41,4 +41,10 @@ public class StoryReactionEntity extends BaseEntity{
         this.storyLoveYn = storyLoveYn;
         this.storyViewDate = storyViewDate;
     }
+    
+    public StoryReactionEntity updateStoryReaction(String storyLoveYn) {
+        this.storyLoveYn = storyLoveYn;
+        this.storyViewDate = LocalDateTime.now();
+        return this;
+    }
 }
