@@ -71,6 +71,15 @@ public class StoryController {
 
         StoryReactionEntity entity = storyService.storyReactionRegist(pvo);
 
+        StoryReactionRVO rvo = StoryReactionRVO.builder()
+                            .reactionNo(entity.getReactionNo())
+                            .storyNo(entity.getStory().getStoryNo())
+                            .storyLoveYn(entity.getStoryLoveYn())
+                            .storyViewDate(entity.getStoryViewDate())
+                            .build();
+
+        r.setData(rvo);
+
         return r;
     }
 
