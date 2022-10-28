@@ -45,6 +45,9 @@ public class CommonUtils {
         return user.getId() != null ? user.getId() : "";
     }
 
+	/*
+	* File Upload
+	* */
     public static String uploadFile(MultipartFile file, String resourcePath, String[] exts) 
 			throws IOException{
 		
@@ -54,20 +57,14 @@ public class CommonUtils {
 		String contentType	= file.getContentType();
 		
 		// 확장자 체크
-		if(!Arrays.asList(exts).contains(contentType)) {
-			String errMsg = contentType + " 확장자는 업로드 할 수 없습니다.";
-			throw new CustomException(Response.FILE_ERROR.getCode(), errMsg);
-		}
+		if(!Arrays.asList(exts).contains(contentType)) throw new CustomException(Response.FILE_ERROR.getCode(), contentType + " 확장자는 업로드 할 수 없습니다.");
 		
 		File dest = new File(resourcePath);
 		
 		// 디렉토리가 없으면 생성
-		if(!dest.exists()) {
-			dest.mkdirs();
-		}
+		if(!dest.exists()) dest.mkdirs();
 		
 		dest = new File(resourcePath + "/" + realName);
-		
 		file.transferTo(dest);
 		
 		return realName;

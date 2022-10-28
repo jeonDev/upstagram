@@ -1,5 +1,6 @@
 package com.api.upstagram.common.Exception;
 
+import com.api.upstagram.common.vo.Response;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,7 +18,7 @@ public class CommonExceptionHandler {
         log.error(e.getClass().getName());
         log.error("error", e);
 
-        ErrorResponseVO error = new ErrorResponseVO("99", "문제가 발생하였습니다.\n고객센터에 문의해주세요.");
+        ErrorResponseVO error = new ErrorResponseVO(Response.ERROR.getCode(), Response.ERROR.getMessage());
 
         return error;
     }
@@ -28,7 +29,7 @@ public class CommonExceptionHandler {
         log.error(e.getClass().getName());
         log.error("error", e);
 
-        ErrorResponseVO error = new ErrorResponseVO("97", "데이터 처리 중 오류가 발생하였습니다.");
+        ErrorResponseVO error = new ErrorResponseVO(Response.CONSTRAINTS_ERROR.getCode(), Response.CONSTRAINTS_ERROR.getMessage());
 
         return error;
     }
