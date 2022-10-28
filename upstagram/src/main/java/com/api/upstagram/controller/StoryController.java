@@ -74,6 +74,7 @@ public class StoryController {
         StoryReactionRVO rvo = StoryReactionRVO.builder()
                             .reactionNo(entity.getReactionNo())
                             .storyNo(entity.getStory().getStoryNo())
+                            .id(entity.getId())
                             .storyLoveYn(entity.getStoryLoveYn())
                             .storyViewDate(entity.getStoryViewDate())
                             .build();
@@ -136,4 +137,32 @@ public class StoryController {
         return r;
     }
 
+    /*
+     * 스토리 조회 (마이페이지)
+     */
+    @GetMapping("/user/my/story/list")
+    public ResponseVO<List<StoryRVO>> getMyStoryList() {
+        log.info(this.getClass().getName() + " ==> Story Watching Update!");
+        ResponseVO<List<StoryRVO>> r = new ResponseVO<List<StoryRVO>>();
+        
+        StoryPVO pvo = new StoryPVO();
+        pvo.setMyId(CommonUtils.getUserId());
+        
+        List<StoryRVO> rvo = storyService.getMyStoryList(pvo).stream()
+                            .map(m -> StoryRVO.builder()
+                                    .storyNo(m.getStoryNo())
+                                    .id(m.getId())
+                                    .storyTime(m.getStoryTime())
+                                    .storyFileName(m.getStoryFileName())
+                                    .showYn(m.getShowYn())
+                                    .keepYn(m.getKeepYn())
+                                    .member(null)
+                                    .build())
+                            .collect(Collectors.toList());
+        
+        // TODO: 시청일자 형식 재 정의 : LocalDateTime or String
+        r.setData(rvo);
+
+        return r;
+    }
 }

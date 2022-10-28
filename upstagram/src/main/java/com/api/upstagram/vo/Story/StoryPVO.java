@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class StoryPVO {
     private String id;
+    private String myId;
     private String storyFileName;
     private String storyTime;
     private String showYn;
