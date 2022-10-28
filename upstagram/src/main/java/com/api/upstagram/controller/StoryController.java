@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.api.upstagram.domain.Story.StoryReactionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,7 +67,9 @@ public class StoryController {
         log.info(this.getClass().getName() + " ==> Story Reaction Register!");
         ResponseVO<StoryReactionRVO> r = new ResponseVO<StoryReactionRVO>();
 
-        storyService.storyReactionRegist(pvo);
+        pvo.setId(CommonUtils.getUserId());
+
+        StoryReactionEntity entity = storyService.storyReactionRegist(pvo);
 
         return r;
     }

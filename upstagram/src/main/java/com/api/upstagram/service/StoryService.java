@@ -81,13 +81,42 @@ public class StoryService {
     public StoryReactionEntity storyReactionRegist(StoryReactionPVO pvo) {
         log.info(this.getClass().getName() + " => Story Reaction Register!");
 
-        /*
-         * 1. 파라미터 검증
-         *  1-1. 스토리 존재여부 체크
-         * 2. 스토리 반응 Select
-         *  2-1. insert & delete
-         */
-        return null;
+        if(StringUtils.isNotEmpty(pvo.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "로그인 후에 이용해주세요.");
+
+        // 1. Story 있는지 체크
+        Optional<StoryEntity> storyEntity = storyRepository.findById(pvo.getStoryNo());
+        if(!storyEntity.isPresent()) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), Response.ARGUMNET_ERROR.getMessage());
+
+        StoryEntity story = storyEntity.get();
+
+        // 2. Story Reaction 있는지 체크
+        Optional<StoryReactionEntity> storyReaction = storyReactionRepository.findByStoryAndId(story, pvo.getId());
+
+        // 3-1. 이전내역이 없을 경우, 좋아요 표시.
+        if(!storyReaction.isPresent()) {
+            StoryReactionEntity reactionEntity = StoryReactionEntity.builder()
+                    .story(story)
+                    .id(pvo.getId())
+                    .storyLoveYn("Y")
+                    .storyViewDate(LocalDateTime.now())
+                    .build();
+
+            return storyReactionRepository.save(reactionEntity);
+
+        // 3-2. 이전내역이 있을 경우, 좋아요 취소 표시.
+        } else {
+            StoryReactionEntity reactionEntity = StoryReactionEntity.builder()
+                    .story(story)
+                    .id(pvo.getId())
+                    .storyLoveYn("N")
+                    .storyViewDate(LocalDateTime.now())
+                    .build();
+
+            return storyReactionRepository.save(reactionEntity);
+        }
+
+
+
     }
 
     /*
