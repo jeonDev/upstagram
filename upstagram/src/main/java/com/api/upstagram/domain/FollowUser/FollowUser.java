@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.api.upstagram.common.vo.BaseEntity;
-import com.api.upstagram.domain.memberInfo.MemberInfoEntity;
+import com.api.upstagram.domain.memberInfo.MemberInfo;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,21 +21,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
 @Table(name = "FOLLOW_USER")
 @Entity
-public class FollowUserEntity extends BaseEntity{
+public class FollowUser extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long followNo;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID")
-    private MemberInfoEntity idMember;
+    private MemberInfo idMember;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FOLLOW_ID")
-    private MemberInfoEntity followMember;
+    private MemberInfo followMember;
 
     @Builder
-    public FollowUserEntity(Long followNo, MemberInfoEntity idMember, MemberInfoEntity followMember) {
+    public FollowUser(Long followNo, MemberInfo idMember, MemberInfo followMember) {
         this.followNo = followNo;
         this.idMember = idMember;
         this.followMember = followMember;

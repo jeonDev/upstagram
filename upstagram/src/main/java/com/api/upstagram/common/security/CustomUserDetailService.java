@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.api.upstagram.common.vo.User;
-import com.api.upstagram.domain.memberInfo.MemberInfoEntity;
+import com.api.upstagram.domain.memberInfo.MemberInfo;
 import com.api.upstagram.domain.memberInfo.MemberInfoRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class CustomUserDetailService implements UserDetailsService{
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         log.info("로그인 인증 시도! => loadUserByUsername");
 
-        MemberInfoEntity memberInfoEntity = memberInfoRepository.findByIdAndUseYn(id, "Y")
+        MemberInfo memberInfoEntity = memberInfoRepository.findByIdAndUseYn(id, "Y")
             .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
         List<String> roles = new ArrayList<>();

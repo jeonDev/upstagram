@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.api.upstagram.domain.OauthMemberInfo.OauthMemberInfoEntity;
+import com.api.upstagram.domain.OauthMemberInfo.OauthMemberInfo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,7 +40,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
         
         // Session 정보를 저장하는 직렬화된 dto 클래스
-        OauthMemberInfoEntity user = saveOrUpdate(attributes);
+        OauthMemberInfo user = saveOrUpdate(attributes);
 
         return new DefaultOAuth2User(
             Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())), 
@@ -48,9 +48,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             attributes.getNameAttributeKey());
     }
     
-    private OauthMemberInfoEntity saveOrUpdate(OAuthAttributes attributes) {
-        OauthMemberInfoEntity user = userRepository.findByEmail(attributes.getEmail())
-                                    .map(entity -> ((OauthMemberInfoEntity) entity).update(attributes.getName(), attributes.getPicture()))
+    private OauthMemberInfo saveOrUpdate(OAuthAttributes attributes) {
+        OauthMemberInfo user = userRepository.findByEmail(attributes.getEmail())
+                                    .map(entity -> ((OauthMemberInfo) entity).update(attributes.getName(), attributes.getPicture()))
                                     .orElse(attributes.toEntity());
 
         return userRepository.save(user);

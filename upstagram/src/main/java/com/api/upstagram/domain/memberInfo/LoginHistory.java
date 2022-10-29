@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
 @Table(name = "LOGIN_HISTORY")
 @Entity
-@IdClass(LoginHistoryEntity.class)
-public class LoginHistoryEntity implements Serializable {
+@IdClass(LoginHistory.class)
+public class LoginHistory implements Serializable {
     
     @Id
     private String id;                  // 아이디
@@ -36,7 +36,7 @@ public class LoginHistoryEntity implements Serializable {
      * LoginHistoryEntity 생성
      */
     @Builder
-    private LoginHistoryEntity(String id, String loginUri, String loginDttm, String loginNowUrl
+    private LoginHistory(String id, String loginUri, String loginDttm, String loginNowUrl
         , String loginIp){
             this.id = id;
             this.loginUri = loginUri;

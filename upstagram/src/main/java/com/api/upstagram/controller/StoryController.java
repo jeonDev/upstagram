@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.api.upstagram.domain.Story.StoryReactionEntity;
+import com.api.upstagram.domain.Story.StoryReaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
-import com.api.upstagram.domain.Story.StoryEntity;
-import com.api.upstagram.domain.Story.StoryWatchingEntity;
+import com.api.upstagram.domain.Story.Story;
+import com.api.upstagram.domain.Story.StoryWatching;
 import com.api.upstagram.service.StoryService;
 import com.api.upstagram.vo.Story.StoryPVO;
 import com.api.upstagram.vo.Story.StoryRVO;
@@ -44,10 +44,10 @@ public class StoryController {
         
         pvo.setId(CommonUtils.getUserId());
         
-        StoryEntity entity = storyService.registStory(pvo, file);
+        Story entity = storyService.registStory(pvo, file);
         StoryRVO rvo = StoryRVO.builder()
                         .storyNo(entity.getStoryNo())
-                        .id(entity.getId())
+                        .id(entity.getMember().getId())
                         .storyFileName(entity.getStoryFileName())
                         .storyTime(entity.getStoryTime())
                         .showYn(entity.getShowYn())
@@ -69,7 +69,7 @@ public class StoryController {
 
         pvo.setId(CommonUtils.getUserId());
 
-        StoryReactionEntity entity = storyService.storyReactionRegist(pvo);
+        StoryReaction entity = storyService.storyReactionRegist(pvo);
 
         StoryReactionRVO rvo = StoryReactionRVO.builder()
                             .reactionNo(entity.getReactionNo())
@@ -94,7 +94,7 @@ public class StoryController {
 
         pvo.setId(CommonUtils.getUserId());
 
-        StoryWatchingEntity entity = storyService.storyWatchingHistory(pvo);
+        StoryWatching entity = storyService.storyWatchingHistory(pvo);
         StoryWatchingRVO rvo = StoryWatchingRVO.builder()
                                 .storyWatchingNo(entity.getStoryWatchingNo())
                                 .storyNo(entity.getStoryNo())
@@ -122,7 +122,7 @@ public class StoryController {
         List<StoryRVO> rvo = storyService.getStoryList(pvo).stream()
                             .map(m -> StoryRVO.builder()
                                     .storyNo(m.getStoryNo())
-                                    .id(m.getId())
+                                    .id(m.getMember().getId())
                                     .storyTime(m.getStoryTime())
                                     .storyFileName(m.getStoryFileName())
                                     .showYn(m.getShowYn())
@@ -151,7 +151,7 @@ public class StoryController {
         List<StoryRVO> rvo = storyService.getMyStoryList(pvo).stream()
                             .map(m -> StoryRVO.builder()
                                     .storyNo(m.getStoryNo())
-                                    .id(m.getId())
+                                    .id(m.getMember().getId())
                                     .storyTime(m.getStoryTime())
                                     .storyFileName(m.getStoryFileName())
                                     .showYn(m.getShowYn())

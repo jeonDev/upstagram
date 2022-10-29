@@ -5,10 +5,10 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.api.upstagram.domain.memberInfo.MemberInfoEntity;
+import com.api.upstagram.domain.memberInfo.MemberInfo;
 
-public interface FollowUserRepository extends JpaRepository<FollowUserEntity, Long> {
-    List<FollowUserEntity> findByIdMember(MemberInfoEntity idMember);
-    List<FollowUserEntity> findByFollowMember(MemberInfoEntity followMember);
-    Optional<FollowUserEntity> findByFollowNo(Long followNo);
+public interface FollowUserRepository extends JpaRepository<FollowUser, Long> {
+    List<FollowUser> findByIdMember(MemberInfo idMember);
+    List<FollowUser> findByFollowMember(MemberInfo followMember);
+    Optional<FollowUser> findByFollowNo(Long followNo);
 }

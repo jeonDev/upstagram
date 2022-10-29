@@ -20,27 +20,21 @@ import lombok.NoArgsConstructor;
 @DynamicInsert
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "STORY")
+@Table(name = "STORY_WATCHING")
 @Entity
-public class StoryEntity extends BaseEntity{
+public class StoryWatching extends BaseEntity{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long storyNo;
+    private Long storyWatchingNo;
     
+    private Long storyNo;
     private String id;
-    private String storyFileName;
-    private String storyTime;
-    private String showYn;
-    private String keepYn;
 
     @Builder
-    public StoryEntity(Long storyNo, String id, String storyFileName, String storyTime, String showYn, String keepYn) {
+    public StoryWatching(Long storyWatchingNo, Long storyNo, String id) {
+        this.storyWatchingNo = storyWatchingNo;
         this.storyNo = storyNo;
         this.id = id;
-        this.storyFileName = storyFileName;
-        this.storyTime = storyTime;
-        this.showYn = showYn;
-        this.keepYn = keepYn;
     }
 }

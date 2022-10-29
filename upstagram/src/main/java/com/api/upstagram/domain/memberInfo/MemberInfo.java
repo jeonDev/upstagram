@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
 @Table(name = "MEMBER_INFO")
 @Entity
-public class MemberInfoEntity extends BaseEntity {
+public class MemberInfo extends BaseEntity {
 
     @Id
     private String id;
@@ -65,7 +65,7 @@ public class MemberInfoEntity extends BaseEntity {
      * MemberInfo 생성
      */
     @Builder
-    public MemberInfoEntity(String id, String oauthNo, String password, String name, String nickname, String sex,
+    public MemberInfo(String id, String oauthNo, String password, String name, String nickname, String sex,
             String tel, String role, String pushViewYn, String tagAllowYn, LocalDateTime joinDttm, LocalDateTime lastLoginDttm,
             int wrongPasswordNumber, LocalDateTime passwordChgDttm, String useYn) {
         this.id = id;
@@ -86,14 +86,14 @@ public class MemberInfoEntity extends BaseEntity {
     }
     
     /* 로그인 성공 */
-    public MemberInfoEntity loginSuccess() {
+    public MemberInfo loginSuccess() {
         this.wrongPasswordNumber = 0;
         this.lastLoginDttm = LocalDateTime.now();
         return this;
     }
 
     /* 로그인 실패 */
-    public MemberInfoEntity loginFalse() {
+    public MemberInfo loginFalse() {
         this.wrongPasswordNumber+= 1;
         return this;
     }

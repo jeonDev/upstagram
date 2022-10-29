@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.Response;
-import com.api.upstagram.domain.FollowUser.FollowUserEntity;
+import com.api.upstagram.domain.FollowUser.FollowUser;
 import com.api.upstagram.domain.FollowUser.FollowUserRepository;
-import com.api.upstagram.domain.memberInfo.MemberInfoEntity;
+import com.api.upstagram.domain.memberInfo.MemberInfo;
 import com.api.upstagram.vo.FollowUser.FollowUserPVO;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class FollowUserService {
     /*
      * 팔로우 요청
      */
-    public FollowUserEntity requestFollowUser(FollowUserPVO pvo){
+    public FollowUser requestFollowUser(FollowUserPVO pvo){
         log.info(this.getClass().getName() + " ==> Request Follow User");
 
         // 입력값 검증 (1. 팔로우 ID와 내 ID 비교)
@@ -35,15 +35,15 @@ public class FollowUserService {
             throw new CustomException(Response.FOLLOW_ERROR.getCode(), Response.FOLLOW_ERROR.getMessage());
         }
 
-        MemberInfoEntity idMember = MemberInfoEntity.builder()
+        MemberInfo idMember = MemberInfo.builder()
                                         .id(pvo.getId())
                                         .build();
         
-        MemberInfoEntity followMember = MemberInfoEntity.builder()
+        MemberInfo followMember = MemberInfo.builder()
                                         .id(pvo.getFollowId())
                                         .build();
 
-        FollowUserEntity followUserEntity = FollowUserEntity.builder()
+        FollowUser followUserEntity = FollowUser.builder()
                                         .idMember(idMember)
                                         .followMember(followMember)
                                         .build();
@@ -65,10 +65,10 @@ public class FollowUserService {
     public void deleteFollowUser(FollowUserPVO pvo) {
         log.info(this.getClass().getName() + " ==> Delete Follow User");
         
-        Optional<FollowUserEntity> followUserEntity = followUserRepository.findByFollowNo(pvo.getFollowNo());
+        Optional<FollowUser> followUserEntity = followUserRepository.findByFollowNo(pvo.getFollowNo());
         if(followUserEntity.isPresent()) {
             
-            FollowUserEntity entity = followUserEntity.get();
+            FollowUser entity = followUserEntity.get();
             if(!CommonUtils.getUserId().equals(entity.getIdMember().getId())) throw new CustomException(Response.NOT_SELF_ERROR.getCode(), Response.NOT_SELF_ERROR.getMessage());
             log.info(entity.getIdMember() + " <=> " + entity.getFollowMember().getId() + " DELETE!");
 
@@ -83,14 +83,14 @@ public class FollowUserService {
     /*
      * 팔로우 리스트 조회
      */
-    public List<FollowUserEntity> getFollowUserList(FollowUserPVO pvo) {
+    public List<FollowUser> getFollowUserList(FollowUserPVO pvo) {
         log.info(this.getClass().getName() + " ==> Get Follow User List");
 
-        MemberInfoEntity idMember = MemberInfoEntity.builder()
+        MemberInfo idMember = MemberInfo.builder()
                                     .id(pvo.getId())
                                     .build();
 
-        List<FollowUserEntity> followUserEntityList = followUserRepository.findByIdMember(idMember);
+        List<FollowUser> followUserEntityList = followUserRepository.findByIdMember(idMember);
 
         return followUserEntityList;
     }
@@ -98,14 +98,14 @@ public class FollowUserService {
     /*
      * 팔로워 리스트 조회
      */
-    public List<FollowUserEntity> getFollowerUserList(FollowUserPVO pvo) {
+    public List<FollowUser> getFollowerUserList(FollowUserPVO pvo) {
         log.info(this.getClass().getName() + " ==> Get Follow User List");
 
-        MemberInfoEntity followMember = MemberInfoEntity.builder()
+        MemberInfo followMember = MemberInfo.builder()
                                     .id(pvo.getFollowId())
                                     .build();
 
-        List<FollowUserEntity> followUserEntityList = followUserRepository.findByFollowMember(followMember);
+        List<FollowUser> followUserEntityList = followUserRepository.findByFollowMember(followMember);
 
         return followUserEntityList;
     }

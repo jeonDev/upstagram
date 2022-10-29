@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtTokenProvider {
 
     private static final String BEARER_TYPE = "bearer";
-    private static long ACCESS_TOKEN_VALID_TIME = 30 * 60 * 1000L;
+    private static long ACCESS_TOKEN_VALID_TIME = 7 * 24 * 60 * 60 * 1000L; //30 * 60 * 1000L;
 	private static long REFRESH_TOKEN_VALID_TIME = 7 * 24 * 60 * 60 * 1000L;
     private final Key secretkey;
 

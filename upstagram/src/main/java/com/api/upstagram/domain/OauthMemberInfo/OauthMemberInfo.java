@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
 @Table(name = "OAUTH_MEMBER_INFO")
 @Entity
-public class OauthMemberInfoEntity {
+public class OauthMemberInfo {
     
     @Id
     private Long id;
@@ -29,14 +29,14 @@ public class OauthMemberInfoEntity {
     private Role role;
 
     @Builder
-    public OauthMemberInfoEntity(String name, String email, String picture, Role role){
+    public OauthMemberInfo(String name, String email, String picture, Role role){
         this.name = name;
         this.email = email;
         this.picture = picture;
         this.role = role;
     }
 
-    public OauthMemberInfoEntity update(String name, String picture) {
+    public OauthMemberInfo update(String name, String picture) {
         this.name = name;
         this.picture = picture;
 

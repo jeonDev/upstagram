@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.upstagram.common.vo.ResponseVO;
 import com.api.upstagram.common.vo.Token;
-import com.api.upstagram.domain.memberInfo.MemberInfoEntity;
+import com.api.upstagram.domain.memberInfo.MemberInfo;
 import com.api.upstagram.service.LoginService;
 import com.api.upstagram.vo.MemberInfo.MemberInfoPVO;
 import com.api.upstagram.vo.MemberInfo.MemberInfoRVO;
@@ -30,7 +30,7 @@ public class LoginController {
 
         ResponseVO<MemberInfoRVO> r = new ResponseVO<MemberInfoRVO>();
 
-        MemberInfoEntity entity = loginService.join(pvo);
+        MemberInfo entity = loginService.join(pvo);
         MemberInfoRVO rvo = MemberInfoRVO.builder()
                                 .id(entity.getId())
                                 .name(entity.getName())

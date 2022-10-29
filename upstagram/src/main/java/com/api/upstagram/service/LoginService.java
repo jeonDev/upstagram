@@ -15,8 +15,8 @@ import com.api.upstagram.common.util.StringUtils;
 import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.common.vo.Role;
 import com.api.upstagram.common.vo.Token;
-import com.api.upstagram.domain.memberInfo.MemberInfoEntity;
-import com.api.upstagram.domain.memberInfo.MemberInfoHistoryEntity;
+import com.api.upstagram.domain.memberInfo.MemberInfo;
+import com.api.upstagram.domain.memberInfo.MemberInfoHistory;
 import com.api.upstagram.domain.memberInfo.MemberInfoHistoryRepository;
 import com.api.upstagram.domain.memberInfo.MemberInfoRepository;
 import com.api.upstagram.vo.MemberInfo.MemberInfoPVO;
@@ -41,12 +41,12 @@ public class LoginService {
     /*
      * 회원가입
      */
-    public MemberInfoEntity join(MemberInfoPVO pvo) {
+    public MemberInfo join(MemberInfoPVO pvo) {
         log.info(this.getClass().getName() + " => join");
 
         this.validateIdCheck(pvo);
 
-        MemberInfoEntity memberInfo = MemberInfoEntity.builder()
+        MemberInfo memberInfo = MemberInfo.builder()
                                     .id(pvo.getId())
                                     .password(pvo.getPassword())
                                     .oauthNo("")        // TODO: OAuth 여부 체크
@@ -63,7 +63,7 @@ public class LoginService {
         
         memberInfoRepository.save(memberInfo);
 
-        MemberInfoHistoryEntity historyEntity = MemberInfoHistoryEntity.builder()
+        MemberInfoHistory historyEntity = MemberInfoHistory.builder()
                                                 .id(memberInfo.getId())
                                                 .oauthNo(memberInfo.getOauthNo())
                                                 .password(memberInfo.getPassword())
@@ -111,11 +111,11 @@ public class LoginService {
         /* TODO: 닉네임 검증(영어 + 특수문자? 기준 정해서 추가.) */
 
         // 5. 닉네임 중복여부 체크
-        Optional<MemberInfoEntity> nicknameCheck = memberInfoRepository.findByNickname(member.getNickname());
+        Optional<MemberInfo> nicknameCheck = memberInfoRepository.findByNickname(member.getNickname());
         if(nicknameCheck.isPresent()) throw new CustomException(Response.DUPLICATION_ERROR.getCode(), "이미 사용중인 닉네임입니다.");
 
         // 6. 아이디 중복여부 체크
-        Optional<MemberInfoEntity> entity = memberInfoRepository.findById(member.getId());
+        Optional<MemberInfo> entity = memberInfoRepository.findById(member.getId());
 
         if(entity.isPresent()) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"이미 등록된 사용자입니다.");
 
@@ -130,7 +130,7 @@ public class LoginService {
         if(StringUtils.isNotEmpty(pvo.getPassword())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"패스워드를 입력해주세요.");
 
         // 2. 사용자 존재 여부 체크
-        MemberInfoEntity loginEntity = memberInfoRepository.findById(pvo.getId())
+        MemberInfo loginEntity = memberInfoRepository.findById(pvo.getId())
                 .orElseThrow(() -> new IllegalAccessException("가입하지 않은 사용자입니다."));
 
         // TODO: 2-1. Login History save

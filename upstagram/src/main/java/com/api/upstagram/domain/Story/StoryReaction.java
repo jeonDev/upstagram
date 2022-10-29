@@ -20,21 +20,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "STORY_REACTION")
 @Entity
-public class StoryReactionEntity extends BaseEntity{
+public class StoryReaction extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reactionNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STORY_NO")
-    private StoryEntity story;
+    private Story story;
 
     private String id;
     private String storyLoveYn;
     private LocalDateTime storyViewDate;
 
     @Builder
-    public StoryReactionEntity(Long reactionNo, StoryEntity story, String id, String storyLoveYn, LocalDateTime storyViewDate) {
+    public StoryReaction(Long reactionNo, Story story, String id, String storyLoveYn, LocalDateTime storyViewDate) {
         this.reactionNo = reactionNo;
         this.story = story;
         this.id = id;
@@ -42,7 +42,7 @@ public class StoryReactionEntity extends BaseEntity{
         this.storyViewDate = storyViewDate;
     }
     
-    public StoryReactionEntity updateStoryReaction(String storyLoveYn) {
+    public StoryReaction updateStoryReaction(String storyLoveYn) {
         this.storyLoveYn = storyLoveYn;
         this.storyViewDate = LocalDateTime.now();
         return this;

@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
 @Table(name = "MEMBER_INFO_HISTORY")
 @Entity
-public class MemberInfoHistoryEntity {
+public class MemberInfoHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,7 +61,7 @@ public class MemberInfoHistoryEntity {
     private LocalDateTime regDttm;
 
     @Builder
-    public MemberInfoHistoryEntity(Long historyNo, String id, String oauthNo, String password, String name,
+    public MemberInfoHistory(Long historyNo, String id, String oauthNo, String password, String name,
             String nickname, String sex, String tel, String role, String pushViewYn, String tagAllowYn, LocalDateTime joinDttm,
             LocalDateTime lastLoginDttm, int wrongPasswordNumber, LocalDateTime passwordChgDttm, String useYn, LocalDateTime regDttm) {
         this.historyNo = historyNo;
