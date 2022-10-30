@@ -15,7 +15,7 @@ import lombok.Data;
 @Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)  // Auditing(자동으로 값 매핑) 기능 추가
-public class BaseEntity {
+public abstract class BaseEntity {
 
     @CreatedDate
     @Column(name="REG_DTTM", updatable = false, insertable = true)
