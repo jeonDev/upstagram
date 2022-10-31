@@ -2,7 +2,6 @@ package com.api.upstagram.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.api.upstagram.domain.Story.StoryReaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,25 +112,14 @@ public class StoryController {
      */
     @GetMapping("/user/story/list")
     public ResponseVO<List<StoryRVO>> getStoryList() {
-        log.info(this.getClass().getName() + " ==> Story Watching Update!");
+        log.info(this.getClass().getName() + " ==> Follow's Story List Get!");
         ResponseVO<List<StoryRVO>> r = new ResponseVO<List<StoryRVO>>();
         
         StoryPVO pvo = new StoryPVO();
         pvo.setId(CommonUtils.getUserId());
         
-        List<StoryRVO> rvo = storyService.getStoryList(pvo).stream()
-                            .map(m -> StoryRVO.builder()
-                                    .storyNo(m.getStoryNo())
-                                    .id(m.getMember().getId())
-                                    .storyTime(m.getStoryTime())
-                                    .storyFileName(m.getStoryFileName())
-                                    .showYn(m.getShowYn())
-                                    .keepYn(m.getKeepYn())
-                                    .member(null)
-                                    .build())
-                            .collect(Collectors.toList());
+        List<StoryRVO> rvo = storyService.getFollowStoryList(pvo);
         
-        // TODO: 시청일자 형식 재 정의 : LocalDateTime or String
         r.setData(rvo);
 
         return r;
@@ -142,25 +130,15 @@ public class StoryController {
      */
     @GetMapping("/user/my/story/list")
     public ResponseVO<List<StoryRVO>> getMyStoryList() {
-        log.info(this.getClass().getName() + " ==> Story Watching Update!");
+        log.info(this.getClass().getName() + " ==> My Story List Get!");
         ResponseVO<List<StoryRVO>> r = new ResponseVO<List<StoryRVO>>();
         
+        // TODO: 다른사람 마이페이지 조회 내역 추가.
         StoryPVO pvo = new StoryPVO();
         pvo.setMyId(CommonUtils.getUserId());
+
+        List<StoryRVO> rvo = storyService.getMyStoryList(pvo);
         
-        List<StoryRVO> rvo = storyService.getMyStoryList(pvo).stream()
-                            .map(m -> StoryRVO.builder()
-                                    .storyNo(m.getStoryNo())
-                                    .id(m.getMember().getId())
-                                    .storyTime(m.getStoryTime())
-                                    .storyFileName(m.getStoryFileName())
-                                    .showYn(m.getShowYn())
-                                    .keepYn(m.getKeepYn())
-                                    .member(null)
-                                    .build())
-                            .collect(Collectors.toList());
-        
-        // TODO: 시청일자 형식 재 정의 : LocalDateTime or String
         r.setData(rvo);
 
         return r;

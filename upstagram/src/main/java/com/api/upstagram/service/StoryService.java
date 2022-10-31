@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,10 @@ import com.api.upstagram.domain.Story.StoryRepository;
 import com.api.upstagram.domain.Story.StoryWatching;
 import com.api.upstagram.domain.Story.StoryWatchingRepository;
 import com.api.upstagram.domain.memberInfo.MemberInfo;
+import com.api.upstagram.vo.MemberInfo.MemberInfoRVO;
+import com.api.upstagram.vo.Story.StoryInterface;
 import com.api.upstagram.vo.Story.StoryPVO;
+import com.api.upstagram.vo.Story.StoryRVO;
 import com.api.upstagram.vo.Story.StoryReactionPVO;
 import com.api.upstagram.vo.Story.StoryWatchingPVO;
 
@@ -140,24 +144,64 @@ public class StoryService {
     /*
      * 스토리 조회
      */
-    public List<Story> getStoryList(StoryPVO pvo) {
-        /*
-         * param : FOLLOW_USER.ID 
-         * WHERE STORY.ID IN FOLLOW_USER.FOLLOW_ID -> MEMBER_INFO.USE_YN : Y
-         *   AND SHOW_YN
-         *   AND REG_DTTM > DATE_ADD(NOW(), INTERVAL - 1 DAY)
-         */
+    public List<StoryRVO> getFollowStoryList(StoryPVO pvo) {
+        log.info(this.getClass().getName() + " => Follow's Story List Get!");
+        List<StoryRVO> list = this.getFollowStoryListImpl(pvo).stream()
+                                .map(m -> StoryRVO.builder()
+                                    .storyNo(m.getStoryNo())
+                                    .id(m.getId())
+                                    .storyFileName(m.getStoryFileName())
+                                    .storyTime(m.getStoryTime())
+                                    .showYn(m.getShowYn())
+                                    .keepYn(m.getKeepYn())
+                                    .member(MemberInfoRVO.builder()
+                                        .id(m.getFollowId())
+                                        .name(m.getFollowName())
+                                        .nickname(m.getFollowNickname())
+                                        .sex(m.getFollowSex())
+                                        .tel(m.getFollowTel())
+                                        .oauthNo(m.getFollowOauthNo())
+                                        .build())   
+                                    .build())
+                                .collect(Collectors.toList());
 
-        List<Story> list = storyRepository.findAll();
         return list;
+    }
+
+    /* Story 조회(Follow) */
+    public List<StoryInterface> getFollowStoryListImpl(StoryPVO pvo) {
+        return storyRepository.findByFollowStoryList(pvo.getId());
     }
 
     /*
      * 스토리 조회 (마이페이지)
      */
-    public List<Story> getMyStoryList(StoryPVO pvo) {
-        //pvo.getMyId()
-        List<Story> list = storyRepository.findAll();
+    public List<StoryRVO> getMyStoryList(StoryPVO pvo) {
+        log.info(this.getClass().getName() + " => My Story List Get!");
+        List<StoryRVO> list = this.getMyStoryListImpl(pvo).stream()
+                                .map(m -> StoryRVO.builder()
+                                    .storyNo(m.getStoryNo())
+                                    .id(m.getId())
+                                    .storyFileName(m.getStoryFileName())
+                                    .storyTime(m.getStoryTime())
+                                    .showYn(m.getShowYn())
+                                    .keepYn(m.getKeepYn())
+                                    .member(MemberInfoRVO.builder()
+                                        .id(m.getFollowId())
+                                        .name(m.getFollowName())
+                                        .nickname(m.getFollowNickname())
+                                        .sex(m.getFollowSex())
+                                        .tel(m.getFollowTel())
+                                        .oauthNo(m.getFollowOauthNo())
+                                        .build())   
+                                    .build())
+                                .collect(Collectors.toList());
+
         return list;
+    }
+
+    /* Story 조회(My) */
+    public List<StoryInterface> getMyStoryListImpl(StoryPVO pvo) {
+        return storyRepository.findByMyStoryList(pvo.getMyId());
     }
 }
