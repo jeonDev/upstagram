@@ -69,15 +69,7 @@ public class FollowUserController {
         FollowUserPVO pvo = new FollowUserPVO();
         pvo.setId(CommonUtils.getUserId());
 
-        List<FollowUserRVO> rvo = followUserService.getFollowUserList(pvo).stream()
-                                .map(m -> FollowUserRVO.builder()
-                                            .followNo(m.getFollowNo())
-                                            .id(m.getIdMember().getId())
-                                            .followId(m.getFollowMember().getId())
-                                            .idMember(m.getIdMember().memberEntityToRVO())
-                                            .followMember(m.getFollowMember().memberEntityToRVO())
-                                            .build())
-                                .collect(Collectors.toList());
+        List<FollowUserRVO> rvo = followUserService.getFollowUserList(pvo);
 
         r.setData(rvo);
         
@@ -95,15 +87,7 @@ public class FollowUserController {
         FollowUserPVO pvo = new FollowUserPVO();
         pvo.setFollowId(CommonUtils.getUserId());
 
-        List<FollowUserRVO> rvo = followUserService.getFollowerUserList(pvo).stream()
-                                .map(m -> FollowUserRVO.builder()
-                                            .followNo(m.getFollowNo())
-                                            .id(m.getIdMember().getId())
-                                            .followId(m.getFollowMember().getId())
-                                            .idMember(m.getIdMember().memberEntityToRVO())
-                                            .followMember(m.getFollowMember().memberEntityToRVO())
-                                            .build())
-                                .collect(Collectors.toList());
+        List<FollowUserRVO> rvo = followUserService.getFollowerUserList(pvo);
 
         r.setData(rvo);
         
