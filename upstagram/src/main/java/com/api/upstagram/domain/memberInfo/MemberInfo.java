@@ -102,7 +102,7 @@ public class MemberInfo extends BaseEntity {
         return MemberInfoRVO.builder()
                 .id(this.getId())
                 .name(this.getName())
-                .nickName(this.getNickname())
+                .nickname(this.getNickname())
                 .oauthNo(this.getOauthNo())
                 .sex(this.getSex())
                 .tel(this.getTel())
