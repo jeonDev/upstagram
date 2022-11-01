@@ -20,7 +20,7 @@ import com.api.upstagram.domain.Story.StoryReactionRepository;
 import com.api.upstagram.domain.Story.StoryRepository;
 import com.api.upstagram.domain.Story.StoryWatching;
 import com.api.upstagram.domain.Story.StoryWatchingRepository;
-import com.api.upstagram.domain.memberInfo.MemberInfo;
+import com.api.upstagram.domain.MemberInfo.MemberInfo;
 import com.api.upstagram.vo.MemberInfo.MemberInfoRVO;
 import com.api.upstagram.vo.Story.StoryInterface;
 import com.api.upstagram.vo.Story.StoryPVO;

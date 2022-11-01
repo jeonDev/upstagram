@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.api.upstagram.common.vo.BaseEntity;
-import com.api.upstagram.domain.memberInfo.MemberInfo;
+import com.api.upstagram.domain.MemberInfo.MemberInfo;
 
 import lombok.AccessLevel;
 import lombok.Builder;

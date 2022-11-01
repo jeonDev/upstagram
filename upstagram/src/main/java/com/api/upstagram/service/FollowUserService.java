@@ -12,7 +12,7 @@ import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.domain.FollowUser.FollowUser;
 import com.api.upstagram.domain.FollowUser.FollowUserRepository;
-import com.api.upstagram.domain.memberInfo.MemberInfo;
+import com.api.upstagram.domain.MemberInfo.MemberInfo;
 import com.api.upstagram.vo.FollowUser.FollowUserInterface;
 import com.api.upstagram.vo.FollowUser.FollowUserPVO;
 import com.api.upstagram.vo.FollowUser.FollowUserRVO;

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.api.upstagram.domain.memberInfo.MemberInfo;
+import com.api.upstagram.domain.MemberInfo.MemberInfo;
 import com.api.upstagram.vo.FollowUser.FollowUserInterface;
 
 public interface FollowUserRepository extends JpaRepository<FollowUser, Long> {

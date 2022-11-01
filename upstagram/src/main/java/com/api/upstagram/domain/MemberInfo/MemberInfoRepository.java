@@ -1,4 +1,4 @@
-package com.api.upstagram.domain.memberInfo;
+package com.api.upstagram.domain.MemberInfo;
 
 import java.util.Optional;
 
