@@ -58,7 +58,6 @@ public class StoryService {
 
         // 2. 파일 업로드
         String[] exts = {"image/png", "image/jpg", "image/jpeg", "video/mp4", "video/avi"};
-        String fileName;
 
         FileInfo fileInfo = CommonUtils.uploadFile(file, resourePath, exts);
         pvo.setStoryFileName(fileInfo.getFileName());
