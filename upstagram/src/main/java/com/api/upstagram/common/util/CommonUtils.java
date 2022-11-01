@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
+import com.api.upstagram.common.vo.FileInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,7 +49,7 @@ public class CommonUtils {
 	/*
 	* File Upload
 	* */
-    public static String uploadFile(MultipartFile file, String resourcePath, String[] exts) 
+    public static FileInfo uploadFile(MultipartFile file, String resourcePath, String[] exts)
 			throws IOException{
 		
 		UUID uuid 			= UUID.randomUUID();
@@ -66,7 +67,12 @@ public class CommonUtils {
 		
 		dest = new File(resourcePath + "/" + realName);
 		file.transferTo(dest);
-		
-		return realName;
+
+
+		return FileInfo.builder()
+				.fileName(realName)
+				.fileOriginName(fileName)
+				.fileExt(contentType)
+				.build();
 	}
 }

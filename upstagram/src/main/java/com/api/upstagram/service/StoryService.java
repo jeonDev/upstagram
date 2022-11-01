@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.api.upstagram.common.vo.FileInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,8 +60,8 @@ public class StoryService {
         String[] exts = {"image/png", "image/jpg", "image/jpeg", "video/mp4", "video/avi"};
         String fileName;
 
-        fileName = CommonUtils.uploadFile(file, resourePath, exts);
-        pvo.setStoryFileName(fileName);
+        FileInfo fileInfo = CommonUtils.uploadFile(file, resourePath, exts);
+        pvo.setStoryFileName(fileInfo.getFileName());
 
         // 3. Story 등록
         String showYn = pvo.getShowYn() != null ? pvo.getShowYn() : "Y";    // 표시여부
