@@ -3,12 +3,10 @@ package com.api.upstagram.controller;
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
 import com.api.upstagram.domain.Feed.Feed;
+import com.api.upstagram.domain.Feed.FeedComment;
 import com.api.upstagram.domain.Feed.FeedHeart;
 import com.api.upstagram.service.FeedService;
-import com.api.upstagram.vo.Feed.FeedHeartPVO;
-import com.api.upstagram.vo.Feed.FeedHeartRVO;
-import com.api.upstagram.vo.Feed.FeedPVO;
-import com.api.upstagram.vo.Feed.FeedRVO;
+import com.api.upstagram.vo.Feed.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -86,4 +84,25 @@ public class FeedController {
         return r;
     }
 
+    @PostMapping("/user/feed/comment")
+    public ResponseVO<FeedCommentRVO> writeFeedComment(@RequestBody FeedCommentPVO pvo) {
+        log.info(this.getClass().getName() + " ==> Feed 댓글 등록!");
+        ResponseVO<FeedCommentRVO> r = new ResponseVO<FeedCommentRVO>();
+
+        pvo.setId(CommonUtils.getUserId());
+
+        FeedComment feedComment = feedService.writeFeedComment(pvo);
+        FeedCommentRVO rvo = FeedCommentRVO.builder()
+                .feedCommentNo(feedComment.getFeedCommentNo())
+                .feedNo(feedComment.getFeed().getFeedNo())
+                .id(feedComment.getMember().getId())
+                .content(feedComment.getContent())
+                .topFix(feedComment.getTopFix())
+                .useYn(feedComment.getUseYn())
+                .build();
+
+        r.setData(rvo);
+
+        return r;
+    }
 }

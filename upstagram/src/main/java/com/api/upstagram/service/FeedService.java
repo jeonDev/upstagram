@@ -8,6 +8,7 @@ import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.domain.Feed.*;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
 import com.api.upstagram.domain.MemberInfo.MemberInfoRepository;
+import com.api.upstagram.vo.Feed.FeedCommentPVO;
 import com.api.upstagram.vo.Feed.FeedHeartPVO;
 import com.api.upstagram.vo.Feed.FeedPVO;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,8 @@ public class FeedService {
     private final FeedHeartRepository feedHeartRepository;
 
     private final FeedTagRepository feedTagRepository;
+
+    private final FeedCommentRepository feedCommentRepository;
 
     private final MemberInfoRepository memberInfoRepository;
 
@@ -131,5 +134,26 @@ public class FeedService {
             feedHeartRepository.delete(deleteFeedHeart);
             return deleteFeedHeart;
         }
+    }
+
+    /*
+     * Feed 댓글 기능
+     */
+    public FeedComment writeFeedComment(FeedCommentPVO pvo) {
+
+        if(StringUtils.isNotEmpty(pvo.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "로그인 후에 이용해주세요.");
+
+        Optional<Feed> feed = feedRepository.findById(pvo.getFeedNo());
+        if(!feed.isPresent()) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "게시글이 존재하지 않습니다.");
+
+        FeedComment feedComment = FeedComment.builder()
+                .feed(feed.get())
+                .member(MemberInfo.builder().id(pvo.getId()).build())
+                .useYn("Y")
+                .topFix("N")
+                .content(pvo.getContent())
+                .build();
+
+        return feedCommentRepository.save(feedComment);
     }
 }
