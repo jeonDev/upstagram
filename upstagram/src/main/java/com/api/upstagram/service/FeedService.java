@@ -7,6 +7,7 @@ import com.api.upstagram.common.vo.FileInfo;
 import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.domain.Feed.*;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
+import com.api.upstagram.domain.MemberInfo.MemberInfoRepository;
 import com.api.upstagram.vo.Feed.FeedHeartPVO;
 import com.api.upstagram.vo.Feed.FeedPVO;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,10 @@ public class FeedService {
     private final FeedFileRepository feedFileRepository;
 
     private final FeedHeartRepository feedHeartRepository;
+
+    private final FeedTagRepository feedTagRepository;
+
+    private final MemberInfoRepository memberInfoRepository;
 
     @Value("${resource-path}")
     private String resourePath;
@@ -76,6 +81,24 @@ public class FeedService {
         }
 
         feedFileRepository.saveAll(fileList);
+
+        // 3. Feed Tag 추가
+        List<String> tagIdList = pvo.getTagId();
+        List<FeedTag> feedTags = new ArrayList<FeedTag>();
+        for(String tagId : tagIdList) {
+            Optional<MemberInfo> member = memberInfoRepository.findByIdAndUseYn(tagId, "Y");
+
+            if(!member.isPresent()) continue;
+            
+            FeedTag feedTag = FeedTag.builder()
+                    .feed(feed)
+                    .member(member.get())
+                    .build();
+
+            feedTags.add(feedTag);
+        }
+
+        if(feedTags.size() > 0) feedTagRepository.saveAll(feedTags);
 
         return feed;
     }
