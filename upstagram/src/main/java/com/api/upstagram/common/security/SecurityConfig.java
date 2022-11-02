@@ -37,13 +37,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable();
-        
+
         httpSecurity
             .httpBasic().disable()
             .authorizeRequests()
             .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-            .antMatchers("/user/**").hasRole("USER")
-            .antMatchers("/admin/**").hasAnyRole("ADMIN", "USER")
+            .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+            .antMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().permitAll()
             // .oauth2Login()
             // .userInfoEndpoint()
