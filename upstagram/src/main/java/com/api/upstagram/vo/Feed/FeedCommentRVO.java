@@ -12,4 +12,7 @@ public class FeedCommentRVO {
     private String content;
     private String useYn;
     private String topFix;
+
+    private Long feedCommentHeartNo;
+    private String commentHeartId;
 }

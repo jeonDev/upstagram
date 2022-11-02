@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class FeedCommentPVO {
+    private Long feedCommentNo;
     private Long feedNo;
     private String id;
     private String content;
