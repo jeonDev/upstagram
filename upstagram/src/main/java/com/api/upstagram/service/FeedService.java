@@ -1,16 +1,18 @@
 package com.api.upstagram.service;
 
+import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.util.CommonUtils;
+import com.api.upstagram.common.util.StringUtils;
 import com.api.upstagram.common.vo.FileInfo;
-import com.api.upstagram.domain.Feed.Feed;
-import com.api.upstagram.domain.Feed.FeedFile;
-import com.api.upstagram.domain.Feed.FeedFileRepository;
-import com.api.upstagram.domain.Feed.FeedRepository;
+import com.api.upstagram.common.vo.Response;
+import com.api.upstagram.domain.Feed.*;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
+import com.api.upstagram.vo.Feed.FeedHeartPVO;
 import com.api.upstagram.vo.Feed.FeedPVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,8 @@ public class FeedService {
 
     private final FeedFileRepository feedFileRepository;
 
+    private final FeedHeartRepository feedHeartRepository;
+
     @Value("${resource-path}")
     private String resourePath;
 
@@ -36,7 +41,7 @@ public class FeedService {
     * */
     @Transactional
     public Feed insertFeed(FeedPVO pvo, MultipartFile[] files) throws IOException {
-
+        log.info(this.getClass().getName() + " ==> Feed Upload!");
         MemberInfo memberInfo = MemberInfo.builder()
                 .id(pvo.getId())
                 .build();
@@ -73,5 +78,35 @@ public class FeedService {
         feedFileRepository.saveAll(fileList);
 
         return feed;
+    }
+
+    /*
+    * Feed 수정
+    * */
+    @Transactional
+    public Feed updateFeed(FeedPVO pvo, MultipartFile[] files) throws IOException{
+        return null;
+    }
+
+    /*
+    * Feed 좋아요 기능
+    * */
+    public FeedHeart feedHeartSave(FeedHeartPVO pvo) {
+
+        if(StringUtils.isNotEmpty(pvo.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "로그인 후에 이용해주세요.");
+
+        Optional<FeedHeart> feedHeart = feedHeartRepository.findByFeedAndMember(
+                Feed.builder().feedNo(pvo.getFeedNo()).build(), MemberInfo.builder().id(pvo.getId()).build());
+
+        if(!feedHeart.isPresent()) {
+            return feedHeartRepository.save(FeedHeart.builder()
+                            .feed(Feed.builder().feedNo(pvo.getFeedNo()).build())
+                            .member(MemberInfo.builder().id(pvo.getId()).build())
+                            .build());
+        } else {
+            FeedHeart deleteFeedHeart = feedHeart.get();
+            feedHeartRepository.delete(deleteFeedHeart);
+            return deleteFeedHeart;
+        }
     }
 }
