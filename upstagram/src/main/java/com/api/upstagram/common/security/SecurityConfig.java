@@ -42,6 +42,7 @@ public class SecurityConfig {
             .httpBasic().disable()
             .authorizeRequests()
             .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+            .antMatchers("/manage/**").hasAnyRole("MANAGE", "ADMIN")
             .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
             .antMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().permitAll()

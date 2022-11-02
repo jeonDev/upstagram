@@ -9,6 +9,7 @@ import com.api.upstagram.vo.CommonCode.CommonCodePVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,5 +51,10 @@ public class CommonService {
                 .srtOdr(pvo.getSrtOdr())
                 .codeDetail(pvo.getCodeDetail())
                 .build());
+    }
+
+    /* 공통코드 조회 */
+    public List<CommonCode> commonCodeList(CommonCodePVO pvo) {
+        return commonCodeRepository.findAllByCommonTypeAndUseYnOrderBySrtOdr(pvo.getCommonType(), pvo.getUseYn());
     }
 }
