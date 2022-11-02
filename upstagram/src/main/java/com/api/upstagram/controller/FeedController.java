@@ -4,6 +4,7 @@ import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
 import com.api.upstagram.domain.Feed.Feed;
 import com.api.upstagram.domain.Feed.FeedComment;
+import com.api.upstagram.domain.Feed.FeedCommentHeart;
 import com.api.upstagram.domain.Feed.FeedHeart;
 import com.api.upstagram.service.FeedService;
 import com.api.upstagram.vo.Feed.*;
@@ -84,6 +85,9 @@ public class FeedController {
         return r;
     }
 
+    /*
+    * Feed 댓글 작성
+    * */
     @PostMapping("/user/feed/comment")
     public ResponseVO<FeedCommentRVO> writeFeedComment(@RequestBody FeedCommentPVO pvo) {
         log.info(this.getClass().getName() + " ==> Feed 댓글 등록!");
@@ -99,6 +103,28 @@ public class FeedController {
                 .content(feedComment.getContent())
                 .topFix(feedComment.getTopFix())
                 .useYn(feedComment.getUseYn())
+                .build();
+
+        r.setData(rvo);
+
+        return r;
+    }
+
+    /*
+     * Feed 댓글 좋아요 기능
+     * */
+    @PostMapping("/user/feed/comment/heart")
+    public ResponseVO<FeedCommentRVO> feedCommentHeart(@RequestBody FeedCommentPVO pvo) {
+        log.info(this.getClass().getName() + " ==> Feed 댓글 좋아요!");
+        ResponseVO<FeedCommentRVO> r = new ResponseVO<FeedCommentRVO>();
+
+        pvo.setId(CommonUtils.getUserId());
+
+        FeedCommentHeart feedCommentHeart = feedService.feedCommentHeart(pvo);
+        FeedCommentRVO rvo = FeedCommentRVO.builder()
+                .feedCommentHeartNo(feedCommentHeart.getFeedCommentHeartNo())
+                .commentHeartId(feedCommentHeart.getMember().getId())
+                .feedCommentNo(feedCommentHeart.getFeedComment().getFeedCommentNo())
                 .build();
 
         r.setData(rvo);

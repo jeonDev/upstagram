@@ -39,6 +39,8 @@ public class FeedService {
 
     private final FeedCommentRepository feedCommentRepository;
 
+    private final FeedCommentHeartRepository feedCommentHeartRepository;
+
     private final MemberInfoRepository memberInfoRepository;
 
     @Value("${resource-path}")
@@ -155,5 +157,28 @@ public class FeedService {
                 .build();
 
         return feedCommentRepository.save(feedComment);
+    }
+
+    /*
+    * Feed 댓글 좋아요 기능
+    * */
+    public FeedCommentHeart feedCommentHeart(FeedCommentPVO pvo) {
+
+        if(StringUtils.isNotEmpty(pvo.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "로그인 후에 이용해주세요.");
+
+        Optional<FeedCommentHeart> feedCommentHeart = feedCommentHeartRepository.findByFeedCommentAndMember(
+                FeedComment.builder().feedCommentNo(pvo.getFeedCommentNo()).build()
+                , MemberInfo.builder().id(pvo.getId()).build());
+
+        if(!feedCommentHeart.isPresent()) {
+            return feedCommentHeartRepository.save(FeedCommentHeart.builder()
+                            .feedComment(FeedComment.builder().feedCommentNo(pvo.getFeedCommentNo()).build())
+                            .member(MemberInfo.builder().id(pvo.getId()).build())
+                            .build());
+        } else {
+            FeedCommentHeart deleteFeedCommentHeart = feedCommentHeart.get();
+            feedCommentHeartRepository.delete(deleteFeedCommentHeart);
+            return deleteFeedCommentHeart;
+        }
     }
 }
