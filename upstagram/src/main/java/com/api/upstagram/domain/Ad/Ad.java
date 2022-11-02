@@ -2,6 +2,7 @@ package com.api.upstagram.domain.Ad;
 
 import com.api.upstagram.common.vo.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,4 +44,20 @@ public class Ad extends BaseEntity {
 
     private String link;
 
+    @Builder
+    public Ad(Long adNo, AdCompany adCompany, String adName, String adFileName, String useYn, String fileDiv, String fileExt, String costDiv, int timeCountCost, int viewCountCost, int linkCountCost, String linkUseYn, String link) {
+        this.adNo = adNo;
+        this.adCompany = adCompany;
+        this.adName = adName;
+        this.adFileName = adFileName;
+        this.useYn = useYn;
+        this.fileDiv = fileDiv;
+        this.fileExt = fileExt;
+        this.costDiv = costDiv;
+        this.timeCountCost = timeCountCost;
+        this.viewCountCost = viewCountCost;
+        this.linkCountCost = linkCountCost;
+        this.linkUseYn = linkUseYn;
+        this.link = link;
+    }
 }
