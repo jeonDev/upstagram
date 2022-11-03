@@ -1,8 +1,11 @@
 package com.api.upstagram.common.config;
 
+import com.api.upstagram.common.interceptor.LogInterceptor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -29,7 +32,7 @@ public class WebConfig implements WebMvcConfigurer{
             .maxAge(3600)
             .allowCredentials(true);
     }
-    
+
     /*
      * 외부 파일접근 허용
      */
@@ -39,4 +42,17 @@ public class WebConfig implements WebMvcConfigurer{
                 .addResourceLocations(resourePath);
     }
 
+
+    /*
+    * 인터셉터 추가
+    * */
+    @Bean
+    public LogInterceptor logInterceptor(){
+        return new LogInterceptor();
+    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(logInterceptor())
+                .addPathPatterns("/user/**", "/manage/**", "/admin/**");
+    }
 }
