@@ -1,6 +1,6 @@
 package com.api.upstagram.domain.Feed;
 
-import com.api.upstagram.common.vo.BaseEntity;
+import com.api.upstagram.common.vo.BaseIdEntity;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "FEED")
-public class Feed extends BaseEntity {
+public class Feed extends BaseIdEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,4 +39,5 @@ public class Feed extends BaseEntity {
         this.hashtag = hashtag;
         this.useYn = useYn;
     }
+
 }

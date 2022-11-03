@@ -1,6 +1,7 @@
 package com.api.upstagram.domain.Ad;
 
-import com.api.upstagram.common.vo.BaseEntity;
+import com.api.upstagram.common.vo.BaseIdEntity;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "AD_COMPANY")
-public class AdCompany extends BaseEntity {
+public class AdCompany extends BaseIdEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

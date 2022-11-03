@@ -1,6 +1,7 @@
 package com.api.upstagram.domain.Feed;
 
-import com.api.upstagram.common.vo.BaseEntity;
+import com.api.upstagram.common.vo.BaseIdEntity;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "FEED_FILE")
-public class FeedFile extends BaseEntity {
+public class FeedFile extends BaseIdEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +28,7 @@ public class FeedFile extends BaseEntity {
     private String fileExt;
 
     private int sortOrder;
-
+    
     @Builder
     public FeedFile(Long feedFileNo, Feed feed, String fileDiv, String fileExt, int sortOrder) {
         this.feedFileNo = feedFileNo;
@@ -36,4 +37,5 @@ public class FeedFile extends BaseEntity {
         this.fileExt = fileExt;
         this.sortOrder = sortOrder;
     }
+
 }
