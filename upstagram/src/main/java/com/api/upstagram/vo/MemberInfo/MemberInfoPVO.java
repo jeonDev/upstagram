@@ -10,4 +10,6 @@ public class MemberInfoPVO {
     private String nickname;
     private String sex;
     private String tel;
+
+    private String role;
 }

@@ -14,7 +14,6 @@ import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.security.Jwt.JwtTokenProvider;
 import com.api.upstagram.common.util.StringUtils;
 import com.api.upstagram.common.vo.Response;
-import com.api.upstagram.common.vo.Role;
 import com.api.upstagram.common.vo.Token;
 import com.api.upstagram.vo.MemberInfo.MemberInfoPVO;
 
@@ -55,7 +54,7 @@ public class LoginService {
                                     .nickname(pvo.getNickname())
                                     .sex(pvo.getSex())
                                     .tel(pvo.getTel())
-                                    .role(Role.USER.getKey())
+                                    .role(pvo.getRole())
                                     .tagAllowYn("Y")
                                     .pushViewYn("Y")
                                     .joinDttm(LocalDateTime.now())
