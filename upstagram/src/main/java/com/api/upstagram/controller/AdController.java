@@ -56,7 +56,6 @@ public class AdController {
                 .adName(ad.getAdName())
                 .adFileName(ad.getAdFileName())
                 .useYn(ad.getUseYn())
-                .fileDiv(ad.getFileDiv())
                 .fileExt(ad.getFileExt())
                 .costDiv(ad.getCostDiv())
                 .timeCountCost(ad.getTimeCountCost())

@@ -12,7 +12,6 @@ public class AdRVO {
     private String adName;
     private String adFileName;
     private String useYn;
-    private String fileDiv;
     private String fileExt;
     private String costDiv;
     private int timeCountCost;

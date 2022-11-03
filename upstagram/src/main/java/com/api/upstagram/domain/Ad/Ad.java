@@ -1,6 +1,7 @@
 package com.api.upstagram.domain.Ad;
 
-import com.api.upstagram.common.vo.BaseEntity;
+import com.api.upstagram.common.vo.BaseIdEntity;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "AD")
-public class Ad extends BaseEntity {
+public class Ad extends BaseIdEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +29,6 @@ public class Ad extends BaseEntity {
 
     private String useYn;
 
-    private String fileDiv;
-
     private String fileExt;
 
     private String costDiv;
@@ -44,14 +43,14 @@ public class Ad extends BaseEntity {
 
     private String link;
 
+
     @Builder
-    public Ad(Long adNo, AdCompany adCompany, String adName, String adFileName, String useYn, String fileDiv, String fileExt, String costDiv, int timeCountCost, int viewCountCost, int linkCountCost, String linkUseYn, String link) {
+    public Ad(Long adNo, AdCompany adCompany, String adName, String adFileName, String useYn, String fileExt, String costDiv, int timeCountCost, int viewCountCost, int linkCountCost, String linkUseYn, String link) {
         this.adNo = adNo;
         this.adCompany = adCompany;
         this.adName = adName;
         this.adFileName = adFileName;
         this.useYn = useYn;
-        this.fileDiv = fileDiv;
         this.fileExt = fileExt;
         this.costDiv = costDiv;
         this.timeCountCost = timeCountCost;

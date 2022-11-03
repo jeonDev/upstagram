@@ -2,7 +2,6 @@ package com.api.upstagram.service;
 
 import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.util.CommonUtils;
-import com.api.upstagram.common.util.StringUtils;
 import com.api.upstagram.common.vo.FileInfo;
 import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.domain.Ad.*;
@@ -68,7 +67,6 @@ public class AdService {
                 .linkUseYn(pvo.getLinkUseYn())
                 .link(pvo.getLink())
                 .adFileName(fileInfo.getFileName())
-                .fileDiv("")    // 컬럼삭제
                 .fileExt(fileInfo.getFileExt())
                 .build();
 
