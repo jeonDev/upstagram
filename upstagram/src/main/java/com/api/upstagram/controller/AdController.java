@@ -33,6 +33,11 @@ public class AdController {
         AdCompanyRVO rvo = AdCompanyRVO.builder()
                 .adCompanyNo(adCompany.getAdCompanyNo())
                 .adCompanyName(adCompany.getAdCompanyName())
+                .managerName(adCompany.getManagerName())
+                .managerTel(adCompany.getManagerTel())
+                .addr(adCompany.getAddr())
+                .addrDetail(adCompany.getAddrDetail())
+                .zipCd(adCompany.getZipCd())
                 .build();
 
         r.setData(rvo);

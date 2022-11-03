@@ -8,4 +8,9 @@ import lombok.Data;
 public class AdCompanyRVO {
     private Long adCompanyNo;
     private String adCompanyName;
+    private String managerName;
+    private String managerTel;
+    private String addr;
+    private String addrDetail;
+    private String zipCd;
 }

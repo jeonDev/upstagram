@@ -41,6 +41,11 @@ public class AdService {
         return adCompanyRepository.save(AdCompany.builder()
                 .adCompanyNo(pvo.getAdCompanyNo())
                 .adCompanyName(pvo.getAdCompanyName())
+                .managerName(pvo.getManagerName())
+                .managerTel(pvo.getManagerTel())
+                .addr(pvo.getAddr())
+                .addrDetail(pvo.getAddrDetail())
+                .zipCd(pvo.getZipCd())
                 .build());
     }
 

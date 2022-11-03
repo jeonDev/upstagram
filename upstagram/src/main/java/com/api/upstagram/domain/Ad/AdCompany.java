@@ -21,9 +21,26 @@ public class AdCompany extends BaseIdEntity {
 
     private String adCompanyName;
 
+    private String managerName;
+
+    private String managerTel;
+    
+    private String addr;
+    
+    private String addrDetail;
+
+    private String zipCd;
+
     @Builder
-    public AdCompany(Long adCompanyNo, String adCompanyName) {
+    public AdCompany(Long adCompanyNo, String adCompanyName, String managerName, String managerTel, String addr,
+            String addrDetail, String zipCd) {
         this.adCompanyNo = adCompanyNo;
         this.adCompanyName = adCompanyName;
+        this.managerName = managerName;
+        this.managerTel = managerTel;
+        this.addr = addr;
+        this.addrDetail = addrDetail;
+        this.zipCd = zipCd;
     }
+
 }
