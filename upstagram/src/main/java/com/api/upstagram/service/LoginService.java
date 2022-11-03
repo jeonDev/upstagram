@@ -134,8 +134,6 @@ public class LoginService {
         MemberInfo loginEntity = memberInfoRepository.findById(pvo.getId())
                 .orElseThrow(() -> new IllegalAccessException("가입하지 않은 사용자입니다."));
 
-        // TODO: 2-1. Login History save
-
         // 3. 사용여부 체크
         if(!"Y".equals(loginEntity.getUseYn())) throw new IllegalAccessException("사용하지 않는 계정입니다.\n로그인 할 수 없습니다.");
 
@@ -152,13 +150,13 @@ public class LoginService {
         // 6. 로그인 성공 시, 정보 Update 및 Token 생성
         memberInfoRepository.save(loginEntity.loginSuccess());
 
+        // 7. 로그인 이력 생성
+        this.loginHistorySave(loginEntity.getId(), request);
+
         // 6-1. Jwt Token 생성
         List<String> roles = new ArrayList<>();
         roles.add(loginEntity.getRole());
         Token token = jwtTokenProvider.generateJwtToken(loginEntity.getId(), roles);
-
-        // 7. 로그인 이력 생성
-        this.loginHistorySave(loginEntity.getId(), request);
 
         return token;
     }
