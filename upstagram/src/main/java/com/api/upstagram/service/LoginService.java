@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.api.upstagram.domain.MemberInfo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,14 +16,12 @@ import com.api.upstagram.common.util.StringUtils;
 import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.common.vo.Role;
 import com.api.upstagram.common.vo.Token;
-import com.api.upstagram.domain.MemberInfo.MemberInfo;
-import com.api.upstagram.domain.MemberInfo.MemberInfoHistory;
-import com.api.upstagram.domain.MemberInfo.MemberInfoHistoryRepository;
-import com.api.upstagram.domain.MemberInfo.MemberInfoRepository;
 import com.api.upstagram.vo.MemberInfo.MemberInfoPVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +31,8 @@ public class LoginService {
     private final MemberInfoRepository memberInfoRepository;
 
     private final MemberInfoHistoryRepository memberInfoHistoryRepository;
+
+    private final LoginHistoryRepository loginHistoryRepository;
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -123,7 +124,7 @@ public class LoginService {
     }
 
     /* 로그인 */
-    public Token login(MemberInfoPVO pvo) throws IllegalAccessException {
+    public Token login(MemberInfoPVO pvo, HttpServletRequest request) throws IllegalAccessException {
 
         // 1. 파라미터 검증
         if(StringUtils.isNotEmpty(pvo.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"아이디를 입력해주세요.");
@@ -156,7 +157,24 @@ public class LoginService {
         roles.add(loginEntity.getRole());
         Token token = jwtTokenProvider.generateJwtToken(loginEntity.getId(), roles);
 
+        // 7. 로그인 이력 생성
+        this.loginHistorySave(loginEntity.getId(), request);
+
         return token;
     }
 
+    /*
+    * 로그인 이력 생성
+    * */
+    public LoginHistory loginHistorySave(String id, HttpServletRequest request) {
+        String clientIp = request.getHeader("X-FORWARDED-FOR");
+
+        LoginHistory loginHistory = LoginHistory.builder()
+                .id(id)
+                .loginDttm(LocalDateTime.now())
+                .loginIp(clientIp != null ? clientIp : request.getRemoteAddr())
+                .loginUri(request.getRequestURI())
+                .build();
+        return loginHistoryRepository.save(loginHistory);
+    }
 }

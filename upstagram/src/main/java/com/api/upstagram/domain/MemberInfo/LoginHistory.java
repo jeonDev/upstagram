@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
+@IdClass(LoginHistoryId.class)
 @Table(name = "LOGIN_HISTORY")
 @Entity
-@IdClass(LoginHistory.class)
-public class LoginHistory implements Serializable {
+public class LoginHistory {
     
     @Id
     private String id;                  // 아이디
@@ -28,21 +28,16 @@ public class LoginHistory implements Serializable {
 
     private String loginUri;            // 접속경로
 
-    private String loginNowUrl;         // 현재 URL
-
     private String loginIp;             // 접속 IP
 
     /*
      * LoginHistoryEntity 생성
      */
     @Builder
-    private LoginHistory(String id, String loginUri, String loginDttm, String loginNowUrl
-        , String loginIp){
-            this.id = id;
-            this.loginUri = loginUri;
-            this.loginDttm = LocalDateTime.now();
-            this.loginNowUrl = loginNowUrl;
-            this.loginIp = loginIp;
+    public LoginHistory(String id, LocalDateTime loginDttm, String loginUri, String loginIp) {
+        this.id = id;
+        this.loginDttm = loginDttm;
+        this.loginUri = loginUri;
+        this.loginIp = loginIp;
     }
-
 }

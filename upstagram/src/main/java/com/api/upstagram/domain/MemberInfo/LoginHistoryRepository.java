@@ -2,6 +2,6 @@ package com.api.upstagram.domain.MemberInfo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface LoginHistoryRepository extends JpaRepository<LoginHistory, String> {
+public interface LoginHistoryRepository extends JpaRepository<LoginHistory, LoginHistoryId> {
     
 }

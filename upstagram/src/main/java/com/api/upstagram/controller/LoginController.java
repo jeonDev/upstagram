@@ -14,6 +14,8 @@ import com.api.upstagram.vo.MemberInfo.MemberInfoRVO;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @Slf4j
 public class LoginController {
@@ -49,12 +51,12 @@ public class LoginController {
      * 로그인
      */
     @PostMapping("/login")
-    public ResponseVO<Token> login(@RequestBody MemberInfoPVO pvo) throws IllegalAccessException{
+    public ResponseVO<Token> login(@RequestBody MemberInfoPVO pvo, HttpServletRequest request) throws IllegalAccessException{
         log.info(this.getClass().getName() + " ==> login");
 
         ResponseVO<Token> r = new ResponseVO<Token>();
 
-        Token token = loginService.login(pvo);
+        Token token = loginService.login(pvo, request);
 
         r.setData(token);
         
