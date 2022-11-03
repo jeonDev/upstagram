@@ -1,19 +1,15 @@
 package com.api.upstagram.controller;
 
+import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
 import com.api.upstagram.domain.Ad.Ad;
 import com.api.upstagram.domain.Ad.AdCompany;
+import com.api.upstagram.domain.Ad.AdViewHistory;
 import com.api.upstagram.service.AdService;
-import com.api.upstagram.vo.Ad.AdCompanyPVO;
-import com.api.upstagram.vo.Ad.AdCompanyRVO;
-import com.api.upstagram.vo.Ad.AdPVO;
-import com.api.upstagram.vo.Ad.AdRVO;
+import com.api.upstagram.vo.Ad.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -30,6 +26,7 @@ public class AdController {
     * */
     @PostMapping("/admin/ad/company/regist")
     public ResponseVO<AdCompanyRVO> adCompanyRegister(@RequestBody AdCompanyPVO pvo) {
+        log.info(this.getClass().getName() + " ==> 광고 회사 추가 및 수정!");
         ResponseVO<AdCompanyRVO> r = new ResponseVO<AdCompanyRVO>();
 
         AdCompany adCompany = adService.adCompanyRegister(pvo);
@@ -46,8 +43,9 @@ public class AdController {
     /*
     * 광고 등록
     * */
-    @PostMapping("/ad/regist")
+    @PostMapping("/manage/ad/regist")
     public ResponseVO<AdRVO> adRegister(@RequestPart AdPVO pvo, @RequestPart MultipartFile file) throws IOException {
+        log.info(this.getClass().getName() + " ==> 광고 등록!");
         ResponseVO<AdRVO> r = new ResponseVO<AdRVO>();
 
         Ad ad = adService.adRegister(pvo, file);
@@ -65,6 +63,35 @@ public class AdController {
                 .viewCountCost(ad.getViewCountCost())
                 .linkCountCost(ad.getLinkCountCost())
                 .link(ad.getLink())
+                .build();
+
+        r.setData(rvo);
+
+        return r;
+    }
+
+    /*
+    * 광고 시청기록 등록
+    * */
+    @GetMapping("/ad/view")
+    public ResponseVO<AdViewHistoryRVO> adViewHistory(@RequestParam String adNo, @RequestParam String link, @RequestParam String linkCountYn) {
+        log.info(this.getClass().getName() + " ==> 광고 시청 기록 등록!");
+        ResponseVO<AdViewHistoryRVO> r = new ResponseVO<AdViewHistoryRVO>();
+
+        AdViewHistoryPVO pvo = new AdViewHistoryPVO();
+        pvo.setId(CommonUtils.getUserId());
+        pvo.setAdNo(Long.parseLong(adNo));
+        pvo.setLink(link);
+        pvo.setLinkCountYn(linkCountYn);
+
+        AdViewHistory adViewHistory = adService.adViewHistory(pvo);
+        AdViewHistoryRVO rvo = AdViewHistoryRVO.builder()
+                .adViewNo(adViewHistory.getAdViewNo())
+                .adNo(adViewHistory.getAd().getAdNo())
+                .id(adViewHistory.getMember().getId())
+                .linkCountYn(adViewHistory.getLinkCountYn())
+                .link(adViewHistory.getLink())
+                .viewDttm(adViewHistory.getViewDttm())
                 .build();
 
         r.setData(rvo);
