@@ -11,6 +11,7 @@ import com.api.upstagram.domain.MemberInfo.MemberInfoRepository;
 import com.api.upstagram.vo.Feed.FeedCommentPVO;
 import com.api.upstagram.vo.Feed.FeedHeartPVO;
 import com.api.upstagram.vo.Feed.FeedPVO;
+import com.api.upstagram.vo.Feed.FeedRVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -180,5 +181,12 @@ public class FeedService {
             feedCommentHeartRepository.delete(deleteFeedCommentHeart);
             return deleteFeedCommentHeart;
         }
+    }
+
+    /*
+    * Feed List 조회
+    * */
+    public List<FeedRVO> selectFeedCustomList(FeedPVO pvo){
+        return feedRepository.selectFeedList(pvo.getId());
     }
 }
