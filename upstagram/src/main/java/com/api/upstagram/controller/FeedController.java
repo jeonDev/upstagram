@@ -139,9 +139,12 @@ public class FeedController {
         FeedPVO pvo = new FeedPVO();
         pvo.setId(CommonUtils.getUserId());
 
-        List<FeedRVO> rvo = feedService.selectFeedCustomList(pvo);
-
+        List<FeedRVO> rvo = feedService.selectFeedList(pvo).stream()
+                .map(m -> m.FeedToRVO())
+                .collect(Collectors.toList());
         r.setData(rvo);
+
+
 
         return r;
     }

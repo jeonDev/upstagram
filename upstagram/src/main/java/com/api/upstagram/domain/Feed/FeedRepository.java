@@ -9,24 +9,14 @@ import java.util.List;
 
 public interface FeedRepository extends JpaRepository<Feed, Long> {
 
-    @Query(nativeQuery = true,
-        value = "SELECT f.FEED_NO AS feedNo" +
-                "     , f.TITLE AS title" +
-                "     , f.HASHTAG AS hashtag" +
-                "     , f.USE_YN AS useYn" +
-                "     , mi.ID AS id" +
-                "     , mi.NAME AS name" +
-                "     , mi.NICKNAME AS nickname" +
-                "     , mi.SEX AS sex" +
-                "     , mi.TEL AS tel" +
-                "  FROM FEED f" +
-                "  JOIN (" +
-                "       SELECT mi.*" +
-                "         FROM FOLLOW_USER fu" +
-                "         JOIN MEMBER_INFO mi ON fu.FOLLOW_ID = mi.ID AND mi.USE_YN = 'Y'" +
-                "        WHERE fu.ID = :id" +
-                "       ) mi ON f.ID = mi.ID" +
-                " WHERE f.USE_YN = 'Y'" +
-                " ORDER BY f.REG_DTTM DESC")
-    List<FeedRVO> selectFeedList(@Param("id") String id);
+    /* Feed 조회 */
+    @Query(value =
+            "SELECT f, m, ff" +
+            "  FROM Feed f" +
+            "  JOIN MemberInfo m ON f.member = m.id" +
+            "   AND m.useYn = 'Y'" +
+            "  JOIN FollowUser fu ON m.id = fu.followMember" +
+            "   AND fu.idMember.id = :id" +
+            " WHERE f.useYn = 'Y'")
+    List<Feed> selectFeedList(@Param("id") String id);
 }

@@ -186,7 +186,7 @@ public class FeedService {
     /*
     * Feed List 조회
     * */
-    public List<FeedRVO> selectFeedCustomList(FeedPVO pvo){
+    public List<Feed> selectFeedList(FeedPVO pvo){
         return feedRepository.selectFeedList(pvo.getId());
     }
 }
