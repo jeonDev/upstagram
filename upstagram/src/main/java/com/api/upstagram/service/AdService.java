@@ -9,6 +9,7 @@ import com.api.upstagram.domain.MemberInfo.MemberInfo;
 import com.api.upstagram.vo.Ad.AdCompanyPVO;
 import com.api.upstagram.vo.Ad.AdPVO;
 import com.api.upstagram.vo.Ad.AdViewHistoryPVO;
+import com.api.upstagram.vo.Ad.AdViewHistoryRVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -99,5 +100,12 @@ public class AdService {
                     .linkCountYn(pvo.getLinkCountYn())
                     .viewDttm(LocalDateTime.now())
                     .build());
+    }
+
+    /*
+    * 광고 시청내역 조회
+    * */
+    public List<AdViewHistory> selectAdViewHistoryList(AdViewHistoryPVO pvo) {
+        return adViewHistoryRepository.selectAdViewHistoryList(pvo.getAdNo());
     }
 }

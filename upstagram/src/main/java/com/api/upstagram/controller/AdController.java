@@ -88,4 +88,24 @@ public class AdController {
         return r;
     }
 
+    /*
+    * 광고 시청기록 조회
+    * */
+    @GetMapping("/ad/view/list")
+    public ResponseVO<List<AdViewHistoryRVO>> selectAdViewHistoryList(@RequestParam(required = false) String adNo) {
+      log.info(this.getClass().getName() + " ==> 광고 시청 기록 조회");
+      ResponseVO<List<AdViewHistoryRVO>> r = new ResponseVO<List<AdViewHistoryRVO>>();
+
+      AdViewHistoryPVO pvo = new AdViewHistoryPVO();
+      pvo.setAdNo(Long.parseLong(adNo));
+
+      List<AdViewHistoryRVO> rvo = adService.selectAdViewHistoryList(pvo).stream()
+              .map(m -> m.adViewHistoryToRVO())
+              .collect(Collectors.toList());
+
+      r.setData(rvo);
+
+      return r;
+    }
+
 }
