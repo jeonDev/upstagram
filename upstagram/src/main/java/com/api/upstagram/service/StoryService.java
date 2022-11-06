@@ -22,10 +22,7 @@ import com.api.upstagram.domain.Story.StoryRepository;
 import com.api.upstagram.domain.Story.StoryWatching;
 import com.api.upstagram.domain.Story.StoryWatchingRepository;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
-import com.api.upstagram.vo.MemberInfo.MemberInfoRVO;
-import com.api.upstagram.vo.Story.StoryInterface;
 import com.api.upstagram.vo.Story.StoryPVO;
-import com.api.upstagram.vo.Story.StoryRVO;
 import com.api.upstagram.vo.Story.StoryReactionPVO;
 import com.api.upstagram.vo.Story.StoryWatchingPVO;
 
@@ -144,64 +141,15 @@ public class StoryService {
     /*
      * 스토리 조회
      */
-    public List<StoryRVO> getFollowStoryList(StoryPVO pvo) {
-        log.info(this.getClass().getName() + " => Follow's Story List Get!");
-        List<StoryRVO> list = this.getFollowStoryListImpl(pvo).stream()
-                                .map(m -> StoryRVO.builder()
-                                    .storyNo(m.getStoryNo())
-                                    .id(m.getId())
-                                    .storyFileName(m.getStoryFileName())
-                                    .storyTime(m.getStoryTime())
-                                    .showYn(m.getShowYn())
-                                    .keepYn(m.getKeepYn())
-                                    .member(MemberInfoRVO.builder()
-                                        .id(m.getFollowId())
-                                        .name(m.getFollowName())
-                                        .nickname(m.getFollowNickname())
-                                        .sex(m.getFollowSex())
-                                        .tel(m.getFollowTel())
-                                        .oauthNo(m.getFollowOauthNo())
-                                        .build())   
-                                    .build())
-                                .collect(Collectors.toList());
-
-        return list;
-    }
-
-    /* Story 조회(Follow) */
-    public List<StoryInterface> getFollowStoryListImpl(StoryPVO pvo) {
-        return storyRepository.findByFollowStoryList(pvo.getId());
+    public List<Story> selectFollowStoryList(StoryPVO pvo) {
+        return storyRepository.selectFollowStoryList(pvo.getId(), CommonUtils.dateNowDaysCalculator(-1));
     }
 
     /*
      * 스토리 조회 (마이페이지)
      */
-    public List<StoryRVO> getMyStoryList(StoryPVO pvo) {
-        log.info(this.getClass().getName() + " => My Story List Get!");
-        List<StoryRVO> list = this.getMyStoryListImpl(pvo).stream()
-                                .map(m -> StoryRVO.builder()
-                                    .storyNo(m.getStoryNo())
-                                    .id(m.getId())
-                                    .storyFileName(m.getStoryFileName())
-                                    .storyTime(m.getStoryTime())
-                                    .showYn(m.getShowYn())
-                                    .keepYn(m.getKeepYn())
-                                    .member(MemberInfoRVO.builder()
-                                        .id(m.getFollowId())
-                                        .name(m.getFollowName())
-                                        .nickname(m.getFollowNickname())
-                                        .sex(m.getFollowSex())
-                                        .tel(m.getFollowTel())
-                                        .oauthNo(m.getFollowOauthNo())
-                                        .build())   
-                                    .build())
-                                .collect(Collectors.toList());
-
-        return list;
-    }
-
-    /* Story 조회(My) */
-    public List<StoryInterface> getMyStoryListImpl(StoryPVO pvo) {
-        return storyRepository.findByMyStoryList(pvo.getMyId());
+    public List<Story> selectMyStoryList(StoryPVO pvo) {
+        log.info(this.getClass().getName() + " => My Story List Select!");
+        return storyRepository.selectMyStoryList(pvo.getId(), CommonUtils.dateNowDaysCalculator(-1));
     }
 }

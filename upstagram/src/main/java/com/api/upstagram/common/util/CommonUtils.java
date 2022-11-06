@@ -3,6 +3,7 @@ package com.api.upstagram.common.util;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
@@ -22,6 +23,15 @@ public class CommonUtils {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(time);
     }
+
+	/*
+	* LocalDateTime 시간 계산
+	* */
+	public static LocalDateTime dateNowDaysCalculator(int date) {
+		LocalDateTime now = LocalDateTime.now();
+		return now.plusDays(date);
+	}
+
 
     /*
      * SecurityContext에 저장된 토큰정보에서 User객체 가져오기

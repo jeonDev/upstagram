@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.api.upstagram.vo.Story.StoryRVO;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "STORY")
 @Entity
-public class Story extends BaseEntity{
+public class Story extends BaseEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,4 +53,19 @@ public class Story extends BaseEntity{
         this.keepYn = keepYn;
     }
 
+    public StoryRVO storyToRVO() {
+        return StoryRVO.builder()
+                .storyNo(this.storyNo)
+                .storyFileName(this.storyFileName)
+                .storyTime(this.storyTime)
+                .showYn(this.showYn)
+                .keepYn(this.keepYn)
+                .id(this.member.getId())
+                .name(this.member.getName())
+                .nickname(this.member.getNickname())
+                .sex(this.member.getSex())
+                .tel(this.member.getTel())
+                .oauthNo(this.member.getOauthNo())
+                .build();
+    }
 }

@@ -2,14 +2,11 @@ package com.api.upstagram.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.api.upstagram.domain.Story.StoryReaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.api.upstagram.common.util.CommonUtils;
@@ -118,7 +115,9 @@ public class StoryController {
         StoryPVO pvo = new StoryPVO();
         pvo.setId(CommonUtils.getUserId());
         
-        List<StoryRVO> rvo = storyService.getFollowStoryList(pvo);
+        List<StoryRVO> rvo = storyService.selectFollowStoryList(pvo).stream()
+                .map(m -> m.storyToRVO())
+                .collect(Collectors.toList());
         
         r.setData(rvo);
 
@@ -129,15 +128,16 @@ public class StoryController {
      * 스토리 조회 (마이페이지)
      */
     @GetMapping("/user/my/story/list")
-    public ResponseVO<List<StoryRVO>> getMyStoryList() {
+    public ResponseVO<List<StoryRVO>> getMyStoryList(@RequestParam(required = false) String id) {
         log.info(this.getClass().getName() + " ==> My Story List Get!");
         ResponseVO<List<StoryRVO>> r = new ResponseVO<List<StoryRVO>>();
-        
-        // TODO: 다른사람 마이페이지 조회 내역 추가.
-        StoryPVO pvo = new StoryPVO();
-        pvo.setMyId(CommonUtils.getUserId());
 
-        List<StoryRVO> rvo = storyService.getMyStoryList(pvo);
+        StoryPVO pvo = new StoryPVO();
+        pvo.setId(id == null ? CommonUtils.getUserId() : id);
+
+        List<StoryRVO> rvo = storyService.selectMyStoryList(pvo).stream()
+                .map(m -> m.storyToRVO())
+                .collect(Collectors.toList());
         
         r.setData(rvo);
 
