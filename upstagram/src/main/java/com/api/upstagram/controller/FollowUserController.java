@@ -1,6 +1,8 @@
 package com.api.upstagram.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +48,9 @@ public class FollowUserController {
         return r;
     }
 
+    /*
+    * 팔로우 제거
+    * */
     @PostMapping("/user/follow/delete")
     public ResponseVO<FollowUserRVO> deleteFollow(@RequestBody FollowUserPVO pvo) {
         log.info("User Follow Delete Request");
@@ -67,7 +72,9 @@ public class FollowUserController {
         FollowUserPVO pvo = new FollowUserPVO();
         pvo.setId(CommonUtils.getUserId());
 
-        List<FollowUserRVO> rvo = followUserService.getFollowUserList(pvo);
+        List<FollowUserRVO> rvo = followUserService.selectFollowUserList(pvo).stream()
+                .map(m -> m.followUserToRVO())
+                .collect(Collectors.toList());
 
         r.setData(rvo);
         
@@ -85,7 +92,9 @@ public class FollowUserController {
         FollowUserPVO pvo = new FollowUserPVO();
         pvo.setFollowId(CommonUtils.getUserId());
 
-        List<FollowUserRVO> rvo = followUserService.getFollowerUserList(pvo);
+        List<FollowUserRVO> rvo = followUserService.selectFollowerUserList(pvo).stream()
+                .map(m -> m.followUserToRVO())
+                .collect(Collectors.toList());
 
         r.setData(rvo);
         

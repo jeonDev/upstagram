@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import com.api.upstagram.common.vo.BaseEntity;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
 
+import com.api.upstagram.vo.FollowUser.FollowUserRVO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,5 +41,22 @@ public class FollowUser extends BaseEntity{
         this.idMember = idMember;
         this.followMember = followMember;
     }
-    
+
+    public FollowUserRVO followUserToRVO() {
+        return FollowUserRVO.builder()
+                .followNo(this.followNo)
+                .id(this.idMember.getId())
+                .name(this.idMember.getName())
+                .nickname(this.idMember.getNickname())
+                .sex(this.idMember.getSex())
+                .tel(this.idMember.getTel())
+                .oauthNo(this.idMember.getOauthNo())
+                .followId(this.followMember.getId())
+                .followName(this.followMember.getName())
+                .followNickname(this.followMember.getNickname())
+                .followSex(this.followMember.getSex())
+                .followTel(this.followMember.getTel())
+                .followOauthNo(this.followNo.toString())
+                .build();
+    }
 }

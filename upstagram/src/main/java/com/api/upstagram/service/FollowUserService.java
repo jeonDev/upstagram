@@ -87,72 +87,16 @@ public class FollowUserService {
     /*
      * 팔로우 리스트 조회
      */
-    public List<FollowUserRVO> getFollowUserList(FollowUserPVO pvo) {
+    public List<FollowUser> selectFollowUserList(FollowUserPVO pvo) {
         log.info(this.getClass().getName() + " ==> Get Follow User List");
-        
-        List<FollowUserRVO> list = this.getFollowUserImpl(pvo).stream()
-                                    .map(m -> FollowUserRVO.builder()
-                                            .followNo(m.getFollowNo())
-                                            .idMember(MemberInfoRVO.builder()
-                                                .id(m.getId())
-                                                .name(m.getName())
-                                                .nickname(m.getNickname())
-                                                .sex(m.getSex())
-                                                .tel(m.getTel())
-                                                .oauthNo(m.getOauthNo())
-                                                .build())
-                                            .followMember(MemberInfoRVO.builder()
-                                                .id(m.getFollowId())
-                                                .name(m.getFollowName())
-                                                .nickname(m.getFollowNickname())
-                                                .sex(m.getFollowSex())
-                                                .tel(m.getFollowTel())
-                                                .oauthNo(m.getFollowOauthNo())
-                                                .build())
-                                            .build())
-                                    .collect(Collectors.toList());
-
-        return list;
-    }
-
-    /* Follow 조회 */
-    public List<FollowUserInterface> getFollowUserImpl(FollowUserPVO pvo) {
-        return followUserRepository.findByFollowUserList(pvo.getId());
+        return followUserRepository.selectFollowUserList(pvo.getId());
     }
 
     /*
      * 팔로워 리스트 조회
      */
-    public List<FollowUserRVO> getFollowerUserList(FollowUserPVO pvo) {
-        log.info(this.getClass().getName() + " ==> Get Follow User List");
-
-        List<FollowUserRVO> list = this.getFollowerUserImpl(pvo).stream()
-                                    .map(m -> FollowUserRVO.builder()
-                                            .followNo(m.getFollowNo())
-                                            .idMember(MemberInfoRVO.builder()
-                                                .id(m.getId())
-                                                .name(m.getName())
-                                                .nickname(m.getNickname())
-                                                .sex(m.getSex())
-                                                .tel(m.getTel())
-                                                .oauthNo(m.getOauthNo())
-                                                .build())
-                                            .followMember(MemberInfoRVO.builder()
-                                                .id(m.getFollowId())
-                                                .name(m.getFollowName())
-                                                .nickname(m.getFollowNickname())
-                                                .sex(m.getFollowSex())
-                                                .tel(m.getFollowTel())
-                                                .oauthNo(m.getFollowOauthNo())
-                                                .build())
-                                            .build())
-                                    .collect(Collectors.toList());
-
-        return list;
-    }
-
-    /* Follower 조회 */
-    public List<FollowUserInterface> getFollowerUserImpl(FollowUserPVO pvo) {
-        return followUserRepository.findByFollowerUserList(pvo.getFollowId());
+    public List<FollowUser> selectFollowerUserList(FollowUserPVO pvo) {
+        log.info(this.getClass().getName() + " ==> Get Follower User List");
+        return followUserRepository.selectFollowerUserList(pvo.getFollowId());
     }
 }
