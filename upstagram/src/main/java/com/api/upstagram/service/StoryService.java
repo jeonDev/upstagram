@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.api.upstagram.common.vo.FileInfo;
-import com.api.upstagram.vo.Story.StoryReactionRVO;
+import com.api.upstagram.vo.Story.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,9 +23,6 @@ import com.api.upstagram.domain.Story.StoryRepository;
 import com.api.upstagram.domain.Story.StoryWatching;
 import com.api.upstagram.domain.Story.StoryWatchingRepository;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
-import com.api.upstagram.vo.Story.StoryPVO;
-import com.api.upstagram.vo.Story.StoryReactionPVO;
-import com.api.upstagram.vo.Story.StoryWatchingPVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,6 +77,21 @@ public class StoryService {
     }
 
     /*
+     * 스토리 조회
+     */
+    public List<Story> selectFollowStoryList(StoryPVO pvo) {
+        return storyRepository.selectFollowStoryList(pvo.getId(), CommonUtils.dateNowDaysCalculator(-1));
+    }
+
+    /*
+     * 스토리 조회 (마이페이지)
+     */
+    public List<Story> selectMyStoryList(StoryPVO pvo) {
+        log.info(this.getClass().getName() + " => My Story List Select!");
+        return storyRepository.selectMyStoryList(pvo.getId(), CommonUtils.dateNowDaysCalculator(-1));
+    }
+
+    /*
      * 스토리 반응 등록
      */
     public StoryReaction storyReactionRegist(StoryReactionPVO pvo) {
@@ -131,7 +143,15 @@ public class StoryService {
     public StoryWatching storyWatchingHistory(StoryWatchingPVO pvo) {
         log.info(this.getClass().getName() + " => Story Watching Update!");
 
-        Optional<StoryWatching> storyWatchingEntity = storyWatchingRepository.findByStoryNoAndId(pvo.getStoryNo(), pvo.getId());
+        Story story = Story.builder()
+                .storyNo(pvo.getStoryNo())
+                .build();
+
+        MemberInfo member = MemberInfo.builder()
+                .id(pvo.getId())
+                .build();
+
+        Optional<StoryWatching> storyWatchingEntity = storyWatchingRepository.findByStoryAndMember(story, member);
 
         // 시청내역이 있을 경우 최종수정일만 Update
         if(storyWatchingEntity.isPresent()) {
@@ -141,25 +161,19 @@ public class StoryService {
         // 시청내역이 없을 경우 시청내역 Insert
         } else {
             return storyWatchingRepository.save(StoryWatching.builder()
-                    .storyNo(pvo.getStoryNo())
-                    .id(pvo.getId())
+                    .story(Story.builder()
+                            .storyNo(pvo.getStoryNo())
+                            .build())
+                    .member(member)
                     .build());
         }
     }
 
     /*
-     * 스토리 조회
-     */
-    public List<Story> selectFollowStoryList(StoryPVO pvo) {
-        return storyRepository.selectFollowStoryList(pvo.getId(), CommonUtils.dateNowDaysCalculator(-1));
-    }
-
-    /*
-     * 스토리 조회 (마이페이지)
-     */
-    public List<Story> selectMyStoryList(StoryPVO pvo) {
-        log.info(this.getClass().getName() + " => My Story List Select!");
-        return storyRepository.selectMyStoryList(pvo.getId(), CommonUtils.dateNowDaysCalculator(-1));
+    * 스토리 시청기록 조회
+    * */
+    public List<StoryWatching> selectWatchingHistoryList(StoryWatchingPVO pvo) {
+        return storyWatchingRepository.selectWatchingList(pvo.getStoryNo());
     }
 
 }

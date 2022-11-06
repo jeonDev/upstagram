@@ -52,6 +52,46 @@ public class StoryController {
     }
 
     /*
+     * 스토리 조회
+     */
+    @GetMapping("/user/story/list")
+    public ResponseVO<List<StoryRVO>> getStoryList() {
+        log.info(this.getClass().getName() + " ==> Follow's Story List Get!");
+        ResponseVO<List<StoryRVO>> r = new ResponseVO<List<StoryRVO>>();
+
+        StoryPVO pvo = new StoryPVO();
+        pvo.setId(CommonUtils.getUserId());
+
+        List<StoryRVO> rvo = storyService.selectFollowStoryList(pvo).stream()
+                .map(m -> m.storyToRVO())
+                .collect(Collectors.toList());
+
+        r.setData(rvo);
+
+        return r;
+    }
+
+    /*
+     * 스토리 조회 (마이페이지)
+     */
+    @GetMapping("/user/my/story/list")
+    public ResponseVO<List<StoryRVO>> getMyStoryList(@RequestParam(required = false) String id) {
+        log.info(this.getClass().getName() + " ==> My Story List Get!");
+        ResponseVO<List<StoryRVO>> r = new ResponseVO<List<StoryRVO>>();
+
+        StoryPVO pvo = new StoryPVO();
+        pvo.setId(id == null ? CommonUtils.getUserId() : id);
+
+        List<StoryRVO> rvo = storyService.selectMyStoryList(pvo).stream()
+                .map(m -> m.storyToRVO())
+                .collect(Collectors.toList());
+
+        r.setData(rvo);
+
+        return r;
+    }
+
+    /*
      * 스토리 반응 등록
      */
     @PostMapping("/user/story/reaction")
@@ -100,14 +140,7 @@ public class StoryController {
 
         pvo.setId(CommonUtils.getUserId());
 
-        StoryWatching entity = storyService.storyWatchingHistory(pvo);
-        StoryWatchingRVO rvo = StoryWatchingRVO.builder()
-                                .storyWatchingNo(entity.getStoryWatchingNo())
-                                .storyNo(entity.getStoryNo())
-                                .id(entity.getId())
-                                .firstWatchingDttm(entity.getRegDttm())
-                                .lastWatchingDttm(entity.getLastDttm())
-                                .build();
+        StoryWatchingRVO rvo = storyService.storyWatchingHistory(pvo).storyWatchingToRVO();
 
         r.setData(rvo);
 
@@ -115,42 +148,22 @@ public class StoryController {
     }
 
     /*
-     * 스토리 조회
-     */
-    @GetMapping("/user/story/list")
-    public ResponseVO<List<StoryRVO>> getStoryList() {
-        log.info(this.getClass().getName() + " ==> Follow's Story List Get!");
-        ResponseVO<List<StoryRVO>> r = new ResponseVO<List<StoryRVO>>();
-        
-        StoryPVO pvo = new StoryPVO();
-        pvo.setId(CommonUtils.getUserId());
-        
-        List<StoryRVO> rvo = storyService.selectFollowStoryList(pvo).stream()
-                .map(m -> m.storyToRVO())
+    * 스토리 시청기록 조회
+    * */
+    @GetMapping("/story/watch/list")
+    public ResponseVO<List<StoryWatchingRVO>> storyWatchingHistoryList(@RequestParam String storyNo) {
+        log.info(this.getClass().getName() + " ==> Story Watching List Select!");
+        ResponseVO<List<StoryWatchingRVO>> r = new ResponseVO<List<StoryWatchingRVO>>();
+
+        StoryWatchingPVO pvo = new StoryWatchingPVO();
+        if(!StringUtils.isNotEmpty(storyNo)) pvo.setStoryNo(Long.parseLong(storyNo));
+        else throw new CustomException(Response.ARGUMNET_ERROR.getCode(), Response.ARGUMNET_ERROR.getMessage());
+
+        List<StoryWatchingRVO> rvo = storyService.selectWatchingHistoryList(pvo).stream()
+                .map(m -> m.storyWatchingToRVO())
                 .collect(Collectors.toList());
-        
+
         r.setData(rvo);
-
-        return r;
-    }
-
-    /*
-     * 스토리 조회 (마이페이지)
-     */
-    @GetMapping("/user/my/story/list")
-    public ResponseVO<List<StoryRVO>> getMyStoryList(@RequestParam(required = false) String id) {
-        log.info(this.getClass().getName() + " ==> My Story List Get!");
-        ResponseVO<List<StoryRVO>> r = new ResponseVO<List<StoryRVO>>();
-
-        StoryPVO pvo = new StoryPVO();
-        pvo.setId(id == null ? CommonUtils.getUserId() : id);
-
-        List<StoryRVO> rvo = storyService.selectMyStoryList(pvo).stream()
-                .map(m -> m.storyToRVO())
-                .collect(Collectors.toList());
-        
-        r.setData(rvo);
-
         return r;
     }
 }

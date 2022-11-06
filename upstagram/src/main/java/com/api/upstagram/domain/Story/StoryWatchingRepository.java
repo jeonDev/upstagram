@@ -1,9 +1,23 @@
 package com.api.upstagram.domain.Story;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.api.upstagram.domain.MemberInfo.MemberInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface StoryWatchingRepository extends JpaRepository<StoryWatching, Long> {
-    Optional<StoryWatching> findByStoryNoAndId(Long storyNo, String id);
+    Optional<StoryWatching> findByStoryAndMember(Story story, MemberInfo member);
+
+    @Query(value =
+            "SELECT s" +
+            "  FROM StoryWatching s" +
+            "  JOIN MemberInfo m ON s.member = m.id" +
+            "   AND m.useYn = 'Y'" +
+            " WHERE s.story.storyNo = :storyNo" +
+            " ORDER BY s.regDttm DESC"
+    )
+    List<StoryWatching> selectWatchingList(@Param("storyNo") Long storyNo);
 }
