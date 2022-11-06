@@ -2,9 +2,6 @@ package com.api.upstagram.controller;
 
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
-import com.api.upstagram.domain.Ad.Ad;
-import com.api.upstagram.domain.Ad.AdCompany;
-import com.api.upstagram.domain.Ad.AdViewHistory;
 import com.api.upstagram.service.AdService;
 import com.api.upstagram.vo.Ad.*;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -30,6 +29,23 @@ public class AdController {
         ResponseVO<AdCompanyRVO> r = new ResponseVO<AdCompanyRVO>();
 
         AdCompanyRVO rvo = adService.adCompanyRegister(pvo).adCompanyToRVO();
+
+        r.setData(rvo);
+
+        return r;
+    }
+
+    /*
+    * 광고회사 조회
+    * */
+    @GetMapping("/admin/ad/company")
+    public ResponseVO<List<AdCompanyRVO>> adCompanyList() {
+        log.info(this.getClass().getName() + " ==> 광고 회사 조회");
+        ResponseVO<List<AdCompanyRVO>> r = new ResponseVO<List<AdCompanyRVO>>();
+
+        List<AdCompanyRVO> rvo = adService.selectAdCompanyList().stream()
+                .map(m -> m.adCompanyToRVO())
+                .collect(Collectors.toList());
 
         r.setData(rvo);
 
@@ -71,4 +87,5 @@ public class AdController {
 
         return r;
     }
+
 }
