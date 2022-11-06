@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.api.upstagram.common.vo.FileInfo;
+import com.api.upstagram.vo.Story.StoryReactionRVO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -92,14 +93,18 @@ public class StoryService {
 
         Story story = storyEntity.get();
 
+        MemberInfo member = MemberInfo.builder()
+                .id(pvo.getId())
+                .build();
+
         // 2. Story Reaction 있는지 체크
-        Optional<StoryReaction> storyReaction = storyReactionRepository.findByStoryAndId(story, pvo.getId());
+        Optional<StoryReaction> storyReaction = storyReactionRepository.findByStoryAndMember(story, member);
 
         // 3-1. 이전내역이 없을 경우, 좋아요 표시.
         if(!storyReaction.isPresent()) {
             return storyReactionRepository.save(StoryReaction.builder()
                     .story(story)
-                    .id(pvo.getId())
+                    .member(member)
                     .storyLoveYn("Y")
                     .storyViewDate(LocalDateTime.now())
                     .build());
@@ -111,9 +116,13 @@ public class StoryService {
 
             return storyReactionRepository.save(entity.updateStoryReaction(storyLoveYn));
         }
+    }
 
-
-
+    /*
+    * 스토리 반응 조회
+    * */
+    public List<StoryReaction> selectStoryReactionList(StoryReactionPVO pvo) {
+        return storyReactionRepository.selectStoryReactionList(pvo.getStoryNo());
     }
 
     /*
@@ -152,4 +161,5 @@ public class StoryService {
         log.info(this.getClass().getName() + " => My Story List Select!");
         return storyRepository.selectMyStoryList(pvo.getId(), CommonUtils.dateNowDaysCalculator(-1));
     }
+
 }

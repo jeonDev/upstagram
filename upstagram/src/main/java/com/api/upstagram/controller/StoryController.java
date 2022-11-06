@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.api.upstagram.common.Exception.CustomException;
+import com.api.upstagram.common.util.StringUtils;
+import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.domain.Story.StoryReaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,15 +43,8 @@ public class StoryController {
         
         pvo.setId(CommonUtils.getUserId());
         
-        Story entity = storyService.registStory(pvo, file);
-        StoryRVO rvo = StoryRVO.builder()
-                        .storyNo(entity.getStoryNo())
-                        .id(entity.getMember().getId())
-                        .storyFileName(entity.getStoryFileName())
-                        .storyTime(entity.getStoryTime())
-                        .showYn(entity.getShowYn())
-                        .keepYn(entity.getKeepYn())
-                        .build();
+        StoryRVO rvo = storyService.registStory(pvo, file)
+                .storyToRVO();
 
         r.setData(rvo);
 
@@ -65,15 +61,29 @@ public class StoryController {
 
         pvo.setId(CommonUtils.getUserId());
 
-        StoryReaction entity = storyService.storyReactionRegist(pvo);
+        StoryReactionRVO rvo = storyService.storyReactionRegist(pvo)
+                .storyReactionToRVO();
 
-        StoryReactionRVO rvo = StoryReactionRVO.builder()
-                            .reactionNo(entity.getReactionNo())
-                            .storyNo(entity.getStory().getStoryNo())
-                            .id(entity.getId())
-                            .storyLoveYn(entity.getStoryLoveYn())
-                            .storyViewDate(entity.getStoryViewDate())
-                            .build();
+        r.setData(rvo);
+
+        return r;
+    }
+
+    /*
+    * 스토리 반응 조회
+    * */
+    @GetMapping("/story/reaction/list")
+    public ResponseVO<List<StoryReactionRVO>> storyReactionList(@RequestParam String storyNo) {
+        log.info(this.getClass().getName() + " ==> Story Reaction List Select!");
+        ResponseVO<List<StoryReactionRVO>> r = new ResponseVO<List<StoryReactionRVO>>();
+
+        StoryReactionPVO pvo = new StoryReactionPVO();
+        if(!StringUtils.isNotEmpty(storyNo)) pvo.setStoryNo(Long.parseLong(storyNo));
+        else throw new CustomException(Response.ARGUMNET_ERROR.getCode(), Response.ARGUMNET_ERROR.getMessage());
+
+        List<StoryReactionRVO> rvo = storyService.selectStoryReactionList(pvo).stream()
+                .map(m -> m.storyReactionToRVO())
+                .collect(Collectors.toList());
 
         r.setData(rvo);
 
