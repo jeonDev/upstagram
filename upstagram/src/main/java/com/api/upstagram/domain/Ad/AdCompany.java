@@ -2,6 +2,7 @@ package com.api.upstagram.domain.Ad;
 
 import com.api.upstagram.common.vo.BaseIdEntity;
 
+import com.api.upstagram.vo.Ad.AdCompanyRVO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,6 +42,18 @@ public class AdCompany extends BaseIdEntity {
         this.addr = addr;
         this.addrDetail = addrDetail;
         this.zipCd = zipCd;
+    }
+
+    public AdCompanyRVO adCompanyToRVO() {
+        return AdCompanyRVO.builder()
+                .adCompanyNo(this.adCompanyNo)
+                .adCompanyName(this.adCompanyName)
+                .managerName(this.managerName)
+                .managerTel(this.managerTel)
+                .addr(this.addr)
+                .addrDetail(this.addrDetail)
+                .zipCd(this.zipCd)
+                .build();
     }
 
 }

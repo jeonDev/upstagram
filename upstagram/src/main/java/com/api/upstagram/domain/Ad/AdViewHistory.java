@@ -2,6 +2,7 @@ package com.api.upstagram.domain.Ad;
 
 import com.api.upstagram.common.vo.BaseEntity;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
+import com.api.upstagram.vo.Ad.AdViewHistoryRVO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,5 +42,21 @@ public class AdViewHistory extends BaseEntity {
         this.linkCountYn = linkCountYn;
         this.link = link;
         this.viewDttm = viewDttm;
+    }
+
+    public AdViewHistoryRVO adViewHistoryToRVO() {
+        return AdViewHistoryRVO.builder()
+                .adViewNo(this.adViewNo)
+                .adNo(this.adViewNo)
+                .id(this.member.getId())
+                .name(this.member.getName())
+                .nickname(this.member.getNickname())
+                .sex(this.member.getSex())
+                .tel(this.member.getTel())
+                .oauthNo(this.member.getOauthNo())
+                .linkCountYn(this.linkCountYn)
+                .link(this.link)
+                .viewDttm(this.viewDttm)
+                .build();
     }
 }

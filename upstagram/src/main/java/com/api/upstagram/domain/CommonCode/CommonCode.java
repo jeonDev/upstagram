@@ -1,5 +1,6 @@
 package com.api.upstagram.domain.CommonCode;
 
+import com.api.upstagram.vo.CommonCode.CommonCodeRVO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,5 +40,16 @@ public class CommonCode {
         this.useYn = useYn;
         this.srtOdr = srtOdr;
         this.codeDetail = codeDetail;
+    }
+
+    public CommonCodeRVO commonCodeToRVO() {
+        return CommonCodeRVO.builder()
+                .commonCode(this.commonCode)
+                .commonCodeName(this.commonCodeName)
+                .commonType(this.commonType)
+                .useYn(this.useYn)
+                .srtOdr(this.srtOdr)
+                .codeDetail(this.codeDetail)
+                .build();
     }
 }

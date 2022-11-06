@@ -32,15 +32,7 @@ public class LoginController {
 
         ResponseVO<MemberInfoRVO> r = new ResponseVO<MemberInfoRVO>();
 
-        MemberInfo entity = loginService.join(pvo);
-        MemberInfoRVO rvo = MemberInfoRVO.builder()
-                                .id(entity.getId())
-                                .name(entity.getName())
-                                .nickname(entity.getNickname())
-                                .sex(entity.getSex())
-                                .tel(entity.getTel())
-                                .oauthNo(entity.getOauthNo())
-                                .build();
+        MemberInfoRVO rvo = loginService.join(pvo).memberInfoToRVO();
 
         r.setData(rvo);
 

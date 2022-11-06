@@ -33,14 +33,8 @@ public class FeedController {
         ResponseVO<FeedRVO> r = new ResponseVO<FeedRVO>();
         pvo.setId(CommonUtils.getUserId());
 
-        Feed feed = feedService.insertFeed(pvo, files);
-        FeedRVO rvo = FeedRVO.builder()
-                .feedNo(feed.getFeedNo())
-                .title(feed.getTitle())
-                .hashtag(feed.getHashtag())
-                .useYn(feed.getUseYn())
-                .id(feed.getMember().getId())
-                .build();
+        FeedRVO rvo = feedService.insertFeed(pvo, files)
+                .FeedToRVO();
 
         r.setData(rvo);
 

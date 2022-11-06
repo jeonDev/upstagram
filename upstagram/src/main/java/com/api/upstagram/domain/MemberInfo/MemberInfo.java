@@ -98,7 +98,7 @@ public class MemberInfo extends BaseEntity {
         return this;
     }
 
-    public MemberInfoRVO memberEntityToRVO() {
+    public MemberInfoRVO memberInfoToRVO() {
         return MemberInfoRVO.builder()
                 .id(this.getId())
                 .name(this.getName())

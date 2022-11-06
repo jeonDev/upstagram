@@ -29,15 +29,7 @@ public class CommonController {
         log.info(this.getClass().getName() + " ==> 공통코드 등록");
         ResponseVO<CommonCodeRVO> r = new ResponseVO<CommonCodeRVO>();
 
-        CommonCode commonCode = commonService.commonCodeRegister(pvo);
-        CommonCodeRVO rvo = CommonCodeRVO.builder()
-                .commonCode(commonCode.getCommonCode())
-                .commonCodeName(commonCode.getCommonCodeName())
-                .commonType(commonCode.getCommonType())
-                .useYn(commonCode.getUseYn())
-                .srtOdr(commonCode.getSrtOdr())
-                .codeDetail(commonCode.getCodeDetail())
-                .build();
+        CommonCodeRVO rvo = commonService.commonCodeRegister(pvo).commonCodeToRVO();
 
         r.setData(rvo);
 
@@ -49,15 +41,7 @@ public class CommonController {
         log.info(this.getClass().getName() + " ==> 공통코드 수정");
         ResponseVO<CommonCodeRVO> r = new ResponseVO<CommonCodeRVO>();
 
-        CommonCode commonCode = commonService.commonCodeUpdate(pvo);
-        CommonCodeRVO rvo = CommonCodeRVO.builder()
-                .commonCode(commonCode.getCommonCode())
-                .commonCodeName(commonCode.getCommonCodeName())
-                .commonType(commonCode.getCommonType())
-                .useYn(commonCode.getUseYn())
-                .srtOdr(commonCode.getSrtOdr())
-                .codeDetail(commonCode.getCodeDetail())
-                .build();
+        CommonCodeRVO rvo = commonService.commonCodeUpdate(pvo).commonCodeToRVO();
 
         r.setData(rvo);
 
@@ -77,14 +61,7 @@ public class CommonController {
         pvo.setUseYn(useYn);
         
         List<CommonCodeRVO> rvo = commonService.commonCodeList(pvo).stream()
-                                .map(m -> CommonCodeRVO.builder()
-                                        .commonCode(m.getCommonCode())
-                                        .commonCodeName(m.getCommonCodeName())
-                                        .commonType(m.getCommonType())
-                                        .useYn(m.getUseYn())
-                                        .srtOdr(m.getSrtOdr())
-                                        .codeDetail(m.getCodeDetail())
-                                        .build())
+                                .map(m -> m.commonCodeToRVO())
                                 .collect(Collectors.toList());
         
         r.setData(rvo);

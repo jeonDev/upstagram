@@ -29,16 +29,7 @@ public class AdController {
         log.info(this.getClass().getName() + " ==> 광고 회사 추가 및 수정!");
         ResponseVO<AdCompanyRVO> r = new ResponseVO<AdCompanyRVO>();
 
-        AdCompany adCompany = adService.adCompanyRegister(pvo);
-        AdCompanyRVO rvo = AdCompanyRVO.builder()
-                .adCompanyNo(adCompany.getAdCompanyNo())
-                .adCompanyName(adCompany.getAdCompanyName())
-                .managerName(adCompany.getManagerName())
-                .managerTel(adCompany.getManagerTel())
-                .addr(adCompany.getAddr())
-                .addrDetail(adCompany.getAddrDetail())
-                .zipCd(adCompany.getZipCd())
-                .build();
+        AdCompanyRVO rvo = adService.adCompanyRegister(pvo).adCompanyToRVO();
 
         r.setData(rvo);
 
@@ -53,21 +44,7 @@ public class AdController {
         log.info(this.getClass().getName() + " ==> 광고 등록!");
         ResponseVO<AdRVO> r = new ResponseVO<AdRVO>();
 
-        Ad ad = adService.adRegister(pvo, file);
-        AdRVO rvo = AdRVO.builder()
-                .adNo(ad.getAdNo())
-                .adCompanyNo(ad.getAdCompany().getAdCompanyNo())
-                .adCompanyName(ad.getAdCompany().getAdCompanyName())
-                .adName(ad.getAdName())
-                .adFileName(ad.getAdFileName())
-                .useYn(ad.getUseYn())
-                .fileExt(ad.getFileExt())
-                .costDiv(ad.getCostDiv())
-                .timeCountCost(ad.getTimeCountCost())
-                .viewCountCost(ad.getViewCountCost())
-                .linkCountCost(ad.getLinkCountCost())
-                .link(ad.getLink())
-                .build();
+        AdRVO rvo = adService.adRegister(pvo, file).adToRVO();
 
         r.setData(rvo);
 
@@ -88,15 +65,7 @@ public class AdController {
         pvo.setLink(link);
         pvo.setLinkCountYn(linkCountYn);
 
-        AdViewHistory adViewHistory = adService.adViewHistory(pvo);
-        AdViewHistoryRVO rvo = AdViewHistoryRVO.builder()
-                .adViewNo(adViewHistory.getAdViewNo())
-                .adNo(adViewHistory.getAd().getAdNo())
-                .id(adViewHistory.getMember().getId())
-                .linkCountYn(adViewHistory.getLinkCountYn())
-                .link(adViewHistory.getLink())
-                .viewDttm(adViewHistory.getViewDttm())
-                .build();
+        AdViewHistoryRVO rvo = adService.adViewHistory(pvo).adViewHistoryToRVO();
 
         r.setData(rvo);
 
