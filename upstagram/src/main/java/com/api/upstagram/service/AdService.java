@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,7 +91,15 @@ public class AdService {
     * 광고 조회
     * */
     public List<Ad> selectAdList() {
-        return adRepository.selectAdList();
+        return adRepository.selectAdList(CommonUtils.dateToYmdStr(new Date()),
+                CommonUtils.dateToHmsStr(new Date()));
+    }
+
+    /*
+    * 광고 조회 (Admin - 전체)
+    * */
+    public List<Ad> selectAdminAdList() {
+        return adRepository.selectAllAdList();
     }
 
     /*
@@ -134,7 +143,7 @@ public class AdService {
             if(adManage.getAdManageNo() == null || adManage.getAdManageNo() == 0L) throw new CustomException(Response.DUPLICATION_ERROR.getCode(), Response.DUPLICATION_ERROR.getMessage());
 
             return adManageRepository.save(AdManage.builder()
-                    .adManageNo(pvo.getAdManageNo())
+                    .adManageNo(adManage.getAdManageNo())
                     .ad(ad)
                     .startDttm(pvo.getStartDttm())
                     .endDttm(pvo.getEndDttm())

@@ -49,7 +49,7 @@ public class AdManage extends BaseIdEntity {
                 .endDttm(this.endDttm)
                 .startTime(this.startTime)
                 .endTime(this.endTime)
-                .adCompanyNo(this.ad.getAdCompany().getAdCompanyNo())
+                .adCompanyNo(this.ad.getAdCompany() != null ? this.ad.getAdCompany().getAdCompanyNo() : null)
                 .adName(this.ad.getAdName())
                 .adFileName(this.ad.getAdFileName())
                 .useYn(this.ad.getUseYn())

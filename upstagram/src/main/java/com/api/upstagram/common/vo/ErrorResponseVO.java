@@ -22,12 +22,12 @@ public class ErrorResponseVO {
     public ErrorResponseVO(String code, String message) {
         this.code = code;
         this.message = message;
-        this.timestamp = CommonUtils.dateToYmdString(new Date());
+        this.timestamp = CommonUtils.dateToYmdBarString(new Date());
     }
 
     public ErrorResponseVO(String code) {
         this.code = code;
         this.message = "오류가 발생하였습니다.";
-        this.timestamp = CommonUtils.dateToYmdString(new Date());
+        this.timestamp = CommonUtils.dateToYmdBarString(new Date());
     }
 }

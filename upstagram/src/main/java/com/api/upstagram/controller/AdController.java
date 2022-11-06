@@ -84,6 +84,23 @@ public class AdController {
     }
 
     /*
+    * 광고 조회 (admin - 전체)
+    * */
+    @GetMapping("/admin/ad/list")
+    public ResponseVO<List<AdRVO>> selectAdminAdList() {
+        log.info(this.getClass().getName() + " ==> 광고 조회");
+        ResponseVO<List<AdRVO>> r = new ResponseVO<List<AdRVO>>();
+
+        List<AdRVO> rvo = adService.selectAdminAdList().stream()
+                .map(m -> m.adToRVO())
+                .collect(Collectors.toList());
+
+        r.setData(rvo);
+
+        return r;
+    }
+
+    /*
     * 광고 시청기록 등록
     * */
     @PostMapping("/ad/view")

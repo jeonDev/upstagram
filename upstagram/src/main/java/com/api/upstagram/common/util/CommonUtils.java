@@ -19,10 +19,20 @@ import com.api.upstagram.common.vo.User;
 
 public class CommonUtils {
     
-    public static String dateToYmdString(Date time) {
+    public static String dateToYmdBarString(Date time) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(time);
     }
+
+	public static String dateToYmdStr(Date time) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+		return format.format(time);
+	}
+
+	public static String dateToHmsStr(Date time) {
+		SimpleDateFormat format = new SimpleDateFormat("HHmmss");
+		return format.format(time);
+	}
 
 	/*
 	* LocalDateTime 시간 계산
