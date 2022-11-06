@@ -1,6 +1,5 @@
 package com.api.upstagram.domain.Feed;
 
-import com.api.upstagram.vo.Feed.FeedRVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +10,7 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
 
     /* Feed 조회 */
     @Query(value =
-            "SELECT f, m, ff" +
+            "SELECT f, m" +
             "  FROM Feed f" +
             "  JOIN MemberInfo m ON f.member = m.id" +
             "   AND m.useYn = 'Y'" +
