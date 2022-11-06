@@ -2,6 +2,8 @@ package com.api.upstagram.controller;
 
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
+import com.api.upstagram.domain.Ad.Ad;
+import com.api.upstagram.domain.Ad.AdViewHistory;
 import com.api.upstagram.service.AdService;
 import com.api.upstagram.vo.Ad.*;
 import lombok.extern.slf4j.Slf4j;
@@ -68,18 +70,29 @@ public class AdController {
     }
 
     /*
+     * 광고 조회
+     * */
+    @GetMapping("/ad/list")
+    public ResponseVO<List<AdRVO>> selectAdList() {
+        log.info(this.getClass().getName() + " ==> 광고 조회");
+        ResponseVO<List<AdRVO>> r = new ResponseVO<List<AdRVO>>();
+
+        List<AdRVO> rvo = adService.selectAdList().stream()
+                .map(m -> m.adToRVO())
+                .collect(Collectors.toList());
+
+        r.setData(rvo);
+
+        return r;
+    }
+
+    /*
     * 광고 시청기록 등록
     * */
-    @GetMapping("/ad/view")
-    public ResponseVO<AdViewHistoryRVO> adViewHistory(@RequestParam String adNo, @RequestParam String link, @RequestParam String linkCountYn) {
+    @PostMapping("/ad/view")
+    public ResponseVO<AdViewHistoryRVO> adViewHistory(@RequestBody AdViewHistoryPVO pvo) {
         log.info(this.getClass().getName() + " ==> 광고 시청 기록 등록!");
         ResponseVO<AdViewHistoryRVO> r = new ResponseVO<AdViewHistoryRVO>();
-
-        AdViewHistoryPVO pvo = new AdViewHistoryPVO();
-        pvo.setId(CommonUtils.getUserId());
-        pvo.setAdNo(Long.parseLong(adNo));
-        pvo.setLink(link);
-        pvo.setLinkCountYn(linkCountYn);
 
         AdViewHistoryRVO rvo = adService.adViewHistory(pvo).adViewHistoryToRVO();
 

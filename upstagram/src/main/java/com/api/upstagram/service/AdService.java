@@ -6,10 +6,7 @@ import com.api.upstagram.common.vo.FileInfo;
 import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.domain.Ad.*;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
-import com.api.upstagram.vo.Ad.AdCompanyPVO;
-import com.api.upstagram.vo.Ad.AdPVO;
-import com.api.upstagram.vo.Ad.AdViewHistoryPVO;
-import com.api.upstagram.vo.Ad.AdViewHistoryRVO;
+import com.api.upstagram.vo.Ad.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -88,6 +85,13 @@ public class AdService {
     }
 
     /*
+    * 광고 조회
+    * */
+    public List<Ad> selectAdList() {
+        return adRepository.selectAdList();
+    }
+
+    /*
     * 광고 시청내역 등록
     * */
     public AdViewHistory adViewHistory(AdViewHistoryPVO pvo) {
@@ -108,4 +112,5 @@ public class AdService {
     public List<AdViewHistory> selectAdViewHistoryList(AdViewHistoryPVO pvo) {
         return adViewHistoryRepository.selectAdViewHistoryList(pvo.getAdNo());
     }
+
 }
