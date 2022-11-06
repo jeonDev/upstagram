@@ -1,9 +1,6 @@
 package com.api.upstagram.controller;
 
-import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
-import com.api.upstagram.domain.Ad.Ad;
-import com.api.upstagram.domain.Ad.AdViewHistory;
 import com.api.upstagram.service.AdService;
 import com.api.upstagram.vo.Ad.*;
 import lombok.extern.slf4j.Slf4j;
@@ -121,4 +118,35 @@ public class AdController {
       return r;
     }
 
+    /*
+    * 광고 노출시간 등록
+    * */
+    @PostMapping("/admin/ad/manage/save")
+    public ResponseVO<AdManageRVO> adManageSave(@RequestBody AdManagePVO pvo) {
+        log.info(this.getClass().getName() + " ==> 광고 노출시간 등록");
+        ResponseVO<AdManageRVO> r = new ResponseVO<AdManageRVO>();
+
+        AdManageRVO rvo = adService.adManageSave(pvo).adManageToRVO();
+
+        r.setData(rvo);
+
+        return r;
+    }
+
+    /*
+    * 광고별 광고 노출시간 조회
+    * */
+    @GetMapping("/admin/ad/manage/list")
+    public ResponseVO<List<AdManageRVO>> adManageList() {
+        log.info(this.getClass().getName() + " ==> 광고별 노출시간 조회");
+        ResponseVO<List<AdManageRVO>> r = new ResponseVO<List<AdManageRVO>>();
+
+        List<AdManageRVO> rvo = adService.adManageList().stream()
+                .map(m -> m.adManageToRVO())
+                .collect(Collectors.toList());
+
+        r.setData(rvo);
+
+        return r;
+    }
 }

@@ -29,6 +29,8 @@ public class AdService {
 
     private final AdViewHistoryRepository adViewHistoryRepository;
 
+    private final AdManageRepository adManageRepository;
+
     @Value("${resource-path}")
     private String resourePath;
 
@@ -113,4 +115,47 @@ public class AdService {
         return adViewHistoryRepository.selectAdViewHistoryList(pvo.getAdNo());
     }
 
+    /*
+    * 광고 노출시간 등록 & 수정
+    * */
+    public AdManage adManageSave(AdManagePVO pvo) {
+
+        Ad ad = Ad.builder()
+                .adNo(pvo.getAdNo())
+                .build();
+
+        // TODO: 입력한 날짜 & 시간 중복되는지 체크.
+
+        Optional<AdManage> adManageOpt = adManageRepository.findByAd(ad);
+
+        if(adManageOpt.isPresent()) {
+            AdManage adManage = adManageOpt.get();
+
+            if(adManage.getAdManageNo() == null || adManage.getAdManageNo() == 0L) throw new CustomException(Response.DUPLICATION_ERROR.getCode(), Response.DUPLICATION_ERROR.getMessage());
+
+            return adManageRepository.save(AdManage.builder()
+                    .adManageNo(pvo.getAdManageNo())
+                    .ad(ad)
+                    .startDttm(pvo.getStartDttm())
+                    .endDttm(pvo.getEndDttm())
+                    .startTime(pvo.getStartTime())
+                    .endTime(pvo.getEndTime())
+                    .build());
+        } else {
+            return adManageRepository.save(AdManage.builder()
+                    .ad(ad)
+                    .startDttm(pvo.getStartDttm())
+                    .endDttm(pvo.getEndDttm())
+                    .startTime(pvo.getStartTime())
+                    .endTime(pvo.getEndTime())
+                    .build());
+        }
+    }
+
+    /*
+    * 광고별 노출시간 조회
+    * */
+    public List<AdManage> adManageList() {
+        return adManageRepository.selectAdManageList();
+    }
 }
