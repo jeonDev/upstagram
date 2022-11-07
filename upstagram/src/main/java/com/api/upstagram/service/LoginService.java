@@ -54,7 +54,7 @@ public class LoginService {
                                     .nickname(pvo.getNickname())
                                     .sex(pvo.getSex())
                                     .tel(pvo.getTel())
-                                    .role(pvo.getRole())
+                                    .role("ROLE_USER")
                                     .tagAllowYn("Y")
                                     .pushViewYn("Y")
                                     .joinDttm(LocalDateTime.now())
