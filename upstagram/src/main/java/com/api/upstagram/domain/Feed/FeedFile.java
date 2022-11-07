@@ -23,19 +23,21 @@ public class FeedFile extends BaseIdEntity {
     @JoinColumn(name = "FEED_NO")
     private Feed feed;
 
+    private String fileName;
+
     private String fileDiv;
 
     private String fileExt;
 
     private int sortOrder;
-    
+
     @Builder
-    public FeedFile(Long feedFileNo, Feed feed, String fileDiv, String fileExt, int sortOrder) {
+    public FeedFile(Long feedFileNo, Feed feed, String fileName, String fileDiv, String fileExt, int sortOrder) {
         this.feedFileNo = feedFileNo;
         this.feed = feed;
+        this.fileName = fileName;
         this.fileDiv = fileDiv;
         this.fileExt = fileExt;
         this.sortOrder = sortOrder;
     }
-
 }

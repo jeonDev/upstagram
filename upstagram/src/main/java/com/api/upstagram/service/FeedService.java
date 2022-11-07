@@ -75,6 +75,7 @@ public class FeedService {
 
             FeedFile feedFile = FeedFile.builder()
                     .feed(feed)
+                    .fileName(fileInfo.getFileName())
                     .fileDiv("FEED")
                     .fileExt(fileInfo.getFileExt())
                     .sortOrder(i++)
@@ -112,6 +113,18 @@ public class FeedService {
     public List<FeedRVO> selectFeedList(FeedPVO pvo){
         return feedRepository.selectFeedList(pvo.getId()).stream()
                 .map(m -> FeedRVO.builder()
+                        .feedNo(m.getFeedNo())
+                        .title(m.getTitle())
+                        .hashtag(m.getHashtag())
+                        .useYn(m.getUseYn())
+                        .id(m.getId())
+                        .name(m.getName())
+                        .nickname(m.getNickname())
+                        .sex(m.getSex())
+                        .tel(m.getTel())
+                        .oauthNo(m.getOauthNo())
+                        .feedHeartCnt(m.getFeedHeartCnt())
+//                        .feedFileNames(m.getFileNames())
                         .build())
                 .collect(Collectors.toList());
     }
