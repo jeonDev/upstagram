@@ -107,6 +107,16 @@ public class FeedService {
     }
 
     /*
+     * Feed List 조회
+     * */
+    public List<FeedRVO> selectFeedList(FeedPVO pvo){
+        return feedRepository.selectFeedList(pvo.getId()).stream()
+                .map(m -> FeedRVO.builder()
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    /*
     * Feed 수정
     * */
     @Transactional
@@ -134,6 +144,13 @@ public class FeedService {
             feedHeartRepository.delete(deleteFeedHeart);
             return deleteFeedHeart;
         }
+    }
+
+    /*
+    * Feed 좋아요 조회
+    * */
+    public List<FeedHeart> selectFeedHeartList(FeedHeartPVO pvo) {
+        return feedHeartRepository.selectFeedHeartList(pvo.getFeedNo());
     }
 
     /*
@@ -202,14 +219,5 @@ public class FeedService {
             feedCommentHeartRepository.delete(deleteFeedCommentHeart);
             return deleteFeedCommentHeart;
         }
-    }
-
-
-
-    /*
-    * Feed List 조회
-    * */
-    public List<Feed> selectFeedList(FeedPVO pvo){
-        return feedRepository.selectFeedList(pvo.getId());
     }
 }

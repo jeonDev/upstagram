@@ -49,9 +49,8 @@ public class FeedController {
         FeedPVO pvo = new FeedPVO();
         pvo.setId(CommonUtils.getUserId());
 
-        List<FeedRVO> rvo = feedService.selectFeedList(pvo).stream()
-                .map(m -> m.feedToRVO())
-                .collect(Collectors.toList());
+        List<FeedRVO> rvo = feedService.selectFeedList(pvo);
+
         r.setData(rvo);
 
         return r;
@@ -89,6 +88,27 @@ public class FeedController {
 
         return r;
     }
+
+    /*
+    * Feed 좋아요 조회
+    * */
+    @GetMapping("/feed/heart/list")
+    public ResponseVO<List<FeedHeartRVO>> feedHeartList(@RequestParam String feedNo) {
+        log.info(this.getClass().getName() + " ==> Feed 좋아요 조회!");
+        ResponseVO<List<FeedHeartRVO>> r = new ResponseVO<List<FeedHeartRVO>>();
+
+        FeedHeartPVO pvo = new FeedHeartPVO();
+        pvo.setFeedNo(Long.parseLong(feedNo));
+
+        List<FeedHeartRVO> rvo = feedService.selectFeedHeartList(pvo).stream()
+                .map(m -> m.feedHeartToRVO())
+                .collect(Collectors.toList());
+
+        r.setData(rvo);
+
+        return r;
+    }
+
 
     /*
     * Feed 댓글 작성

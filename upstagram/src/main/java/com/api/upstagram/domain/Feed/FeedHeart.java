@@ -40,6 +40,11 @@ public class FeedHeart extends BaseEntity {
                 .feedHeartNo(this.feedHeartNo)
                 .feedNo(this.feed.getFeedNo())
                 .id(this.member.getId())
+                .name(this.member.getName())
+                .nickname(this.member.getNickname())
+                .sex(this.member.getSex())
+                .tel(this.member.getTel())
+                .oauthNo(this.member.getOauthNo())
                 .build();
     }
 }
