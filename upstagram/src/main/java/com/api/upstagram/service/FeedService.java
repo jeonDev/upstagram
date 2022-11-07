@@ -124,7 +124,7 @@ public class FeedService {
                         .tel(m.getTel())
                         .oauthNo(m.getOauthNo())
                         .feedHeartCnt(m.getFeedHeartCnt())
-//                        .feedFileNames(m.getFileNames())
+                        .feedFileNames(m.getFileNames())
                         .build())
                 .collect(Collectors.toList());
     }

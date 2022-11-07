@@ -21,7 +21,7 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
             "     , MAX(m.tel) AS tel" +
             "     , MAX(m.oauthNo) AS oauthNo" +
             "     , COUNT(fh.feedHeartNo) AS feedHeartCnt" +
-//            "     , GROUP_CONCAT(ff.fileName) AS fileNames " +
+            "     , GROUP_CONCAT(ff.fileName, ' ')  AS fileNames " +
             "  FROM Feed f" +
             "  JOIN FollowUser fu ON fu.followMember.id = f.member.id" +
             "   AND fu.idMember.id = :id" +
