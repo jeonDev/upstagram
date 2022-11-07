@@ -185,18 +185,21 @@ public class LoginService {
         if(memberInfoOpt.isPresent()) {
             MemberInfo memberInfo = memberInfoOpt.get();
 
-            // 비밀번호 검증
+            // 1. 비밀번호 검증
             if(!encoder.matches(pvo.getPassword(), memberInfo.getPassword())) throw new IllegalAccessException("비밀번호가 틀렸습니다.");
 
-            // 변경할 비밀번호 체크 & 암호화
+            // 2. 변경할 비밀번호 체크 & 암호화
             if(!StringUtils.isNotEmpty(pvo.getNewPassword())){
                 if(!pvo.getNewPassword().equals(pvo.getNewPasswordCheck())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "변경할 비밀번호가 동일하지 않습니다.");
                 if(encoder.matches(pvo.getNewPassword(), memberInfo.getPassword())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "변경할 비밀번호가 기존과 동일합니다.");
                 pvo.setNewPassword(encoder.encode(pvo.getNewPassword()));
             }
 
-            // 닉네임 중복 체크
-            if(!StringUtils.isNotEmpty(pvo.getNickname())) {
+            // 3. 권한변경 시, 관리자 여부 체크
+            if(!StringUtils.isNotEmpty(pvo.getRole()) && !"ROLE_ADMIN".equals(memberInfo.getRole())) throw new CustomException(Response.AUTHORITY_ERROR.getCode(), Response.AUTHORITY_ERROR.getMessage());
+
+            // 4. 닉네임 중복 체크
+            if(!StringUtils.isNotEmpty(pvo.getNickname()) && !memberInfo.getNickname().equals(pvo.getNickname())) {
                 Optional<MemberInfo> nicknameCheck = memberInfoRepository.findByNickname(pvo.getNickname());
                 if(nicknameCheck.isPresent()) throw new CustomException(Response.DUPLICATION_ERROR.getCode(), "이미 사용중인 닉네임입니다.");
             }
@@ -206,6 +209,12 @@ public class LoginService {
 
             return memberInfo;
         }
-        else throw new CustomException(Response.ARGUMNET_ERROR.getCode(), Response.ARGUMNET_ERROR.getMessage());
+        else {
+            throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "계정이 존재하지 않습니다.");
+        }
+    }
+
+    public List<MemberInfo> selectMemberInfoList() {
+        return memberInfoRepository.selectMemberInfoList();
     }
 }
