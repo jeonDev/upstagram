@@ -34,8 +34,27 @@ public class FeedController {
         pvo.setId(CommonUtils.getUserId());
 
         FeedRVO rvo = feedService.insertFeed(pvo, files)
-                .FeedToRVO();
+                .feedToRVO();
 
+        r.setData(rvo);
+
+        return r;
+    }
+
+    /*
+     * Feed 조회
+     * */
+    @GetMapping("/user/feed/list")
+    public ResponseVO<List<FeedRVO>> feedList() {
+        log.info(this.getClass().getName() + " ==> Feed 댓글 좋아요!");
+        ResponseVO<List<FeedRVO>> r = new ResponseVO<List<FeedRVO>>();
+
+        FeedPVO pvo = new FeedPVO();
+        pvo.setId(CommonUtils.getUserId());
+
+        List<FeedRVO> rvo = feedService.selectFeedList(pvo).stream()
+                .map(m -> m.feedToRVO())
+                .collect(Collectors.toList());
         r.setData(rvo);
 
         return r;
@@ -66,12 +85,8 @@ public class FeedController {
 
         pvo.setId(CommonUtils.getUserId());
 
-        FeedHeart feedHeart = feedService.feedHeartSave(pvo);
-        FeedHeartRVO rvo = FeedHeartRVO.builder()
-                .feedHeartNo(feedHeart.getFeedHeartNo())
-                .feedNo(feedHeart.getFeed().getFeedNo())
-                .id(feedHeart.getMember().getId())
-                .build();
+        FeedHeartRVO rvo = feedService.feedHeartSave(pvo)
+                .feedHeartToRVO();
 
         r.setData(rvo);
 
@@ -88,15 +103,8 @@ public class FeedController {
 
         pvo.setId(CommonUtils.getUserId());
 
-        FeedComment feedComment = feedService.writeFeedComment(pvo);
-        FeedCommentRVO rvo = FeedCommentRVO.builder()
-                .feedCommentNo(feedComment.getFeedCommentNo())
-                .feedNo(feedComment.getFeed().getFeedNo())
-                .id(feedComment.getMember().getId())
-                .content(feedComment.getContent())
-                .topFix(feedComment.getTopFix())
-                .useYn(feedComment.getUseYn())
-                .build();
+        FeedCommentRVO rvo = feedService.writeFeedComment(pvo)
+                .feedCommentToRVO();
 
         r.setData(rvo);
 
@@ -113,33 +121,13 @@ public class FeedController {
 
         pvo.setId(CommonUtils.getUserId());
 
-        FeedCommentHeart feedCommentHeart = feedService.feedCommentHeart(pvo);
-        FeedCommentRVO rvo = FeedCommentRVO.builder()
-                .feedCommentHeartNo(feedCommentHeart.getFeedCommentHeartNo())
-                .commentHeartId(feedCommentHeart.getMember().getId())
-                .feedCommentNo(feedCommentHeart.getFeedComment().getFeedCommentNo())
-                .build();
+        FeedCommentRVO rvo = feedService.feedCommentHeart(pvo)
+                .feedCommentToRVO();
 
         r.setData(rvo);
 
         return r;
     }
 
-    @GetMapping("/user/feed/list")
-    public ResponseVO<List<FeedRVO>> feedList() {
-        log.info(this.getClass().getName() + " ==> Feed 댓글 좋아요!");
-        ResponseVO<List<FeedRVO>> r = new ResponseVO<List<FeedRVO>>();
 
-        FeedPVO pvo = new FeedPVO();
-        pvo.setId(CommonUtils.getUserId());
-
-        List<FeedRVO> rvo = feedService.selectFeedList(pvo).stream()
-                .map(m -> m.FeedToRVO())
-                .collect(Collectors.toList());
-        r.setData(rvo);
-
-
-
-        return r;
-    }
 }

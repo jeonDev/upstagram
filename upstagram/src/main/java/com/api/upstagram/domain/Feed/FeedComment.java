@@ -2,6 +2,7 @@ package com.api.upstagram.domain.Feed;
 
 import com.api.upstagram.common.vo.BaseIdEntity;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
+import com.api.upstagram.vo.Feed.FeedCommentRVO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,5 +42,15 @@ public class FeedComment extends BaseIdEntity {
         this.content = content;
         this.useYn = useYn;
         this.topFix = topFix;
+    }
+
+    public FeedCommentRVO feedCommentToRVO() {
+        return FeedCommentRVO.builder()
+                .feedCommentNo(this.feedCommentNo)
+                .id(this.member.getId())
+                .content(this.content)
+                .useYn(this.useYn)
+                .topFix(this.topFix)
+                .build();
     }
 }

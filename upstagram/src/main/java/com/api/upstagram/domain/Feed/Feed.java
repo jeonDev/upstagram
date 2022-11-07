@@ -42,7 +42,7 @@ public class Feed extends BaseIdEntity {
     }
 
 
-    public FeedRVO FeedToRVO(){
+    public FeedRVO feedToRVO(){
         return FeedRVO.builder()
                 .feedNo(this.feedNo)
                 .title(this.title)
