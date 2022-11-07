@@ -1,5 +1,6 @@
 package com.api.upstagram.controller;
 
+import com.api.upstagram.common.util.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,6 +53,23 @@ public class LoginController {
 
         r.setData(token);
         
+        return r;
+    }
+
+    /*
+    * 사용자 정보 수정
+    * */
+    @PostMapping("/user/info/update")
+    public ResponseVO<MemberInfoRVO> memberinfoUpdate(@RequestBody MemberInfoPVO pvo) throws IllegalAccessException {
+        log.info(this.getClass().getName() + " ==> Member Info Update");
+
+        ResponseVO<MemberInfoRVO> r = new ResponseVO<MemberInfoRVO>();
+        pvo.setId(CommonUtils.getUserId());
+
+        MemberInfoRVO rvo = loginService.memberInfoUpdate(pvo).memberInfoToRVO();
+
+        r.setData(rvo);
+
         return r;
     }
 }

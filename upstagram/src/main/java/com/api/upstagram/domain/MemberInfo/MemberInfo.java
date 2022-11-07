@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.api.upstagram.common.util.StringUtils;
+import com.api.upstagram.vo.MemberInfo.MemberInfoPVO;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -95,6 +97,17 @@ public class MemberInfo extends BaseEntity {
     /* 로그인 실패 */
     public MemberInfo loginFalse() {
         this.wrongPasswordNumber+= 1;
+        return this;
+    }
+
+    public MemberInfo updateMemberInfo(MemberInfoPVO pvo) {
+        if(!StringUtils.isNotEmpty(pvo.getNewPassword())) this.password = pvo.getNewPassword();
+        if(!StringUtils.isNotEmpty(pvo.getName())) this.name = pvo.getName();
+        if(!StringUtils.isNotEmpty(pvo.getNickname())) this.nickname = pvo.getNickname();
+        if(!StringUtils.isNotEmpty(pvo.getSex())) this.sex = pvo.getSex();
+        if(!StringUtils.isNotEmpty(pvo.getTel())) this.tel = pvo.getTel();
+        if(!StringUtils.isNotEmpty(pvo.getRole())) this.role = pvo.getRole();
+        if(!StringUtils.isNotEmpty(pvo.getUseYn())) this.useYn = pvo.getUseYn();
         return this;
     }
 
