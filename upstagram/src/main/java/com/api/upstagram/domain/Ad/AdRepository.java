@@ -14,7 +14,7 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
             "  FROM Ad a" +
             "  JOIN AdCompany ac ON a.adCompany = ac.adCompanyNo" +
             "  JOIN AdManage am ON a.adNo = am.ad" +
-            " WHERE 1=1" +
+            " WHERE a.useYn = 'Y'" +
             "   AND :dttm BETWEEN am.startDttm AND am.endDttm" +
             "   AND :time BETWEEN am.startTime AND am.endTime" +
             " ORDER BY a.regDttm DESC")
