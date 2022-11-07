@@ -3,6 +3,7 @@ package com.api.upstagram.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.api.upstagram.vo.FollowUser.RecommandRVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ public class FollowUserController {
      */
     @PostMapping("/user/follow/add")
     public ResponseVO<FollowUserRVO> requestFollow(@RequestBody FollowUserPVO pvo) {
-        log.info("User Follow Request!");
+        log.info(this.getClass().getName() + "User Follow Request!");
         ResponseVO<FollowUserRVO> r = new ResponseVO<FollowUserRVO>();
         
         pvo.setId(CommonUtils.getUserId());
@@ -53,7 +54,7 @@ public class FollowUserController {
     * */
     @PostMapping("/user/follow/delete")
     public ResponseVO<FollowUserRVO> deleteFollow(@RequestBody FollowUserPVO pvo) {
-        log.info("User Follow Delete Request");
+        log.info(this.getClass().getName() + "User Follow Delete Request");
         ResponseVO<FollowUserRVO> r = new ResponseVO<FollowUserRVO>();
         
         followUserService.deleteFollowUser(pvo);
@@ -66,7 +67,7 @@ public class FollowUserController {
      */
     @GetMapping("/user/follow/list")
     public ResponseVO<List<FollowUserRVO>> getFollowList() {
-        log.info("User Get Follow List!");
+        log.info(this.getClass().getName() + "User Get Follow List!");
         ResponseVO<List<FollowUserRVO>> r = new ResponseVO<List<FollowUserRVO>>();
 
         FollowUserPVO pvo = new FollowUserPVO();
@@ -86,7 +87,7 @@ public class FollowUserController {
      */
     @GetMapping("/user/follower/list")
     public ResponseVO<List<FollowUserRVO>> getFollowerList() {
-        log.info("User Get Follower List!");
+        log.info(this.getClass().getName() + "User Get Follower List!");
         ResponseVO<List<FollowUserRVO>> r = new ResponseVO<List<FollowUserRVO>>();
 
         FollowUserPVO pvo = new FollowUserPVO();
@@ -98,6 +99,24 @@ public class FollowUserController {
 
         r.setData(rvo);
         
+        return r;
+    }
+
+    /*
+    * Follow 추천 리스트 조회
+    * */
+    @GetMapping("/user/follow/recommand/list")
+    public ResponseVO<List<RecommandRVO>> getFollowRecommandList() {
+        log.info(this.getClass().getName() + " ==> Follow Recommander List!");
+        ResponseVO<List<RecommandRVO>> r = new ResponseVO<List<RecommandRVO>>();
+
+        FollowUserPVO pvo = new FollowUserPVO();
+        pvo.setId(CommonUtils.getUserId());
+
+        List<RecommandRVO> rvo = followUserService.selectFollowRecommanderList(pvo);
+
+        r.setData(rvo);
+
         return r;
     }
 }

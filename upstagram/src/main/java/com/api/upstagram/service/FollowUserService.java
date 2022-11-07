@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.api.upstagram.vo.FollowUser.RecommandRVO;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,7 @@ import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.domain.FollowUser.FollowUser;
 import com.api.upstagram.domain.FollowUser.FollowUserRepository;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
-import com.api.upstagram.vo.FollowUser.FollowUserInterface;
 import com.api.upstagram.vo.FollowUser.FollowUserPVO;
-import com.api.upstagram.vo.FollowUser.FollowUserRVO;
-import com.api.upstagram.vo.MemberInfo.MemberInfoRVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -98,5 +96,24 @@ public class FollowUserService {
     public List<FollowUser> selectFollowerUserList(FollowUserPVO pvo) {
         log.info(this.getClass().getName() + " ==> Get Follower User List");
         return followUserRepository.selectFollowerUserList(pvo.getFollowId());
+    }
+
+    /*
+    * 팔로우 추천 리스트 조회
+    * */
+    public List<RecommandRVO> selectFollowRecommanderList(FollowUserPVO pvo) {
+        List<RecommandRVO> list = followUserRepository.selectFollowRecommanderList(pvo.getId()).stream()
+                .map(m -> RecommandRVO.builder()
+                        .followNo(m.getFollowNo())
+                        .followId(m.getFollowId())
+                        .followName(m.getFollowName())
+                        .followNickname(m.getFollowNickname())
+                        .followSex(m.getFollowSex())
+                        .followTel(m.getFollowTel())
+                        .followOauthNo(m.getFollowOauthNo())
+                        .friendCnt(m.getFriendCnt())
+                        .build())
+                .collect(Collectors.toList());
+        return list;
     }
 }
