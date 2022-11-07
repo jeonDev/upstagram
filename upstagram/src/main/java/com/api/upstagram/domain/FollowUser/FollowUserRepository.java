@@ -54,5 +54,22 @@ public interface FollowUserRepository extends JpaRepository<FollowUser, Long> {
             " WHERE f.followMember.id <> :id" +
             " GROUP BY f.followMember.id" +
             " ORDER BY COUNT(f.followMember.id) DESC")
-    List<RecommandInterface> selectFollowRecommanderList(String id);
+    List<RecommandInterface> selectFollowRecommanderList(@Param("id") String id);
+
+    @Query(value =
+            "SELECT MAX(f.followNo) AS followNo" +
+            "     , MAX(m.id) AS followId" +
+            "     , MAX(m.name) AS followName" +
+            "     , MAX(m.nickname) AS followNickname" +
+            "     , MAX(m.sex) AS followSex" +
+            "     , MAX(m.tel) AS followTel" +
+            "     , MAX(m.oauthNo) AS followOauthNo" +
+            "     , COUNT(f.idMember) AS friendCnt" +
+            "  FROM FollowUser f" +
+            "  JOIN MemberInfo m ON f.followMember = m.id" +
+            "   AND m.useYn = 'Y'" +
+            " WHERE f.followMember.id <> :id" +
+            " GROUP BY f.followMember.id" +
+            " ORDER BY COUNT(f.followMember.id) DESC")
+    List<RecommandInterface> selectFollowTopRecommanderList(@Param("id")String id);
 }

@@ -115,7 +115,14 @@ public class FollowUserController {
 
         List<RecommandRVO> rvo = followUserService.selectFollowRecommanderList(pvo);
 
-        r.setData(rvo);
+        // 추천 팔로우가 없을 경우, 팔로워가 가장 많은 사용자 추천
+        if(rvo.size() == 0) {
+            List<RecommandRVO> maxRvo = followUserService.selectFollowTopRecommanderList(pvo);
+
+            r.setData(maxRvo);
+        } else {
+            r.setData(rvo);
+        }
 
         return r;
     }

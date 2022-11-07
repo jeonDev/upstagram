@@ -116,4 +116,20 @@ public class FollowUserService {
                 .collect(Collectors.toList());
         return list;
     }
+
+    public List<RecommandRVO> selectFollowTopRecommanderList(FollowUserPVO pvo) {
+        List<RecommandRVO> list = followUserRepository.selectFollowTopRecommanderList(pvo.getId()).stream()
+                .map(m -> RecommandRVO.builder()
+                        .followNo(m.getFollowNo())
+                        .followId(m.getFollowId())
+                        .followName(m.getFollowName())
+                        .followNickname(m.getFollowNickname())
+                        .followSex(m.getFollowSex())
+                        .followTel(m.getFollowTel())
+                        .followOauthNo(m.getFollowOauthNo())
+                        .friendCnt(m.getFriendCnt())
+                        .build())
+                .collect(Collectors.toList());
+        return list;
+    }
 }
