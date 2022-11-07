@@ -8,10 +8,7 @@ import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.domain.Feed.*;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
 import com.api.upstagram.domain.MemberInfo.MemberInfoRepository;
-import com.api.upstagram.vo.Feed.FeedCommentPVO;
-import com.api.upstagram.vo.Feed.FeedHeartPVO;
-import com.api.upstagram.vo.Feed.FeedPVO;
-import com.api.upstagram.vo.Feed.FeedRVO;
+import com.api.upstagram.vo.Feed.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -161,6 +159,29 @@ public class FeedService {
     }
 
     /*
+     * Feed Comment 조회
+     * */
+    public List<FeedCommentRVO> selectFeedCommentList(FeedCommentPVO pvo) {
+        return feedCommentRepository.selectFeedCommentList(pvo.getFeedNo()).stream()
+                .map(m -> FeedCommentRVO.builder()
+                        .feedCommentNo(m.getFeedCommentNo())
+                        .feedNo(m.getFeedNo())
+                        .id(m.getId())
+                        .name(m.getName())
+                        .nickname(m.getNickname())
+                        .sex(m.getSex())
+                        .tel(m.getTel())
+                        .oauthNo(m.getOauthNo())
+                        .content(m.getContent())
+                        .useYn(m.getUseYn())
+                        .topFix(m.getTopFix())
+                        .heartCnt(m.getHeartCnt())
+                        .build()
+                )
+                .collect(Collectors.toList());
+    }
+
+    /*
     * Feed 댓글 좋아요 기능
     * */
     public FeedCommentHeart feedCommentHeart(FeedCommentPVO pvo) {
@@ -182,6 +203,8 @@ public class FeedService {
             return deleteFeedCommentHeart;
         }
     }
+
+
 
     /*
     * Feed List 조회

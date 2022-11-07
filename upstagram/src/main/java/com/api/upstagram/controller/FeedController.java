@@ -3,9 +3,6 @@ package com.api.upstagram.controller;
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
 import com.api.upstagram.domain.Feed.Feed;
-import com.api.upstagram.domain.Feed.FeedComment;
-import com.api.upstagram.domain.Feed.FeedCommentHeart;
-import com.api.upstagram.domain.Feed.FeedHeart;
 import com.api.upstagram.service.FeedService;
 import com.api.upstagram.vo.Feed.*;
 import lombok.extern.slf4j.Slf4j;
@@ -111,6 +108,23 @@ public class FeedController {
         return r;
     }
 
+    /*
+    * Feed 댓글 조회
+    * */
+    @GetMapping("/feed/comment/list")
+    public ResponseVO<List<FeedCommentRVO>> selectFeedCommentList(@RequestParam String feedNo) {
+        log.info(this.getClass().getName() + " ==> Feed 댓글 조회");
+        ResponseVO<List<FeedCommentRVO>> r = new ResponseVO<List<FeedCommentRVO>>();
+
+        FeedCommentPVO pvo = new FeedCommentPVO();
+        pvo.setFeedNo(Long.parseLong(feedNo));
+
+        List<FeedCommentRVO> rvo = feedService.selectFeedCommentList(pvo);
+
+        r.setData(rvo);
+
+        return r;
+    }
     /*
      * Feed 댓글 좋아요 기능
      * */
