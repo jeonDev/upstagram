@@ -19,6 +19,7 @@ public class FeedRVO {
     private String oauthNo;
 
     private int feedHeartCnt;
+    private int feedCommentCnt;
 
     private String feedFileNames;
 }

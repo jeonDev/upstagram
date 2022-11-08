@@ -140,6 +140,7 @@ public class FeedService {
                         .tel(m.getTel())
                         .oauthNo(m.getOauthNo())
                         .feedHeartCnt(m.getFeedHeartCnt())
+                        .feedCommentCnt(m.getFeedCommentCnt())
                         .feedFileNames(m.getFileNames())
                         .build())
                 .collect(Collectors.toList());

@@ -12,5 +12,6 @@ public interface FeedInterface {
     String getTel();
     String getOauthNo();
     int getFeedHeartCnt();
+    int getFeedCommentCnt();
     String getFileNames();
 }
