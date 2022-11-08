@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class JwtTokenProvider {
 
-    private static final String BEARER_TYPE = "bearer";
+    private static final String BEARER_TYPE = "Bearer";
     private static long ACCESS_TOKEN_VALID_TIME = 7 * 24 * 60 * 60 * 1000L; //30 * 60 * 1000L;
 	private static long REFRESH_TOKEN_VALID_TIME = 7 * 24 * 60 * 60 * 1000L;
     private final Key secretkey;
@@ -140,6 +140,9 @@ public class JwtTokenProvider {
      * Request의 Header에서 Token 값 추출. "Authrization" : "TOKEN값"
      */
     public String resolveAccessToken(HttpServletRequest request) {
-        return request.getHeader("Authorization");
+        String authorization = request.getHeader("Authorization");
+        if(authorization == null || authorization.startsWith(BEARER_TYPE)) return null;
+
+        return authorization.substring(BEARER_TYPE.toString().length() + 1);
     }
 }
