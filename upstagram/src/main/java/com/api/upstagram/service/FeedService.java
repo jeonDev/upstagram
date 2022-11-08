@@ -65,6 +65,18 @@ public class FeedService {
         feed = feedRepository.save(feed);
 
         // 2. Feed File 업로드 & 등록
+        this.feedFileSaveAll(feed, files);
+
+        // 3. Feed Tag 추가
+        this.feedTagSaveAll(pvo, feed);
+
+        return feed;
+    }
+
+    /*
+    * Feed File 등록 & 업로드
+    * */
+    public void feedFileSaveAll(Feed feed, MultipartFile[] files) throws IOException{
         List<FeedFile> fileList = new ArrayList<FeedFile>();
 
         String[] exts = {"image/png", "image/jpg", "image/jpeg", "video/mp4", "video/avi"};
@@ -85,15 +97,20 @@ public class FeedService {
         }
 
         feedFileRepository.saveAll(fileList);
+    }
 
-        // 3. Feed Tag 추가
+    /*
+    * Feed Tag 등록
+    * */
+    public void feedTagSaveAll(FeedPVO pvo, Feed feed) {
         List<String> tagIdList = pvo.getTagId();
         List<FeedTag> feedTags = new ArrayList<FeedTag>();
+
         for(String tagId : tagIdList) {
             Optional<MemberInfo> member = memberInfoRepository.findByIdAndUseYn(tagId, "Y");
 
             if(!member.isPresent()) continue;
-            
+
             FeedTag feedTag = FeedTag.builder()
                     .feed(feed)
                     .member(member.get())
@@ -102,9 +119,8 @@ public class FeedService {
             feedTags.add(feedTag);
         }
 
-        if(feedTags.size() > 0) feedTagRepository.saveAll(feedTags);
-
-        return feed;
+        if(feedTags.size() > 0)
+            feedTagRepository.saveAll(feedTags);
     }
 
     /*
