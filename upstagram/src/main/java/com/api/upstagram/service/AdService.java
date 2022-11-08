@@ -91,8 +91,8 @@ public class AdService {
     * 광고 조회
     * */
     public List<Ad> selectAdList() {
-        return adRepository.selectAdList(CommonUtils.dateToYmdStr(new Date()),
-                CommonUtils.dateToHmsStr(new Date()));
+        return adRepository.selectAdList(CommonUtils.format(new Date(), "yyyyMMdd")
+                , CommonUtils.format(new Date(), "HHmmss"));
     }
 
     /*

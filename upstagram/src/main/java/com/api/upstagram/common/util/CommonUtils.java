@@ -18,28 +18,24 @@ import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.common.vo.User;
 
 public class CommonUtils {
-    
-    public static String dateToYmdBarString(Date time) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        return format.format(time);
-    }
 
-	public static String dateToYmdStr(Date time) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-		return format.format(time);
-	}
-
-	public static String dateToHmsStr(Date time) {
-		SimpleDateFormat format = new SimpleDateFormat("HHmmss");
-		return format.format(time);
+	/*
+	* Date to String
+	* */
+	public static String format(Date date, String pattern) {
+		if (date == null) {
+			return "";
+		} else {
+			SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+			return formatter.format(date);
+		}
 	}
 
 	/*
 	* LocalDateTime 시간 계산
 	* */
-	public static LocalDateTime dateNowDaysCalculator(int date) {
-		LocalDateTime now = LocalDateTime.now();
-		return now.plusDays(date);
+	public static LocalDateTime dateNowDaysCalculator(LocalDateTime dateTime, int date) {
+		return dateTime.plusDays(date);
 	}
 
 

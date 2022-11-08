@@ -80,7 +80,7 @@ public class StoryService {
      * 스토리 조회
      */
     public List<Story> selectFollowStoryList(StoryPVO pvo) {
-        return storyRepository.selectFollowStoryList(pvo.getId(), CommonUtils.dateNowDaysCalculator(-1));
+        return storyRepository.selectFollowStoryList(pvo.getId(), CommonUtils.dateNowDaysCalculator(LocalDateTime.now(), -1));
     }
 
     /*
@@ -88,7 +88,7 @@ public class StoryService {
      */
     public List<Story> selectMyStoryList(StoryPVO pvo) {
         log.info(this.getClass().getName() + " => My Story List Select!");
-        return storyRepository.selectMyStoryList(pvo.getId(), CommonUtils.dateNowDaysCalculator(-1));
+        return storyRepository.selectMyStoryList(pvo.getId(), CommonUtils.dateNowDaysCalculator(LocalDateTime.now(), -1));
     }
 
     /*
