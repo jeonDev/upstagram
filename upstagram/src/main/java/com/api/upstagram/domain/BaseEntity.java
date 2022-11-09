@@ -1,4 +1,4 @@
-package com.api.upstagram.common.vo;
+package com.api.upstagram.domain;
 
 import java.time.LocalDateTime;
 

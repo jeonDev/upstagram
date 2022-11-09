@@ -1,6 +1,6 @@
 package com.api.upstagram.domain.Feed;
 
-import com.api.upstagram.common.vo.BaseIdEntity;
+import com.api.upstagram.domain.BaseIdEntity;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
 import com.api.upstagram.vo.Feed.FeedRVO;
 import lombok.AccessLevel;

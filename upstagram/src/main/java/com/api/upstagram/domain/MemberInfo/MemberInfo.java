@@ -12,7 +12,7 @@ import com.api.upstagram.vo.MemberInfo.MemberInfoPVO;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.api.upstagram.common.vo.BaseEntity;
+import com.api.upstagram.domain.BaseEntity;
 import com.api.upstagram.vo.MemberInfo.MemberInfoRVO;
 
 import lombok.AccessLevel;

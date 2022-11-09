@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.api.upstagram.common.vo.BaseEntity;
+import com.api.upstagram.domain.BaseEntity;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
 
 import com.api.upstagram.vo.FollowUser.FollowUserRVO;

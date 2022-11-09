@@ -1,6 +1,6 @@
 package com.api.upstagram.domain.Ad;
 
-import com.api.upstagram.common.vo.BaseIdEntity;
+import com.api.upstagram.domain.BaseIdEntity;
 
 import com.api.upstagram.vo.Ad.AdCompanyRVO;
 import lombok.AccessLevel;

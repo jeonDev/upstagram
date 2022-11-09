@@ -10,7 +10,7 @@ import lombok.Builder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.api.upstagram.common.vo.BaseEntity;
+import com.api.upstagram.domain.BaseEntity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
