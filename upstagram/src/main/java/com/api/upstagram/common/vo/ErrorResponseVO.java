@@ -9,23 +9,23 @@ import lombok.Getter;
 @Getter
 public class ErrorResponseVO {
 
-    private String code;
+    private int code;
     private String message;
     private String timestamp;
 
-    public ErrorResponseVO(String code, String message, String timestamp) {
+    public ErrorResponseVO(int code, String message, String timestamp) {
         this.code = code;
         this.message = message;
         this.timestamp = timestamp;
     }
 
-    public ErrorResponseVO(String code, String message) {
+    public ErrorResponseVO(int code, String message) {
         this.code = code;
         this.message = message;
         this.timestamp = CommonUtils.format(new Date(), "yyyy-MM-dd");
     }
 
-    public ErrorResponseVO(String code) {
+    public ErrorResponseVO(int code) {
         this.code = code;
         this.message = "오류가 발생하였습니다.";
         this.timestamp = CommonUtils.format(new Date(), "yyyy-MM-dd");

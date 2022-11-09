@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ResponseVO<T> {
 
-    public String code = Response.SUCCESS.getCode();
+    public int code = Response.SUCCESS.getCode();
 
     public String message = Response.SUCCESS.getMessage();
 

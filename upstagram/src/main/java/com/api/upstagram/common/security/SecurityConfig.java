@@ -1,5 +1,7 @@
 package com.api.upstagram.common.security;
 
+import com.api.upstagram.common.security.Handler.CustomAccessDeniedHandler;
+import com.api.upstagram.common.security.Handler.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -23,6 +25,10 @@ public class SecurityConfig {
 //    private final CustomOAuth2UserService customOAuth2UserService;
 
     private final JwtTokenProvider jwtTokenProvider;
+
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -49,6 +55,10 @@ public class SecurityConfig {
             // .oauth2Login()
             // .userInfoEndpoint()
             // .userService(customOAuth2UserService)
+            .and()
+            .exceptionHandling()
+            .accessDeniedHandler(customAccessDeniedHandler)
+            .authenticationEntryPoint(customAuthenticationEntryPoint)
             .and()
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter.class);

@@ -209,7 +209,7 @@ public class LoginService {
             }
 
             // 3. 권한변경 시, 관리자 여부 체크
-            if(!StringUtils.isNotEmpty(pvo.getRole()) && !"ROLE_ADMIN".equals(memberInfo.getRole())) throw new CustomException(Response.AUTHORITY_ERROR.getCode(), Response.AUTHORITY_ERROR.getMessage());
+            if(!StringUtils.isNotEmpty(pvo.getRole()) && !"ROLE_ADMIN".equals(memberInfo.getRole())) throw new CustomException(Response.FORBIDDEN_ERROR.getCode(), Response.FORBIDDEN_ERROR.getMessage());
 
             // 4. 닉네임 중복 체크
             if(!StringUtils.isNotEmpty(pvo.getNickname()) && !memberInfo.getNickname().equals(pvo.getNickname())) {
