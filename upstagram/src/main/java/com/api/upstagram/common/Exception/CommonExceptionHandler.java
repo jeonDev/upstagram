@@ -25,6 +25,16 @@ public class CommonExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(IllegalAccessException.class)
+    public ResponseEntity<ErrorResponseVO> handleAccessException(final Exception e) {
+        log.error(e.getClass().getName());
+        log.error("error", e);
+
+        ErrorResponseVO error = new ErrorResponseVO(Response.ERROR.getCode(), e.getMessage());
+
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     // 제약조건 오류
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponseVO> handleSQLDataException(final Exception e) {
