@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import {join} from "../../api/LoginApi";
 
 const Join = () => {
@@ -23,7 +23,7 @@ const Join = () => {
     const joinApply = async () => {
         await join(data)
             .then((response) => {
-                if(response.code == "200") {
+                if(response.code === 200) {
                     alert(response.message);
                 }
             })

@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import {login} from "../../api/LoginApi";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.css';
 
 const Login = () => {
     /** Navigate */
@@ -19,14 +20,18 @@ const Login = () => {
         });
     }
 
+    const onKeyPress = (e) => {
+        if(e.key === 'Enter') loginApply();
+    }
+
     // 로그인
     const loginApply = async () => {
         await login(data)
             .then((response) => {
-                if(response.code == "200") {
+                if(response.code === 200) {
                     const token = response.data.accessToken;
                     localStorage.setItem("Authorization", token);
-                    alert(response.message);
+                    // alert(response.message);
                     navigate("/main");
                 }
             })
@@ -45,14 +50,17 @@ const Login = () => {
     }
 
     return (
-        <div>
-            <div>
-                <input type='text' name='id' value={data.id} onChange={handleData} />
-                <input type="password" name="password" value={data.password} onChange={handleData}/>
-                <input type="button" id="loginBtn" value="login" onClick={loginApply}/>
+        <div class="container">
+            <div class="row">
+                <input type='text' class="form-control" name='id' value={data.id} onChange={handleData} onKeyPress={onKeyPress} />
+                <input type="password" class="form-control" name="password" value={data.password} onChange={handleData} onKeyPress={onKeyPress}/>
+                <input type="button" class="btn btn-primary" id="loginBtn" value="login" onClick={loginApply}/>
             </div>
-            <div>
-                <input type="button" id="googleLoginBtn" value="googleLogin" onClick={() => googleLogin()}/>
+            <div class="row">
+                <Link class="btn btn-dark" to='/join'>회원가입</Link>
+            </div>
+            <div class="row">
+                <input type="button" class="btn btn-default" id="googleLoginBtn" value="googleLogin" onClick={() => googleLogin()}/>
             </div>
         </div>
     );

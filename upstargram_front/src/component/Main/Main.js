@@ -1,5 +1,4 @@
 import {selectFeedList} from "../../api/FeedApi";
-import {join} from "../../api/LoginApi";
 import React, {useEffect, useState} from "react";
 import {selectStoryList} from "../../api/StoryApi";
 import FeedCard from "../Feed/FeedCard";
@@ -10,8 +9,7 @@ const Main = () => {
 
     useEffect(() => {
         feedSearch();
-        storySearch();
-
+        // storySearch();
     }, [])
 
     // Feed 조회
@@ -21,7 +19,7 @@ const Main = () => {
                 setFeedList(response.data);
             })
             .catch((error) => {
-                alert(error.response.data.message);
+                console.log(error.response.data.message);
             });
     }
 
@@ -32,7 +30,7 @@ const Main = () => {
                 setStoryList(response.data);
             })
             .catch((error) => {
-                alert(error.response.data.message);
+                console.log(error.response.data.message);
             });
     }
 
@@ -43,9 +41,7 @@ const Main = () => {
                     FeedCard({feed})
                 ))}
                 {storyList.map(story => (
-                    <>
-                        <div>닉네임 : {story.nickname}</div>
-                    </>
+                    <div>닉네임 : {story.nickname}</div>
                 ))}
             </div>
         </div>
