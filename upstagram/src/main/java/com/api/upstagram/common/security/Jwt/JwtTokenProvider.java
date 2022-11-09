@@ -143,6 +143,6 @@ public class JwtTokenProvider {
         String authorization = request.getHeader("Authorization");
         if(authorization == null || authorization.startsWith(BEARER_TYPE)) return null;
 
-        return authorization.substring(BEARER_TYPE.toString().length() + 1);
+        return authorization.substring(BEARER_TYPE.toString().length() + 1, authorization.length());
     }
 }

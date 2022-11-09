@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
+import com.api.upstagram.common.vo.CookieInfo;
 import com.api.upstagram.common.vo.FileInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.vo.Response;
 import com.api.upstagram.common.vo.User;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 public class CommonUtils {
 
@@ -61,6 +65,18 @@ public class CommonUtils {
         User user = getUserInfo();
         return user.getId() != null ? user.getId() : "";
     }
+
+	/*
+	 * Cookie 저장 (HttpOnly)
+	 * */
+	public static void setHttpCookie(CookieInfo cookieInfo, HttpServletResponse response) {
+		Cookie cookie = new Cookie(cookieInfo.getCookieName(), cookieInfo.getCookieValue());
+		cookie.setMaxAge(cookieInfo.getMaxAge());
+		cookie.setHttpOnly(cookieInfo.isHttpOnly());
+		cookie.setPath(cookieInfo.getPath());
+
+		response.addCookie(cookie);
+	}
 
 	/*
 	* File Upload

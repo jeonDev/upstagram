@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.api.upstagram.common.util.CommonUtils;
+import com.api.upstagram.common.vo.CookieInfo;
 import com.api.upstagram.domain.MemberInfo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -123,7 +126,7 @@ public class LoginService {
     }
 
     /* 로그인 */
-    public Token login(MemberInfoPVO pvo, HttpServletRequest request) throws IllegalAccessException {
+    public Token login(MemberInfoPVO pvo, HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException {
 
         // 1. 파라미터 검증
         if(StringUtils.isNotEmpty(pvo.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(),"아이디를 입력해주세요.");
@@ -156,6 +159,16 @@ public class LoginService {
         List<String> roles = new ArrayList<>();
         roles.add(loginEntity.getRole());
         Token token = jwtTokenProvider.generateJwtToken(loginEntity.getId(), roles);
+
+        // 6-2. Refresh Token Http Cookie 저장
+        CookieInfo cookieInfo = CookieInfo.builder()
+                .cookieName("refreshToken")
+                .cookieValue(token.getAccessToken())
+                .maxAge(7 * 24 * 60 * 60 * 1000)
+                .httpOnly(true)
+                .path("/")
+                .build();
+        CommonUtils.setHttpCookie(cookieInfo, response);
 
         return token;
     }
