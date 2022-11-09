@@ -1,7 +1,11 @@
 import React, {useState, useEffect} from "react";
 import {login} from "../../api/LoginApi";
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
+    /** Navigate */
+    const navigate = useNavigate();
+
     const [data, setData] = useState({
         id : '',
         password : ''
@@ -23,7 +27,7 @@ const Login = () => {
                     const token = response.data.accessToken;
                     localStorage.setItem("Authorization", token);
                     alert(response.message);
-                    // TODO: 로그인 후 처리 내역
+                    navigate("/main");
                 }
             })
             .catch((error) => {
