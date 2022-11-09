@@ -19,7 +19,8 @@ public enum Response {
     FOLLOW_ERROR(21, "팔로우 할 수 없는 대상입니다."),
     FILE_ERROR(10, "파일을 업로드/다운로드 할 수 없습니다."),
     FORBIDDEN_ERROR(HttpServletResponse.SC_FORBIDDEN, "사용하실수 있는 권한이 존재하지 않습니다."),
-    UNAUTHORIZED_ERROR(HttpServletResponse.SC_UNAUTHORIZED, "인증되지 않은 사용자입니다.")
+    UNAUTHORIZED_ERROR(HttpServletResponse.SC_UNAUTHORIZED, "인증되지 않은 사용자입니다."),
+    EXPIRATION_ERROR(01, "로그인이 만료되었습니다.")
     ;
     
     private final int code;

@@ -21,3 +21,14 @@ export async function join (data) {
             return Promise.reject(error);
         })
 }
+
+// Refresh Token 요청
+export async function tokenReIssueRequest(){
+    return await httpRequest.post('/token/re/issue')
+        .then( (response) => {
+            return response.data;
+        })
+        .catch( (error) => {
+            return Promise.reject(error);
+        })
+}

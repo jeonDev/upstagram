@@ -128,7 +128,7 @@ public class JwtTokenProvider {
     /*
      * 토큰에서 Claims 정보 추출
      */
-    private Claims parseClaims(String accessToken) {
+    public Claims parseClaims(String accessToken) {
         try{
             return Jwts.parserBuilder().setSigningKey(secretkey).build().parseClaimsJws(accessToken).getBody();
         } catch (ExpiredJwtException e) {

@@ -156,21 +156,35 @@ public class LoginService {
         this.loginHistorySave(loginEntity.getId(), request);
 
         // 6-1. Jwt Token 생성
-        List<String> roles = new ArrayList<>();
-        roles.add(loginEntity.getRole());
-        Token token = jwtTokenProvider.generateJwtToken(loginEntity.getId(), roles);
+        Token token = this.tokenGenerate(loginEntity.getId(), loginEntity.getRole());
 
         // 6-2. Refresh Token Http Cookie 저장
-        CookieInfo cookieInfo = CookieInfo.builder()
-                .cookieName("refreshToken")
-                .cookieValue(token.getAccessToken())
-                .maxAge(7 * 24 * 60 * 60 * 1000)
-                .httpOnly(true)
-                .path("/")
-                .build();
-        CommonUtils.setHttpCookie(cookieInfo, response);
+        CommonUtils.setHttpCookie(new CookieInfo(token.getRefreshToken()), response);
 
         return token;
+    }
+
+    /*
+    * Token 재발급
+    * */
+    public Token tokenReIssue(String refreshToken) {
+        log.info(refreshToken);
+        // 1. Refresh Token 유효성 체크
+        if(!jwtTokenProvider.validDateToken(refreshToken)) throw new CustomException(Response.EXPIRATION_ERROR.getCode(), Response.EXPIRATION_ERROR.getMessage());
+
+        String id = jwtTokenProvider.parseClaims(refreshToken).getSubject();
+
+        MemberInfo memberInfo = memberInfoRepository.findById(id).get();
+        Token token = this.tokenGenerate(memberInfo.getId(), memberInfo.getRole());
+
+        return token;
+    }
+
+    public Token tokenGenerate(String id, String role) {
+        List<String> roles = new ArrayList<>();
+        roles.add(role);
+
+        return jwtTokenProvider.generateJwtToken(id, roles);
     }
 
     /*
@@ -230,4 +244,5 @@ public class LoginService {
     public List<MemberInfo> selectMemberInfoList() {
         return memberInfoRepository.selectMemberInfoList();
     }
+
 }

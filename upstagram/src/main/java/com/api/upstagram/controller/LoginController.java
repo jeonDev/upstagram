@@ -60,6 +60,23 @@ public class LoginController {
     }
 
     /*
+    * Token 재발급
+    * */
+    @PostMapping("/token/re/issue")
+    public ResponseVO<Token> tokenReIssue(@CookieValue("refreshToken") String refreshToken) {
+        log.info(this.getClass().getName() + " ==> token 재 발급!");
+
+        ResponseVO<Token> r = new ResponseVO<Token>();
+
+        Token token = loginService.tokenReIssue(refreshToken);
+
+        r.setData(token);
+
+        return r;
+
+    }
+
+    /*
     * 사용자 정보 수정
     * */
     @PostMapping("/user/info/update")
@@ -76,6 +93,9 @@ public class LoginController {
         return r;
     }
 
+    /*
+    * 사용자 조회
+    * */
     @GetMapping("/admin/member/list")
     public ResponseVO<List<MemberInfoRVO>> memberInfoList(@RequestParam(required = false) String role) {
         log.info(this.getClass().getName() + " ==> Member Info list");
