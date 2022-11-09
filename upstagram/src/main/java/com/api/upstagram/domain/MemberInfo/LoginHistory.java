@@ -3,10 +3,7 @@ package com.api.upstagram.domain.MemberInfo;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,16 +12,17 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // new 막기
-@IdClass(LoginHistoryId.class)
 @Table(name = "LOGIN_HISTORY")
 @Entity
 public class LoginHistory {
-    
-    @Id
-    private String id;                  // 아이디
 
     @Id
-    private LocalDateTime loginDttm;             // 로그인접속시간
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long historyNo;
+
+    private String id;                  // 아이디
+
+    private LocalDateTime loginDttm;    // 로그인접속시간
 
     private String loginUri;            // 접속경로
 
@@ -34,7 +32,8 @@ public class LoginHistory {
      * LoginHistoryEntity 생성
      */
     @Builder
-    public LoginHistory(String id, LocalDateTime loginDttm, String loginUri, String loginIp) {
+    public LoginHistory(Long historyNo, String id, LocalDateTime loginDttm, String loginUri, String loginIp) {
+        this.historyNo = historyNo;
         this.id = id;
         this.loginDttm = loginDttm;
         this.loginUri = loginUri;
