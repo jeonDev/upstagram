@@ -50,17 +50,17 @@ const Login = () => {
     }
 
     return (
-        <div class="container">
-            <div class="row">
-                <input type='text' class="form-control" name='id' value={data.id} onChange={handleData} onKeyPress={onKeyPress} />
-                <input type="password" class="form-control" name="password" value={data.password} onChange={handleData} onKeyPress={onKeyPress}/>
-                <input type="button" class="btn btn-primary" id="loginBtn" value="login" onClick={loginApply}/>
+        <div className="container">
+            <div className="row">
+                <input type='text' className="form-control" name='id' value={data.id} onChange={handleData} onKeyPress={onKeyPress} />
+                <input type="password" className="form-control" name="password" value={data.password} onChange={handleData} onKeyPress={onKeyPress}/>
+                <input type="button" className="btn btn-primary" id="loginBtn" value="login" onClick={loginApply}/>
             </div>
-            <div class="row">
-                <Link class="btn btn-dark" to='/join'>회원가입</Link>
+            <div className="row">
+                <Link className="btn btn-dark" to='/join'>회원가입</Link>
             </div>
-            <div class="row">
-                <input type="button" class="btn btn-default" id="googleLoginBtn" value="googleLogin" onClick={() => googleLogin()}/>
+            <div className="row">
+                <input type="button" className="btn btn-default" id="googleLoginBtn" value="googleLogin" onClick={() => googleLogin()}/>
             </div>
         </div>
     );

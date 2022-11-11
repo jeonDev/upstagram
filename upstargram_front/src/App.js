@@ -7,13 +7,14 @@ import Join from "./component/Login/Join";
 import Main from "./component/Main/Main";
 import Dm from "./component/Dm/Dm";
 import DmList from "./component/Dm/DmList";
+import Header from './template/Header';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <Header/>
         <Routes>
-
             {/* Main */}
             <Route path='/main' element={<Main/>}/>
 

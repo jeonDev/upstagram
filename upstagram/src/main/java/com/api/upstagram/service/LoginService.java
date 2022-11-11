@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.CookieInfo;
+import com.api.upstagram.common.vo.Role;
 import com.api.upstagram.domain.MemberInfo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,8 +48,10 @@ public class LoginService {
     public MemberInfo join(MemberInfoPVO pvo) {
         log.info(this.getClass().getName() + " => join");
 
+        // 1. 회원가입 검증
         this.validateIdCheck(pvo);
 
+        // 2. MemberInfo Entity 세팅
         MemberInfo memberInfo = MemberInfo.builder()
                                     .id(pvo.getId())
                                     .password(pvo.getPassword())
@@ -57,7 +60,7 @@ public class LoginService {
                                     .nickname(pvo.getNickname())
                                     .sex(pvo.getSex())
                                     .tel(pvo.getTel())
-                                    .role("ROLE_USER")
+                                    .role(Role.USER.getKey())       // default : ROLE_USER
                                     .tagAllowYn("Y")
                                     .pushViewYn("Y")
                                     .joinDttm(LocalDateTime.now())
@@ -66,6 +69,7 @@ public class LoginService {
         
         memberInfoRepository.save(memberInfo);
 
+        // 3. 회원정보 History save
         MemberInfoHistory historyEntity = MemberInfoHistory.builder()
                                                 .id(memberInfo.getId())
                                                 .oauthNo(memberInfo.getOauthNo())
@@ -165,6 +169,16 @@ public class LoginService {
     }
 
     /*
+     * 로그인 후, 토큰 생성
+     * */
+    public Token tokenGenerate(String id, String role) {
+        List<String> roles = new ArrayList<>();
+        roles.add(role);
+
+        return jwtTokenProvider.generateJwtToken(id, roles);
+    }
+
+    /*
     * Token 재발급
     * */
     public Token tokenReIssue(String refreshToken) {
@@ -179,14 +193,7 @@ public class LoginService {
 
         return token;
     }
-
-    public Token tokenGenerate(String id, String role) {
-        List<String> roles = new ArrayList<>();
-        roles.add(role);
-
-        return jwtTokenProvider.generateJwtToken(id, roles);
-    }
-
+    
     /*
     * 로그인 이력 생성
     * */
@@ -241,6 +248,9 @@ public class LoginService {
         }
     }
 
+    /*
+    * 회원정보 조회
+    * */
     public List<MemberInfo> selectMemberInfoList() {
         return memberInfoRepository.selectMemberInfoList();
     }
