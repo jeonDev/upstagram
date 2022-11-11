@@ -31,18 +31,28 @@ httpRequest.interceptors.response.use(
     async function(error) {
 
         const originalRequest = error.config;
-        const accessToken = localStorage.getItem("Authorization");
+
         // Access Token 만료 시, 토큰 재발급
-        if(accessToken && error.response.status === 401 && !originalRequest._retry) {
+        if(error.response.status === 401 && !originalRequest._retry) {
+
+            const accessToken = localStorage.getItem("Authorization");
+            if(!accessToken) {
+                alert("로그인 후 이용해주세요.");
+                return false;
+            }
+
             const response = await tokenReIssueRequest();
 
             if(response.code === 200) {
                 const token = response.data.accessToken;
                 localStorage.setItem("Authorization", token);
                 originalRequest._retry = true;
-
-                originalRequest.headers.Authorization = "Bearer " + accessToken;
-                return await axios(originalRequest);
+                
+                originalRequest.headers = {
+                    ...originalRequest.headers
+                }
+                
+                return httpRequest(originalRequest);
             } else {
                 localStorage.removeItem("Authorization");
             }
