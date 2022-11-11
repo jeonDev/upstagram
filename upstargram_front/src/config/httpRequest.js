@@ -1,7 +1,7 @@
 import axios from "axios";
 import {tokenReIssueRequest} from "../api/LoginApi";
 
-const serverIp = 'http://localhost:8090';
+const serverIp = process.env.REACT_APP_SERVER;
 
 const httpRequest = axios.create({
     baseURL: serverIp,
@@ -47,7 +47,7 @@ httpRequest.interceptors.response.use(
                 const token = response.data.accessToken;
                 localStorage.setItem("Authorization", token);
                 originalRequest._retry = true;
-                
+
                 originalRequest.headers = {
                     ...originalRequest.headers
                 }
