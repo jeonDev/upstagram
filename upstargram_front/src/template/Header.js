@@ -63,7 +63,7 @@ const Header = () => {
             </nav>
             <div>
                 <Modal open={loginModalOpen} close={closeLoginModal} header="로그인">
-                    <Login/>
+                    <Login close={closeLoginModal}/>
                 </Modal>
             </div>
         </>

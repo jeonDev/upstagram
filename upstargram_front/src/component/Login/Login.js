@@ -3,10 +3,11 @@ import {login} from "../../api/LoginApi";
 import {Link, useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 
-const Login = () => {
+const Login = (props) => {
     /** Navigate */
     const navigate = useNavigate();
 
+    const { close } = props;
     const [data, setData] = useState({
         id : '',
         password : ''
@@ -33,6 +34,7 @@ const Login = () => {
                     localStorage.setItem("Authorization", token);
                     // alert(response.message);
                     navigate("/main");
+                    close();
                 }
             })
             .catch((error) => {
@@ -61,7 +63,7 @@ const Login = () => {
                 <input type="button" className="btn btn-primary" id="loginBtn" value="login" onClick={loginApply}/>
             </div>
             <div className="row m-1">
-                <Link className="btn btn-dark" to='/join'>회원가입</Link>
+                <Link className="btn btn-dark" to='/join' onClick={close}>회원가입</Link>
             </div>
             <div className="row m-1">
                 <button onClick={() => googleLogin()}>
