@@ -51,15 +51,19 @@ const Login = () => {
 
     return (
         <div className="container">
-            <div className="row">
-                <input type='text' className="form-control" name='id' value={data.id} onChange={handleData} onKeyPress={onKeyPress} />
-                <input type="password" className="form-control" name="password" value={data.password} onChange={handleData} onKeyPress={onKeyPress}/>
+            <div className="row m-1">
+                <input type='text' className="form-control" name='id' value={data.id} placeholder="아이디(ID) 입력"
+                    onChange={handleData} onKeyPress={onKeyPress} />
+                <input type="password" className="form-control" name="password" value={data.password} placeholder="패스워드(PASSWORD) 입력"
+                    onChange={handleData} onKeyPress={onKeyPress}/>
+            </div>
+            <div className="row m-1">
                 <input type="button" className="btn btn-primary" id="loginBtn" value="login" onClick={loginApply}/>
             </div>
-            <div className="row">
+            <div className="row m-1">
                 <Link className="btn btn-dark" to='/join'>회원가입</Link>
             </div>
-            <div className="row">
+            <div className="row m-1">
                 <input type="button" className="btn btn-default" id="googleLoginBtn" value="googleLogin" onClick={() => googleLogin()}/>
             </div>
         </div>
