@@ -64,7 +64,9 @@ const Login = () => {
                 <Link className="btn btn-dark" to='/join'>회원가입</Link>
             </div>
             <div className="row m-1">
-                <input type="button" className="btn btn-default" id="googleLoginBtn" value="googleLogin" onClick={() => googleLogin()}/>
+                <button onClick={() => googleLogin()}>
+                    <img className="" alt="로그인" width={'30px;'} src={'/images/google.png'}/>Google Login
+                </button>
             </div>
         </div>
     );
