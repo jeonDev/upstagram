@@ -39,6 +39,8 @@ public class FeedService {
 
     private final FeedCommentHeartRepository feedCommentHeartRepository;
 
+    private final FeedKeepRepository feedKeepRepository;
+
     private final MemberInfoRepository memberInfoRepository;
 
     @Value("${resource-path}")
@@ -249,5 +251,54 @@ public class FeedService {
             feedCommentHeartRepository.delete(deleteFeedCommentHeart);
             return deleteFeedCommentHeart;
         }
+    }
+
+    /*
+    * Feed 보관
+    * */
+    public FeedKeep feedKeepSave(FeedKeepPVO pvo) {
+        Feed feed = Feed.builder()
+                .feedNo(pvo.getFeedNo())
+                .build();
+
+        MemberInfo memberInfo = MemberInfo.builder()
+                .id(pvo.getId())
+                .build();
+
+        Optional<FeedKeep> feedKeepOpt = feedKeepRepository.findByFeedAndMember(feed, memberInfo);
+
+        if(feedKeepOpt.isPresent()) {
+            FeedKeep feedKeep = feedKeepOpt.get();
+            feedKeepRepository.delete(feedKeep);
+            return feedKeep;
+        } else {
+            return feedKeepRepository.save(FeedKeep.builder()
+                    .feed(feed)
+                    .member(memberInfo)
+                    .build());
+        }
+    }
+
+    /*
+    * Feed 보관내역 조회
+    * */
+    public List<FeedRVO> selectFeedKeepList(FeedPVO pvo) {
+        return feedKeepRepository.selectFeedKeepList(pvo.getId()).stream()
+                .map(m -> FeedRVO.builder()
+                        .feedNo(m.getFeedNo())
+                        .title(m.getTitle())
+                        .hashtag(m.getHashtag())
+                        .useYn(m.getUseYn())
+                        .id(m.getId())
+                        .name(m.getName())
+                        .nickname(m.getNickname())
+                        .sex(m.getSex())
+                        .tel(m.getTel())
+                        .oauthNo(m.getOauthNo())
+                        .feedHeartCnt(m.getFeedHeartCnt())
+                        .feedCommentCnt(m.getFeedCommentCnt())
+                        .feedFileNames(m.getFileNames())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

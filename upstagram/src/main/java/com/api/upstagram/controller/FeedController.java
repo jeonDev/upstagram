@@ -163,5 +163,38 @@ public class FeedController {
         return r;
     }
 
+    /*
+    * Feed 보관
+    * */
+    @PostMapping("/user/feed/keep/save")
+    public ResponseVO<FeedKeepRVO> feedKeepSave(@RequestBody FeedKeepPVO pvo) {
+        log.info(this.getClass().getName() + " ==> Feed 보관!");
+        ResponseVO<FeedKeepRVO> r = new ResponseVO<FeedKeepRVO>();
 
+        pvo.setId(CommonUtils.getUserId());
+
+        FeedKeepRVO rvo = feedService.feedKeepSave(pvo).feedKeepToRVO();
+
+        r.setData(rvo);
+
+        return r;
+    }
+
+    /*
+    * Feed 보관 내역 조회
+    * */
+    @GetMapping("/user/feed/keep/list")
+    public ResponseVO<List<FeedRVO>> feedKeepList() {
+        log.info(this.getClass().getName() + " ==> Feed 보관내역 조회");
+        ResponseVO<List<FeedRVO>> r = new ResponseVO<List<FeedRVO>>();
+
+        FeedPVO pvo = new FeedPVO();
+        pvo.setId(CommonUtils.getUserId());
+
+        List<FeedRVO> rvo = feedService.selectFeedKeepList(pvo);
+
+        r.setData(rvo);
+
+        return r;
+    }
 }
