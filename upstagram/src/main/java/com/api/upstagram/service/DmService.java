@@ -33,8 +33,8 @@ public class DmService {
     /*
     * Dm 채팅방 목록 가져오기
     * */
-    public List<DmChatRoom> selectDmChatRoomList(DmChatPVO pvo) {
-        return null;
+    public List<DmChatRoomUser> selectDmChatRoomList(DmChatPVO pvo) {
+        return dmChatRoomUserRepository.findByDmChatRoomList(pvo.getId());
     }
 
     /*

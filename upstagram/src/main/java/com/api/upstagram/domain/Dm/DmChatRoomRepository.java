@@ -9,11 +9,11 @@ import java.util.Optional;
 public interface DmChatRoomRepository extends JpaRepository<DmChatRoom, Long> {
     @Query(value =
             "SELECT d" +
-                    "  FROM DmChatRoom d" +
-                    "  JOIN DmChatRoomUser d1 ON d1.dmChatRoom.dmChatRoomNo = d.dmChatRoomNo" +
-                    "   AND d1.member.id = :id" +
-                    "  JOIN DmChatRoomUser d2 ON d2.dmChatRoom.dmChatRoomNo = d.dmChatRoomNo" +
-                    "   AND d2.member.id = :receiveId" )
+            "  FROM DmChatRoom d" +
+            "  JOIN DmChatRoomUser d1 ON d1.dmChatRoom.dmChatRoomNo = d.dmChatRoomNo" +
+            "   AND d1.member.id = :id" +
+            "  JOIN DmChatRoomUser d2 ON d2.dmChatRoom.dmChatRoomNo = d.dmChatRoomNo" +
+            "   AND d2.member.id = :receiveId" )
     Optional<DmChatRoom> findByDmChatRoomUserCheck(@Param("id") String id, @Param("receiveId") String receiveId);
 
     @Query(nativeQuery = true,

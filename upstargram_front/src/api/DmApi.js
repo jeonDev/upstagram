@@ -11,6 +11,17 @@ export async function selectDmChatRoomList () {
         })
 }
 
+// DmChatRoom 생성
+export async function createDmChatRoom (id) {
+    return await httpRequest.post('/user/dm/room/create/' + id)
+        .then( (response) => {
+            return response.data;
+        })
+        .catch( (error) => {
+            return Promise.reject(error);
+        })
+}
+
 // DmChat 조회
 export async function selectDmChatList (dmChatRoom) {
     return await httpRequest.get('/user/dm/list/' + dmChatRoom)
