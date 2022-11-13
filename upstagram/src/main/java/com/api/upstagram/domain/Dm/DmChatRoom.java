@@ -1,7 +1,9 @@
 package com.api.upstagram.domain.Dm;
 
 import com.api.upstagram.domain.BaseEntity;
+import com.api.upstagram.vo.Dm.DmChatRoomUserRVO;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +16,16 @@ import javax.persistence.*;
 public class DmChatRoom extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dmChatRoomNo;
+
+    @Builder
+    public DmChatRoom(Long dmChatRoomNo) {
+        this.dmChatRoomNo = dmChatRoomNo;
+    }
+
+    public DmChatRoomUserRVO dmChatRoomToRVO(){
+        return DmChatRoomUserRVO.builder()
+                .dmChatRoomNo(this.dmChatRoomNo)
+                .build();
+    }
 }

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -52,9 +53,23 @@ public class DmController {
     }
 
     /*
-    * Dm 채팅방 추가
+    * Dm 채팅방 입장
     * */
+    @PostMapping("/user/dm/room/create/{id}")
+    public ResponseVO<DmChatRoomUserRVO> dmRoomCreate(@PathVariable("id") String id){
+        log.info(this.getClass().getName() + " ==> DM 채팅방 입장(" + id + ")");
+        ResponseVO<DmChatRoomUserRVO> r = new ResponseVO<DmChatRoomUserRVO>();
+        DmChatPVO pvo = new DmChatPVO();
+        pvo.setId(CommonUtils.getUserId());
+        pvo.setReceiveId(id);
 
+        DmChatRoomUserRVO rvo = dmService.dmChatRoomSave(pvo).dmChatRoomToRVO();
+                
+        r.setData(rvo);
+        
+        return r;
+    }
+    
     /*
     * DM 채팅방 나가기
     * */

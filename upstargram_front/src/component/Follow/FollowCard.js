@@ -1,8 +1,8 @@
 const FollowCard = (props) => {
-    const {followYn, id, name, nickname} = props;
+    const {followYn, id, name, nickname, onclickEvent} = props;
     return (
         <>
-            <div className="d-flex justify-content-between">
+            <div className="d-flex justify-content-between" onClick={onclickEvent}>
                 <div>
                     <img alt="이미지" width={'30px;'} src={'/images/mypage.jpg'}/>
                 </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { selectDmChatRoomList } from "../../api/DmApi";
+import { selectDmChatRoomList, createDmChatRoom } from "../../api/DmApi";
 import { selectFollowList } from "../../api/FollowApi";
 import FollowCard from "../Follow/FollowCard";
 
@@ -31,19 +31,29 @@ const DmList = () => {
                 console.log(error);
             })
     }
+    
+    const followDmChatRoomCreate = async (dmId) => {
+        await createDmChatRoom(dmId)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+    }
 
     return (
         <div className="container">
-            
-            <div className="d-flex justify-content-between">
+            <div className="d-flex justify-content-between bg-light">
                 {/* DM Chat Room 목록 */}
-                <div className="col-sm-6">
+                <div className="col-sm-4">
                     {/* 채팅방 목록 */}
-                    <div className="h-50">
+                    <div style={dmStyle}>
 
                     </div>
                     {/* Follow */}
-                    <div className="h-50">
+                    <div style={dmStyle}>
                         {followMember.map( (follow, idx) => (
                             <div key={idx}>
                                 <FollowCard
@@ -51,6 +61,7 @@ const DmList = () => {
                                     id={follow.followId}
                                     name={follow.followName}
                                     nickname={follow.followNickname}
+                                    onclickEvent={() => followDmChatRoomCreate(follow.followId)}
                                 />
                             </div>
                         ))}
@@ -58,8 +69,15 @@ const DmList = () => {
                 </div>
 
                 {/* DM */}
-                <div className="col-sm-6">
+                <div className="col-sm-8">
+                    {/* 출력창 */}
+                    <div>
 
+                    </div>
+                    {/* 입력창 */}
+                    <div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,3 +85,9 @@ const DmList = () => {
 }
 
 export default DmList;
+
+const dmStyle ={
+    height: '150px',
+    overflowY: 'scroll',
+    MsOverflowStyle: 'none'
+}
