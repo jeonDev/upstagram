@@ -45,7 +45,7 @@ const Header = () => {
                         </Link>
                     </span>
                     <span className="p-3">
-                        <Link to='/dm'>
+                        <Link to='/dm/list'>
                             <img className="" alt="DM" width={'30px;'} src={'/images/dm.png'}/>
                         </Link>
                     </span>
