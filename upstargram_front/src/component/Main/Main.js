@@ -9,7 +9,7 @@ const Main = () => {
 
     useEffect(() => {
         feedSearch();
-        // storySearch();
+        storySearch();
     }, [])
 
     // Feed 조회
@@ -37,8 +37,12 @@ const Main = () => {
     return (
         <div>
             <div>
-                {feedList.map(feed => (
-                    FeedCard({feed})
+                {feedList.map((feed, idx) => (
+                    <div key={idx}>
+                    <FeedCard
+                        feed={feed}
+                    />
+                    </div>
                 ))}
                 {storyList.map(story => (
                     <div>닉네임 : {story.nickname}</div>
