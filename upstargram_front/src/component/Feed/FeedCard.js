@@ -22,7 +22,7 @@ const FeedCard = (props) => {
 
             <div className={"row bg-white m-auto"} style={style}>
                 {feed.feedFileNames}
-                <img src={process.env.REACT_APP_SERVER + "/" + feed.feedFileNames.split(' ')[0]}/>
+                <img src={process.env.REACT_APP_SERVER_FILE_URL + feed.feedFileNames.split(' ')[0]}/>
             </div>
 
             <div className="d-flex justify-content-between">

@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer{
     @Value("${upload-path}")
     private String uploadPath;      // 외부파일 접근 경로
 
-    @Value("${resource-path")
+    @Value("${resource-path}")
     private String resourePath;     // 외부파일 접근 경로
 
     /*
@@ -39,7 +39,7 @@ public class WebConfig implements WebMvcConfigurer{
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(uploadPath)
-                .addResourceLocations(resourePath);
+                .addResourceLocations("file:///" + resourePath);
     }
 
 
