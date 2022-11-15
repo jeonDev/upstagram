@@ -22,4 +22,5 @@ public class FeedRVO {
     private int feedCommentCnt;
 
     private String feedFileNames;
+    private String feedExts;
 }

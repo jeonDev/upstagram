@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../assets/css/Main.css";
 
 const FeedCard = (props) => {
     const {feed} = props;
+    const [feedFile, setFeedFile] = useState([{
+        "feedFileName": "cae7853d-a84b-4092-9aee-f841d238bce0_KakaoTalk_Video_20190928_1841_49_515.mp4",
+        "feedExt": "video/mp4"
+    }]);
+
+    useEffect( () => {
+        const feedFileNames = feed.feedFileNames.split(',');
+        const feedFileExts = feed.feedExts.split(',');
+        for(let i = 0; i <= feedFileNames.length; i++) {
+            const newObj = {
+                feedFileName : feedFileNames[i],
+                feedExt : feedFileExts[i]
+            };
+//            setFeedFile([...feedFile, newObj]);
+        }
+        console.log(feedFile);
+    }, []);
+
     return (
         <div className={"container bg-light mb-2 w-50"}>
             <div className="row p-2">
@@ -21,8 +39,17 @@ const FeedCard = (props) => {
             </div>
 
             <div className={"row bg-white m-auto"} style={style}>
-                {feed.feedFileNames}
-                <img src={process.env.REACT_APP_SERVER_FILE_URL + feed.feedFileNames.split(' ')[0]}/>
+                {
+                    feedFile.map((item, idx) => {
+                        if(item.feedExt.split('/')[0] === 'image'){
+                            <img src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName}/>
+                        } else if (item.feedExt.split('/')[0] === 'video'){
+                            <video autoplay>
+                                <source src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName} type={item.feedExt}/>
+                            </video>
+                        }
+                    })
+                }
             </div>
 
             <div className="d-flex justify-content-between">

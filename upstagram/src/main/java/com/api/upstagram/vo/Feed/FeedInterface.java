@@ -14,4 +14,5 @@ public interface FeedInterface {
     int getFeedHeartCnt();
     int getFeedCommentCnt();
     String getFileNames();
+    String getFileExts();
 }
