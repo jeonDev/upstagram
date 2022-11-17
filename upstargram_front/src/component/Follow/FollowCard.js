@@ -1,12 +1,14 @@
+import { Card } from "react-bootstrap";
+
 const FollowCard = (props) => {
     const {followYn, id, name, nickname, onclickEvent} = props;
     return (
-        <>
-            <div className="d-flex justify-content-between" onClick={onclickEvent}>
-                <div>
+        <Card variant="outlined" >
+            <div className="row" onClick={onclickEvent}>
+                <div className="col-sm-2 align-self-center pointer">
                     <img alt="이미지" width={'30px;'} src={'/images/mypage.jpg'}/>
                 </div>
-                <div className="text-left">
+                <div className="col-sm-6 text-left align-self-center pointer">
                     <div>
                         {nickname}
                     </div>
@@ -14,11 +16,11 @@ const FollowCard = (props) => {
                         {name}
                     </div>
                 </div>
-                <div>
-                    <button className="btn btn-dark">팔로우</button>
+                <div className="col-sm-4 align-self-center">
+                    <button className="btn btn-dark pointer">팔로우</button>
                 </div>
             </div>
-        </>
+        </Card>
     );
 }
 

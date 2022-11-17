@@ -15,7 +15,7 @@ function App() {
         <Header/>
         <Routes>
             {/* Main */}
-            <Route exact={true} path="/" element={<Main/>}/>
+            <Route exact path="/" element={<Main/>}/>
             <Route path='/main' element={<Main/>}/>
 
             {/* Login */}
