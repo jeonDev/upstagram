@@ -22,6 +22,20 @@ export async function createDmChatRoom (id) {
         })
 }
 
+// Dm 전송 (Data : message / dmChatRoomNo)
+export async function sendDmChat(message, dmChatRoomNo) {
+    return await httpRequest.post("user/dm/send", {
+        message : message,
+        dmChatRoomNo : dmChatRoomNo
+    })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        })
+}
+
 // DmChat 조회
 export async function selectDmChatList (dmChatRoom) {
     return await httpRequest.get('user/dm/list/' + dmChatRoom)
