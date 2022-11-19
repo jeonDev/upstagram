@@ -1,38 +1,74 @@
-.App {
-  text-align: center;
+.main-layout {
+  width: 1000px;
+  margin: auto;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* DM */
+.select-dm-room {
+  background : #cdcdcd
+}
+.friend-text-div {
+  display: flex;
+  margin-left: 0.5rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.friend-text-div > img {
+  height: 2rem;
+  align-self: flex-end;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.friend-text-container {
+  width: 10rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.friend-text {
+  background: #262626;
+  border-radius: 0.5rem;
+  color: #fff;
+  height: fit-content;
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  margin: 0.12rem 0.5rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.my-text-div {
+  display: flex;
+  justify-content: flex-end;
+}
+.my-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.my-text {
+  background: linear-gradient(
+      180deg,
+      rgba(139, 47, 184, 1) 0%,
+      rgba(103, 88, 205, 1) 51%,
+      rgba(89, 116, 219, 1) 92%
+    )
+    no-repeat center;
+  background-attachment: fixed;
+  color: #fff;
+  border-radius: 0.5rem 0.2rem 0.2rem 0.5rem;
+  height: fit-content;
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  margin: 0.12rem 0.5rem;
+}
+
+.my-text-container > div:first-child {
+  border-radius: 0.5rem 1rem 0.2rem 0.5rem;
+}
+.my-text-container > div:last-child {
+  border-radius: 0.5rem 0.2rem 1rem 0.5rem;
+}
+.friend-text-container > div:first-child {
+  border-radius: 1rem 0.5rem 0.2rem 0.5rem;
+}
+.friend-text-container > div:last-child {
+  border-radius: 0.5rem 0.2rem 0.5rem 1rem;
 }
