@@ -8,10 +8,7 @@ import com.api.upstagram.vo.Dm.DmChatRVO;
 import com.api.upstagram.vo.Dm.DmChatRoomUserRVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +28,10 @@ public class DmController {
         ResponseVO<List<DmChatRVO>> r = new ResponseVO<List<DmChatRVO>>();
         DmChatPVO pvo = new DmChatPVO();
         pvo.setDmChatRoomNo(Long.parseLong(dmChatRoomNo));
+
+        List<DmChatRVO> rvo = dmService.selectDmChatList(pvo);
+
+        r.setData(rvo);
 
         return r;
     }
@@ -82,4 +83,19 @@ public class DmController {
     * */
 
 
+    /*
+    * Dm 보내기
+    * */
+    @PostMapping("/user/dm/send")
+    public ResponseVO<DmChatRVO> sendDm(@RequestBody DmChatPVO pvo){
+        log.info(this.getClass().getName() + " ==> DM Send");
+        ResponseVO<DmChatRVO> r = new ResponseVO<DmChatRVO>();
+        pvo.setId(CommonUtils.getUserId());
+
+        DmChatRVO rvo = dmService.dmSend(pvo).dmChatToRVO();
+
+        r.setData(rvo);
+
+        return r;
+    }
 }

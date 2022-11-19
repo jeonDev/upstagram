@@ -13,22 +13,24 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Header/>
-        <Routes>
-            {/* Main */}
-            <Route exact path="/" element={<Main/>}/>
-            <Route path='/main' element={<Main/>}/>
+        <div className='main-layout'>
+          <Routes>
+              {/* Main */}
+              <Route exact path="/" element={<Main/>}/>
+              <Route path='/main' element={<Main/>}/>
 
-            {/* Login */}
-            <Route path='/join' element={<Join/>}/>
-            <Route path='/login/callback/' element={<OAuth2CallbackGoogle/>}/>
+              {/* Login */}
+              <Route path='/join' element={<Join/>}/>
+              <Route path='/login/callback/' element={<OAuth2CallbackGoogle/>}/>
 
-            {/* DM */}
-            <Route path='/dm' element={<Dm/>}/>
-            <Route path='/dm/list' element={<DmList/>}/>
+              {/* DM */}
+              <Route path='/dm' element={<Dm/>}/>
+              <Route path='/dm/list' element={<DmList/>}/>
 
-            {/* Not Found */}
-            <Route component={() => <Link to="/" />} />
-        </Routes>
+              {/* Not Found */}
+              <Route component={() => <Link to="/" />} />
+          </Routes>
+        </div>
       </BrowserRouter>
     </div>
   );

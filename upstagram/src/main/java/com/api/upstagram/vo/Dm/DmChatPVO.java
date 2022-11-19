@@ -7,4 +7,5 @@ public class DmChatPVO {
     private String id;
     private String receiveId;
     private Long dmChatRoomNo;
+    private String message;
 }

@@ -1,8 +1,10 @@
 package com.api.upstagram.vo.Dm;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class DmChatRVO {
     private Long dmChatNo;
 
@@ -17,11 +19,4 @@ public class DmChatRVO {
     private String sendSex;
     private String sendTel;
     private String sendOauthNo;
-
-    private String receiveId;
-    private String receiveName;
-    private String receiveNickname;
-    private String receiveSex;
-    private String receiveTel;
-    private String receiveOauthNo;
 }

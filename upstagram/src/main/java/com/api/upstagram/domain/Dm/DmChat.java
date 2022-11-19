@@ -2,6 +2,7 @@ package com.api.upstagram.domain.Dm;
 
 import com.api.upstagram.domain.BaseEntity;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
+import com.api.upstagram.vo.Dm.DmChatRVO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,5 +39,20 @@ public class DmChat extends BaseEntity {
         this.member = member;
         this.message = message;
         this.viewYn = viewYn;
+    }
+
+    public DmChatRVO dmChatToRVO() {
+        return DmChatRVO.builder()
+                .dmChatNo(this.dmChatNo)
+                .dmChatRoomNo(this.dmChatRoom.getDmChatRoomNo())
+                .message(this.message)
+                .viewYn(this.viewYn)
+                .sendId(this.member.getId())
+                .sendName(this.member.getName())
+                .sendNickname(this.member.getNickname())
+                .sendSex(this.member.getSex())
+                .sendTel(this.member.getTel())
+                .sendOauthNo(this.member.getOauthNo())
+                .build();
     }
 }
