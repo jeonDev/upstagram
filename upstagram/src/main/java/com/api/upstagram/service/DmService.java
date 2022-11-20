@@ -7,6 +7,7 @@ import com.api.upstagram.domain.Dm.*;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
 import com.api.upstagram.vo.Dm.DmChatPVO;
 import com.api.upstagram.vo.Dm.DmChatRVO;
+import com.api.upstagram.vo.Dm.DmChatRoomUserRVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -52,8 +53,19 @@ public class DmService {
     /*
     * Dm 채팅방 목록 가져오기
     * */
-    public List<DmChatRoomUser> selectDmChatRoomList(DmChatPVO pvo) {
-        return dmChatRoomUserRepository.findByDmChatRoomList(pvo.getId());
+    public List<DmChatRoomUserRVO> selectDmChatRoomList(DmChatPVO pvo) {
+        return dmChatRoomUserRepository.findByDmChatRoomList(pvo.getId())
+                .stream()
+                .map(m -> DmChatRoomUserRVO.builder()
+                                .dmChatRoomNo(m.getDmChatRoomNo())
+                                .id(m.getId())
+                                .name(m.getName())
+                                .nickname(m.getNickname())
+                                .sex(m.getSex())
+                                .tel(m.getTel())
+                                .oauthNo(m.getOauthNo())
+                                .build())
+                .collect(Collectors.toList());
     }
 
     /*
