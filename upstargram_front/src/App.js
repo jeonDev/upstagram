@@ -7,8 +7,23 @@ import Main from "./component/Main/Main";
 import Dm from "./component/Dm/Dm";
 import DmList from "./component/Dm/DmList";
 import Header from './template/Header';
+import { selectUserInfo } from './api/LoginApi';
+import { useEffect } from 'react';
 
 function App() {
+  
+  const getUserInfo = async() => {
+    const token = localStorage.getItem("Authorization");
+    if(!token) return;
+  
+    const result = await selectUserInfo();
+    
+  }
+  
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
   return (
     <div className="App">
       <BrowserRouter>

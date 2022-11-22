@@ -32,3 +32,14 @@ export async function tokenReIssueRequest(){
             return Promise.reject(error);
         })
 }
+
+// 회원정보 조회 및 Token 유효 확인
+export async function selectUserInfo() {
+    return await httpRequest.get('user/info/get')
+    .then( (response) => {
+        return response.data;
+    })
+    .catch( (error) => {
+        return Promise.reject(error);
+    })
+}

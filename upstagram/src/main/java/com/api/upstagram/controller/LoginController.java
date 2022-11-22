@@ -110,4 +110,21 @@ public class LoginController {
 
         return r;
     }
+
+    /*
+     * 사용자 조회
+     * */
+    @GetMapping("/user/info/get")
+    public ResponseVO<MemberInfoRVO> getUserInfo() {
+        log.info(this.getClass().getName() + " ==> Get User Info");
+        MemberInfoPVO pvo = new MemberInfoPVO();
+        pvo.setId(CommonUtils.getUserId());
+        ResponseVO<MemberInfoRVO> r = new ResponseVO<MemberInfoRVO>();
+
+        MemberInfoRVO rvo = loginService.selectMemberInfo(pvo).memberInfoToRVO();
+
+        r.setData(rvo);
+
+        return r;
+    }
 }

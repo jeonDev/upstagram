@@ -249,10 +249,21 @@ public class LoginService {
     }
 
     /*
-    * 회원정보 조회
+    * 회원정보 전체 조회
     * */
     public List<MemberInfo> selectMemberInfoList() {
         return memberInfoRepository.selectMemberInfoList();
     }
 
+    /*
+    * 회원정보 조회
+    * */
+    public MemberInfo selectMemberInfo(MemberInfoPVO pvo) {
+        Optional<MemberInfo> memberInfoOpt = memberInfoRepository.findByIdAndUseYn(pvo.getId(), "Y");
+        if(memberInfoOpt.isPresent()) {
+            return memberInfoOpt.get();
+        } else {
+            throw new CustomException(Response.UNAUTHORIZED_ERROR.getCode(), Response.UNAUTHORIZED_ERROR.getMessage());
+        }
+    }
 }
