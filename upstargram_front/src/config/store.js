@@ -3,6 +3,7 @@ import { createStore } from "redux";
 const userInfo = {
     id : '',
     name : '',
+    nickname : '',
     sex : '',
     tel : ''
 }
@@ -10,12 +11,14 @@ const userInfo = {
 const rootReducer = (state = userInfo, action) => {
     switch (action.type) {
         case "SET_USER" :
+            console.log("SET_USER : " + action.payload)
             return {
                 ...state,
-                id:action.id,
-                name:action.name,
-                sex:action.sex,
-                tel:action.tel
+                id:action.payload.id,
+                name:action.payload.name,
+                nickname:action.payload.nickname,
+                sex:action.payload.sex,
+                tel:action.payload.tel
             };
         default:
             return state;

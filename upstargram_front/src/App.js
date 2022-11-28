@@ -9,19 +9,23 @@ import DmList from "./component/Dm/DmList";
 import Header from './template/Header';
 import { selectUserInfo } from './api/LoginApi';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setUserInfo } from './config/action';
 
 function App() {
   
-  const getUserInfo = async() => {
+  const dispatch = useDispatch();
+
+  const loginUserInfo = async() => {
     const token = localStorage.getItem("Authorization");
     if(!token) return;
   
     const result = await selectUserInfo();
-    
+    dispatch(setUserInfo(result.data));
   }
   
   useEffect(() => {
-    getUserInfo();
+    loginUserInfo();
   }, []);
 
   return (

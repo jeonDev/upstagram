@@ -1,12 +1,14 @@
 import { Card } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 const DmCard = (props) => {
     const {dm} = props;
-    // TODO: 아이디 비교해서 메시지 누가보냈는지 체크
+    const id = useSelector((state) => state.id);
+
     return (
-        <div className={dm.sendId ? 'my-text-div' : 'friend-text-div'}>
-            <div className={dm.sendId ? 'my-text-container' : 'friend-text-div'}>
-                <div className={dm.sendId ? 'my-text' : 'friend-text'}>{ dm.message }</div>
+        <div className={dm.sendId === id ? 'my-text-div' : 'friend-text-div'}>
+            <div className={dm.sendId === id ? 'my-text-container' : 'friend-text-div'}>
+                <div className={dm.sendId === id ? 'my-text' : 'friend-text'}>{ dm.message }</div>
             </div>
         </div>
     )
