@@ -10,13 +10,13 @@ import java.util.List;
 public interface DmChatRoomUserRepository extends JpaRepository<DmChatRoomUser, Long> {
     @Query(nativeQuery = true,
             value =
-            "SELECT A.DM_CHAT_ROOM_NO" +
-            "     , target.ID" +
-            "     , m.NAME" +
-            "     , m.NICKNAME" +
-            "     , m.SEX" +
-            "     , m.TEL " +
-            "     , m.OAUTH_NO" +
+            "SELECT A.DM_CHAT_ROOM_NO AS dmChatRoomNo" +
+            "     , target.ID AS id" +
+            "     , m.NAME AS name" +
+            "     , m.NICKNAME AS nickname" +
+            "     , m.SEX AS sex" +
+            "     , m.TEL AS tel" +
+            "     , m.OAUTH_NO AS oauthNo" +
             "  FROM (" +
             "       SELECT dcr.DM_CHAT_ROOM_NO" +
             "            , MAX(dcru.DM_ROOM_USER_NO) AS DM_ROOM_USER_NO" +
