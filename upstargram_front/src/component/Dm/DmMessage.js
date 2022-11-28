@@ -20,12 +20,23 @@ const DmMessage = (props) => {
     const sendDmMessage = async () => {
         
         const result = await sendDmChat(data.message, dmChatRoom)
-        .then((response) => {
-            // TODO: List에 추가
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+        console.log(result);
+        if(result.code === 200) {
+            console.log(result);
+            setDmChatList({
+                ...dmChatList,
+                dmChatNo : result.data.dmChatNo,
+                dmChatRoomNo : result.data.dmChatRoomNo,
+                message : result.data.message,
+                sendId : result.data.sendId,
+                sendName : result.data.sendName,
+                sendNickname : result.data.sendNickname,
+                sendOauthNo : result.data.sendOauthNo,
+                sendSex : result.data.sendSex,
+                sendTel : result.data.sendTel,
+                viewYn : result.data.viewYn
+            })
+        }
         ;
     }
 

@@ -57,19 +57,20 @@ const DmList = () => {
             setDmChatList(response.data);
         })
         .catch((error) => {
-
+            console.log(error);
         });
     }
 
     useEffect(() => {
+        console.log(dmChatRoom);
         if(dmChatRoom === '' || dmChatRoom === null) return;
 
         dmRoomPart(dmChatRoom);
     } , [dmChatRoom])
 
     return (
-        <div className="container bg-light" style={{height:'100%'}}>
-            <div className="d-flex justify-content-between">
+        <div className="container bg-light" style={{height:'1000px'}}>
+            <div className="d-flex justify-content-between" style={{height:'100%'}}>
 
                 {/* DM Chat Room 목록 */}
                 <div className="col-sm-4 border p-1">
@@ -107,7 +108,7 @@ const DmList = () => {
                 <div className="col-sm-8 border p-1 position-relative">
                     {/* 출력창 */}
                     
-                    <Card variant="outlined" style={{height: '85%'}}>
+                    <Card variant="outlined" className="overflow-auto" style={{height: '95%'}}>
                         {
                             dmChatList.map( (dm, idx) => (
                                 <DmCard
@@ -136,7 +137,7 @@ const DmList = () => {
 export default DmList;
 
 const dmStyle ={
-    height: '150px',
+    height: '50%',
     overflowY: 'scroll',
     MsOverflowStyle: 'none'
 }
