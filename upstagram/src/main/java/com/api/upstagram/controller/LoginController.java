@@ -60,6 +60,19 @@ public class LoginController {
     }
 
     /*
+    * 로그아웃
+    * */
+    @PostMapping("/user/logout")
+    public ResponseVO<Void> logout(HttpServletResponse response) {
+        log.info(this.getClass().getName() + " ==> Logout");
+        ResponseVO<Void> r = new ResponseVO<Void>();
+
+        loginService.logout(response);
+
+        return r;
+    }
+
+    /*
     * Token 재발급
     * */
     @PostMapping("/token/re/issue")

@@ -11,6 +11,17 @@ export async function login (data) {
     })
 }
 
+// 로그아웃
+export async function logout () {
+    return await httpRequest.post('user/logout')
+    .then( (response) => {
+        return response.data;
+    })
+    .catch( (error) => {
+        return Promise.reject(error);
+    })
+}
+
 // 회원가입
 export async function join (data) {
     return await httpRequest.post('join', data)

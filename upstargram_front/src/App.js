@@ -10,6 +10,7 @@ import Header from './template/Header';
 import { selectUserInfo } from './api/LoginApi';
 import { useDispatch } from 'react-redux';
 import { setUserInfo } from './config/action';
+import Mypage from './component/Login/Mypage';
 
 function App() {
   
@@ -38,6 +39,7 @@ function App() {
               {/* Login */}
               <Route path='/join' element={<Join/>}/>
               <Route path='/login/callback/' element={<OAuth2CallbackGoogle/>}/>
+              <Route path='/mypage' element={<Mypage/>}/>
 
               {/* DM */}
               <Route path='/dm' element={<Dm/>}/>

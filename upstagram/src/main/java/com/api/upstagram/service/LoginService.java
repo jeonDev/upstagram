@@ -179,6 +179,13 @@ public class LoginService {
     }
 
     /*
+     * 로그아웃
+     * */
+    public void logout(HttpServletResponse response) {
+        CommonUtils.setHttpCookie(new CookieInfo(""), response);
+    }
+
+    /*
     * Token 재발급
     * */
     public Token tokenReIssue(String refreshToken) {
@@ -266,4 +273,5 @@ public class LoginService {
             throw new CustomException(Response.UNAUTHORIZED_ERROR.getCode(), Response.UNAUTHORIZED_ERROR.getMessage());
         }
     }
+
 }
