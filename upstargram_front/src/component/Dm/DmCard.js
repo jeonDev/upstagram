@@ -1,9 +1,5 @@
-import { Card } from "react-bootstrap";
-import { useSelector } from "react-redux";
-
 const DmCard = (props) => {
-    const {dm} = props;
-    const id = useSelector((state) => state.id);
+    const {dm, id} = props;
 
     return (
         <div className={dm.sendId === id ? 'my-text-div' : 'friend-text-div'}>

@@ -33,7 +33,7 @@ const Login = (props) => {
                     const token = response.data.accessToken;
                     localStorage.setItem("Authorization", token);
                     // alert(response.message);
-                    navigate("/main");
+                    window.location.href = '/main';
                     close();
                 }
             })

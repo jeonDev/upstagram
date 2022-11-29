@@ -8,7 +8,6 @@ import Dm from "./component/Dm/Dm";
 import DmList from "./component/Dm/DmList";
 import Header from './template/Header';
 import { selectUserInfo } from './api/LoginApi';
-import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUserInfo } from './config/action';
 
@@ -24,9 +23,7 @@ function App() {
     dispatch(setUserInfo(result.data));
   }
   
-  useEffect(() => {
-    loginUserInfo();
-  }, []);
+  loginUserInfo();
 
   return (
     <div className="App">

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { selectDmChatRoomList, createDmChatRoom, selectDmChatList } from "../../api/DmApi";
 import { selectFollowList } from "../../api/FollowApi";
 import FollowCard from "../Follow/FollowCard";
@@ -12,6 +13,7 @@ const DmList = () => {
     const [dmChatRoom, setDmChatRoom] = useState('');               // 선택된 DM Room No
     const [dmChatRoomList, setDmChatRoomList] = useState([]);       // DM 채팅방 리스트
     const [dmChatList, setDmChatList] = useState([]);               // Dm 채팅 목록
+    const id = useSelector(state => state.id);                      // Login ID
 
     useEffect(() => {
         dmChatRoomSearch();
@@ -54,7 +56,8 @@ const DmList = () => {
     const dmRoomPart = async (dmChatRoomNo) => {
         await selectDmChatList(dmChatRoomNo)
         .then((response) => {
-            setDmChatList(response.data);
+            console.log(response);
+            setDmChatList(response.data);   // DM 내역 세팅
         })
         .catch((error) => {
             console.log(error);
@@ -69,16 +72,16 @@ const DmList = () => {
     } , [dmChatRoom])
 
     return (
-        <div className="container bg-light" style={{height:'1000px'}}>
+        <div className="container bg-light" style={{height:'800px'}}>
             <div className="d-flex justify-content-between" style={{height:'100%'}}>
 
                 {/* DM Chat Room 목록 */}
-                <div className="col-sm-4 border p-1">
+                <div className="col-sm-4 border">
 
                     {/* 채팅방 목록 */}
                     <div style={dmStyle}>
                         {dmChatRoomList.map( (room, idx) => (
-                            <div key={idx}>
+                            <div key={idx} className="mb-1">
                                 <DmRoomCard
                                     room={room}
                                     dmChatRoom={dmChatRoom}
@@ -91,7 +94,7 @@ const DmList = () => {
                     {/* Follow */}
                     <div style={dmStyle}>
                         {followMember.map( (follow, idx) => (
-                            <div key={idx}>
+                            <div key={idx} className="mb-1">
                                 <FollowCard
                                     followYn={'Y'}
                                     id={follow.followId}
@@ -110,10 +113,18 @@ const DmList = () => {
                     
                     <Card variant="outlined" className="overflow-auto" style={{height: '95%'}}>
                         {
+                            dmChatList.length === 0 && (
+                                <div className="text-center w-100 m-auto h1">
+                                    메시지를 보내세요.
+                                </div>
+                            )
+                        }
+                        {
                             dmChatList.map( (dm, idx) => (
                                 <DmCard
                                     key={idx}
                                     dm={dm}
+                                    id={id}
                                 />
                             ))
                         }
@@ -139,5 +150,6 @@ export default DmList;
 const dmStyle ={
     height: '50%',
     overflowY: 'scroll',
+    overflowX: 'hidden',
     MsOverflowStyle: 'none'
 }
