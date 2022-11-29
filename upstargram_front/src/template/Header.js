@@ -3,9 +3,12 @@ import {Link} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import Login from "../component/Login/Login";
 import Modal from "./Modal";
+import { useSelector } from "react-redux";
+import isNotEmpty from "../config/utils";
 
 const Header = () => {
     const [loginModalOpen, setloginModalOpen] = useState(false);
+    const id = useSelector(state => state.id);
 
     // Login Modal open & close
     const loginModal = () => {
@@ -17,7 +20,6 @@ const Header = () => {
 
     /** Navigate */
     //const navigate = useNavigate();
-
 
     return (
         <>
@@ -33,12 +35,19 @@ const Header = () => {
                             <img className="" alt="메인" width={'30px;'} src={'/images/home.png'}/>
                         </Link>
                     </span>
-                    <span className="p-3" onClick={loginModal}>
-                        <img className="" alt="로그인" width={'30px;'} src={'/images/mypage.jpg'}/>
-                    </span>
-                    {/* <span className="p-3">
-                        <img className="" alt="마이페이지" width={'30px;'} src={'/images/mypage.jpg'}/>
-                    </span> */}
+                    {
+                        isNotEmpty(id)
+                        ? 
+                        <span className="p-3" onClick={loginModal}>
+                            <img className="" alt="로그인" width={'30px;'} src={'/images/mypage.jpg'}/>
+                        </span>
+                        :
+                        <span className="p-3">
+                            <Link to='/mypage'>
+                                <img className="" alt="마이페이지" width={'30px;'} src={'/images/mypage.jpg'}/>
+                            </Link>
+                        </span>
+                    }
                     <span className="p-3">
                         <Link to='/search'>
                             <img className="" alt="검색" width={'30px;'} src={'/images/search.png'}/>
