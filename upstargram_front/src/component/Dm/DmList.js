@@ -3,6 +3,7 @@ import { Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { selectDmChatRoomList, createDmChatRoom, selectDmChatList } from "../../api/DmApi";
 import { selectFollowList } from "../../api/FollowApi";
+import isNotEmpty from "../../config/utils";
 import FollowCard from "../Follow/FollowCard";
 import DmCard from "./DmCard";
 import DmMessage from "./DmMessage";
@@ -45,7 +46,8 @@ const DmList = () => {
     const followDmChatRoomCreate = async (dmId) => {
         await createDmChatRoom(dmId)
             .then((response) => {
-                dmRoomPart(response.dmChatRoomNo);
+                dmRoomPart(response.data.dmChatRoomNo);
+                setDmChatRoom(response.data.dmChatRoomNo);
             })
             .catch((error) => {
                 console.log(error);
@@ -56,7 +58,6 @@ const DmList = () => {
     const dmRoomPart = async (dmChatRoomNo) => {
         await selectDmChatList(dmChatRoomNo)
         .then((response) => {
-            console.log(response);
             setDmChatList(response.data);   // DM 내역 세팅
         })
         .catch((error) => {
@@ -65,7 +66,6 @@ const DmList = () => {
     }
 
     useEffect(() => {
-        console.log(dmChatRoom);
         if(dmChatRoom === '' || dmChatRoom === null) return;
 
         dmRoomPart(dmChatRoom);
@@ -113,9 +113,10 @@ const DmList = () => {
                     
                     <Card variant="outlined" className="overflow-auto" style={{height: '95%'}}>
                         {
-                            dmChatList.length === 0 && (
+                            dmChatList.length === 0 && dmChatRoom !== '' && 
+                            (
                                 <div className="text-center w-100 m-auto h1">
-                                    메시지를 보내세요.
+                                    첫 메시지를 보내보세요.
                                 </div>
                             )
                         }
