@@ -109,8 +109,15 @@ public class DmService {
     * Dm 전송
     * */
     public DmChat dmSend(DmChatPVO pvo) {
-        if(pvo.getDmChatRoomNo() == null || pvo.getDmChatRoomNo() == 0) throw new CustomException(Response.DUPLICATION_ERROR.getCode(), Response.DUPLICATION_ERROR.getMessage());
+
         if(StringUtils.isNotEmpty(pvo.getId())) throw new CustomException(Response.DUPLICATION_ERROR.getCode(), Response.DUPLICATION_ERROR.getMessage());
+
+        if(pvo.getDmChatRoomNo() == null || pvo.getDmChatRoomNo() == 0) {
+            if(StringUtils.isNotEmpty(pvo.getReceiveId())) throw new CustomException(Response.DUPLICATION_ERROR.getCode(), Response.DUPLICATION_ERROR.getMessage());
+
+            DmChatRoom dmChatRoom = this.dmChatRoomSave(pvo);
+            pvo.setDmChatRoomNo(dmChatRoom.getDmChatRoomNo());
+        }
 
         Optional<DmChatRoom> dmChatRoom = dmChatRoomRepository.findById(pvo.getDmChatRoomNo());
         MemberInfo member = MemberInfo.builder()
