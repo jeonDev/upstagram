@@ -23,10 +23,11 @@ export async function createDmChatRoom (id) {
 }
 
 // Dm 전송 (Data : message / dmChatRoomNo)
-export async function sendDmChat(message, dmChatRoomNo) {
+export async function sendDmChat(message, dmChatRoomNo, receiveId) {
     return await httpRequest.post("user/dm/send", {
         message : message,
-        dmChatRoomNo : dmChatRoomNo
+        dmChatRoomNo : dmChatRoomNo,
+        receiveId : receiveId
     })
         .then((response) => {
             return response.data;

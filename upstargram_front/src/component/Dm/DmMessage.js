@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { sendDmChat } from "../../api/DmApi";
 
 const DmMessage = (props) => {
-    const {dmChatRoom, dmChatList, setDmChatList} = props; // 방 No / DM 목록
+    const {dmChatRoom, dmChatList, setDmChatList, receiveId} = props; // 방 No / DM 목록
 
     const [data, setData] = useState({
         message : ''
@@ -31,7 +31,7 @@ const DmMessage = (props) => {
 
     // DM 전송
     const sendDmMessage = async () => {
-        const result = await sendDmChat(data.message, dmChatRoom)
+        const result = await sendDmChat(data.message, dmChatRoom, receiveId)
         
         if(result.code === 200) {
             setDmChatList([
