@@ -23,3 +23,16 @@ export async function feedKeepSave(feedNo) {
             return Promise.reject(error);
         })
 }
+
+// Feed 좋아요
+export async function feedHeartSave(feedNo) {
+    return await httpRequest.post('user/feed/heart/save', {
+        feedNo : feedNo
+    })
+    .then( (response) => {
+        return response.data
+    })
+    .catch( (error) => {
+        return Promise.reject(error);
+    })
+}

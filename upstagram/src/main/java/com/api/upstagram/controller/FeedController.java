@@ -74,7 +74,7 @@ public class FeedController {
     /*
     * Feed 좋아요 기능
     * */
-    @PostMapping("/user/feed/heart")
+    @PostMapping("/user/feed/heart/save")
     public ResponseVO<FeedHeartRVO> feedHeart(@RequestBody FeedHeartPVO pvo) {
         log.info(this.getClass().getName() + " ==> Feed 좋아요!");
         ResponseVO<FeedHeartRVO> r = new ResponseVO<FeedHeartRVO>();

@@ -16,4 +16,5 @@ public interface FeedInterface {
     String getFileNames();
     String getFileExts();
     Long getFeedKeepNo();
+    Long getFeedHeartNo();
 }

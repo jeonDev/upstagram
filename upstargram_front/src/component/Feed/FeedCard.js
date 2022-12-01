@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import "../../assets/css/Main.css";
-import {feedKeepSave} from "../../api/FeedApi";
+import {feedHeartSave, feedKeepSave} from "../../api/FeedApi";
 import utils from "../../config/utils";
 
 const FeedCard = (props) => {
     const {feed} = props;
     const [feedFile, setFeedFile] = useState([]);
     const [feedKeepYn, setFeedKeepYn] = useState( !utils.isNotEmpty(feed.feedKeepNo));
+    const [feedHeartYn, setFeedHeartYn] = useState (!utils.isNotEmpty(feed.feedHeartNo));
 
     useEffect( () => {
-        console.log(feed);
+        
         const feedFileNames = feed.feedFileNames.split(',');
         const feedFileExts = feed.feedExts.split(',');
 
@@ -25,10 +26,18 @@ const FeedCard = (props) => {
         }
     }, []);
 
+    // 피드 좋아요
+    const saveFeedHeart = async () => {
+        const result = await feedHeartSave(feed.feedNo);
+
+        if(result.code === 200) {
+            setFeedHeartYn(!feedHeartYn);
+        }
+    }
     // 피드 저장
-    const saveFeed = async () => {
-        console.log(feedKeepYn)
+    const saveFeedKeep = async () => {
         const result = await feedKeepSave(feed.feedNo);
+
         if(result.code === 200) {
             setFeedKeepYn(!feedKeepYn);
         }
@@ -74,13 +83,8 @@ const FeedCard = (props) => {
             {/* 버튼 */}
             <div className="d-flex justify-content-between p-2">
                 <div>
-                    <span className="pointer p-1">
-                        { true &&
-                            <img alt="좋아요" width={'30px;'} src={'/images/feed_heart_n.png'}/>
-                        }
-                        { false &&
-                            <img alt="좋아요 취소" width={'30px;'} src={'/images/feed_heart_y.png'}/>
-                        }
+                    <span className="pointer p-1" onClick={saveFeedHeart}>
+                        <img alt="좋아요" width={'30px;'} src={ feedHeartYn ? '/images/feed_heart_n.png' : '/images/feed_heart_y.png'}/>
                     </span>
                     <span className="pointer p-1">
                         <img alt="댓글" width={'30px;'} src={'/images/comment.png'}/>
@@ -90,7 +94,7 @@ const FeedCard = (props) => {
                     </span>
                 </div>
                 <div>
-                    <div className="pointer" onClick={saveFeed}>
+                    <div className="pointer" onClick={saveFeedKeep}>
                         <img alt="이미지" width={'30px;'} src={ feedKeepYn ? '/images/save_feed_y.png' : '/images/save_feed_n.png'}/>
                     </div>
                 </div>
