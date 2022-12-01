@@ -9,6 +9,7 @@ import com.api.upstagram.domain.Feed.*;
 import com.api.upstagram.domain.MemberInfo.MemberInfo;
 import com.api.upstagram.domain.MemberInfo.MemberInfoRepository;
 import com.api.upstagram.vo.Feed.*;
+import com.api.upstagram.vo.Search.SearchPVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -301,5 +302,13 @@ public class FeedService {
                         .feedFileNames(m.getFileNames())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    /*
+    * Feed Hashtag 조회
+    * */
+    public List<String> selectSearchHashtagList(SearchPVO pvo){
+        List<String> list = feedRepository.selectSearchHashtagList(pvo.getSearchValue());
+        return null;
     }
 }

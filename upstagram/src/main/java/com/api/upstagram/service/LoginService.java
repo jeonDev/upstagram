@@ -9,6 +9,7 @@ import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.CookieInfo;
 import com.api.upstagram.common.vo.Role;
 import com.api.upstagram.domain.MemberInfo.*;
+import com.api.upstagram.vo.Search.SearchPVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -272,6 +273,14 @@ public class LoginService {
         } else {
             throw new CustomException(Response.UNAUTHORIZED_ERROR.getCode(), Response.UNAUTHORIZED_ERROR.getMessage());
         }
+    }
+
+    /*
+    * 회원정보 조회
+    *  */
+    public List<MemberInfo> selectMemberInfoSearchList(SearchPVO pvo) {
+        List<MemberInfo> list = memberInfoRepository.selectSearchMemberInfoList(pvo.getId(), pvo.getSearchValue());
+        return list;
     }
 
 }

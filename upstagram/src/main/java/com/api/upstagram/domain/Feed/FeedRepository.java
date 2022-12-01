@@ -37,4 +37,10 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
             " GROUP BY f.feedNo" +
             " ORDER BY MAX(f.regDttm) DESC")
     List<FeedInterface> selectFeedList(@Param("id") String id);
+
+    @Query(value =
+            "SELECT f.hashtag" +
+            "  FROM Feed f"
+    )
+    List<String> selectSearchHashtagList(String searchValue);
 }
