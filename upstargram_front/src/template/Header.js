@@ -5,6 +5,7 @@ import Login from "../component/Login/Login";
 import Modal from "./Modal";
 import { useSelector } from "react-redux";
 import isNotEmpty from "../config/utils";
+import utils from "../config/utils";
 
 const Header = () => {
     const [loginModalOpen, setloginModalOpen] = useState(false);
@@ -36,7 +37,7 @@ const Header = () => {
                         </Link>
                     </span>
                     {
-                        isNotEmpty(id)
+                        utils.isNotEmpty(id)
                         ? 
                         <span className="p-3" onClick={loginModal}>
                             <img className="" alt="로그인" width={'30px;'} src={'/images/mypage.jpg'}/>
@@ -54,7 +55,7 @@ const Header = () => {
                         </Link>
                     </span>
                     <span className="p-3">
-                        <Link to='/dm/list'>
+                        <Link to='/dm'>
                             <img className="" alt="DM" width={'30px;'} src={'/images/dm.png'}/>
                         </Link>
                     </span>

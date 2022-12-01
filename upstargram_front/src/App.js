@@ -5,12 +5,12 @@ import OAuth2CallbackGoogle from './oauth/OAuth2CallbackGoogle';
 import Join from "./component/Login/Join";
 import Main from "./component/Main/Main";
 import Dm from "./component/Dm/Dm";
-import DmList from "./component/Dm/DmList";
 import Header from './template/Header';
 import { selectUserInfo } from './api/LoginApi';
 import { useDispatch } from 'react-redux';
 import { setUserInfo } from './config/action';
 import Mypage from './component/Login/Mypage';
+import Search from "./component/Search/Search";
 
 function App() {
   
@@ -43,7 +43,9 @@ function App() {
 
               {/* DM */}
               <Route path='/dm' element={<Dm/>}/>
-              <Route path='/dm/list' element={<DmList/>}/>
+
+              {/* Search */}
+              <Route path='/search' element={<Search/>}/>
 
               {/* Not Found */}
               <Route component={() => <Link to="/" />} />
