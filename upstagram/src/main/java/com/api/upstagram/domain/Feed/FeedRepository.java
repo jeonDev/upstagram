@@ -24,6 +24,7 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
             "     , COUNT(fc.feedCommentNo) AS feedCommentCnt" +
             "     , GROUP_CONCAT(ff.fileName)  AS fileNames " +
             "     , GROUP_CONCAT(ff.fileExt)  AS fileExts " +
+            "     , MAX(keep.feedKeepNo) AS feedKeepNo" +
             "  FROM Feed f" +
             "  JOIN FollowUser fu ON fu.followMember.id = f.member.id" +
             "   AND fu.idMember.id = :id" +
@@ -32,6 +33,7 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
             "  LEFT JOIN FeedHeart fh ON fh.feed.feedNo = f.feedNo" +
             "  JOIN FeedFile ff ON ff.feed.feedNo = f.feedNo" +
             "  LEFT JOIN FeedComment fc ON fc.feed.feedNo = f.feedNo" +
+            "  LEFT JOIN FeedKeep keep ON keep.feed.feedNo = f.feedNo" +
 //            "  LEFT JOIN FeedTag ft ON ft.feed.feedNo = f.feedNo" +
             " WHERE f.useYn = 'Y'" +
             " GROUP BY f.feedNo" +

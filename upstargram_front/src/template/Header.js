@@ -61,7 +61,7 @@ const Header = () => {
                     </span>
                     <span className="p-3">
                         <Link to='/feed/keep'>
-                            <img className="" alt="보관" width={'30px;'} src={'/images/save_feed.png'}/>
+                            <img className="" alt="보관" width={'30px;'} src={'/images/save_feed_y.png'}/>
                         </Link>
                     </span>
                     <span className="p-3">

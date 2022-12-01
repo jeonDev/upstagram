@@ -146,6 +146,7 @@ public class FeedService {
                         .feedCommentCnt(m.getFeedCommentCnt())
                         .feedFileNames(m.getFileNames())
                         .feedExts(m.getFileExts())
+                        .feedKeepNo(m.getFeedKeepNo())
                         .build())
                 .collect(Collectors.toList());
     }

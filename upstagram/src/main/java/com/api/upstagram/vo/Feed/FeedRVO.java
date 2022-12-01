@@ -23,4 +23,5 @@ public class FeedRVO {
 
     private String feedFileNames;
     private String feedExts;
+    private Long feedKeepNo;
 }

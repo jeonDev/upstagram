@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import "../../assets/css/Main.css";
+import {feedKeepSave} from "../../api/FeedApi";
+import utils from "../../config/utils";
 
 const FeedCard = (props) => {
     const {feed} = props;
     const [feedFile, setFeedFile] = useState([]);
+    const [feedKeepYn, setFeedKeepYn] = useState( !utils.isNotEmpty(feed.feedKeepNo));
 
     useEffect( () => {
+        console.log(feed);
         const feedFileNames = feed.feedFileNames.split(',');
         const feedFileExts = feed.feedExts.split(',');
 
@@ -20,6 +24,15 @@ const FeedCard = (props) => {
             ]);
         }
     }, []);
+
+    // 피드 저장
+    const saveFeed = async () => {
+        console.log(feedKeepYn)
+        const result = await feedKeepSave(feed.feedNo);
+        if(result.code === 200) {
+            setFeedKeepYn(!feedKeepYn);
+        }
+    }
 
     return (
         <div className={"container bg-light p-2 mt-3"} style={feedCard}>
@@ -63,22 +76,22 @@ const FeedCard = (props) => {
                 <div>
                     <span className="pointer p-1">
                         { true &&
-                            <img className="pointer" alt="좋아요" width={'30px;'} src={'/images/feed_heart_n.png'}/>
+                            <img alt="좋아요" width={'30px;'} src={'/images/feed_heart_n.png'}/>
                         }
                         { false &&
-                            <img className="pointer" alt="좋아요 취소" width={'30px;'} src={'/images/feed_heart_y.png'}/>
+                            <img alt="좋아요 취소" width={'30px;'} src={'/images/feed_heart_y.png'}/>
                         }
                     </span>
                     <span className="pointer p-1">
-                        <img className="pointer" alt="댓글" width={'30px;'} src={'/images/comment.png'}/>
+                        <img alt="댓글" width={'30px;'} src={'/images/comment.png'}/>
                     </span>
                     <span className="pointer p-1">
-                        <img className="pointer" alt="이미지" width={'30px;'} src={'/images/dm.png'}/>
+                        <img alt="이미지" width={'30px;'} src={'/images/dm.png'}/>
                     </span>
                 </div>
                 <div>
-                    <div>
-                        <img className="pointer" alt="이미지" width={'30px;'} src={'/images/save_feed.png'}/>
+                    <div className="pointer" onClick={saveFeed}>
+                        <img alt="이미지" width={'30px;'} src={ feedKeepYn ? '/images/save_feed_y.png' : '/images/save_feed_n.png'}/>
                     </div>
                 </div>
             </div>
@@ -106,7 +119,7 @@ const FeedCard = (props) => {
                         <input type="text" className="form-control" placeholder="댓글달기"/>
                     </div>
                     <div className="col-sm-3">
-                        <button className="btn btn-outline-primary">게시</button>
+                        <button className="btn btn-outline-primary w-100">게시</button>
                     </div>
                 </div>
             </Card>

@@ -10,3 +10,16 @@ export async function selectFeedList () {
             return Promise.reject(error);
         })
 }
+
+// Feed 보관
+export async function feedKeepSave(feedNo) {
+    return await httpRequest.post('user/feed/keep/save', {
+        feedNo : feedNo
+    })
+        .then( (response) => {
+            return response.data
+        })
+        .catch( (error) => {
+            return Promise.reject(error);
+        })
+}
