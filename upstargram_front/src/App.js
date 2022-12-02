@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { setUserInfo } from './config/action';
 import Mypage from './component/Login/Mypage';
 import Search from "./component/Search/Search";
+import FeedKeep from './component/Feed/Keep/FeedKeep';
 
 function App() {
   
@@ -46,6 +47,9 @@ function App() {
 
               {/* Search */}
               <Route path='/search' element={<Search/>}/>
+
+              {/* Keep */}
+              <Route path='/feed/keep' element={<FeedKeep/>}/>
 
               {/* Not Found */}
               <Route component={() => <Link to="/" />} />
