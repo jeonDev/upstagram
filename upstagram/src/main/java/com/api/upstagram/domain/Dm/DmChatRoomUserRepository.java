@@ -32,4 +32,6 @@ public interface DmChatRoomUserRepository extends JpaRepository<DmChatRoomUser, 
             "  JOIN MEMBER_INFO m ON target.ID = m.ID" +
             "   AND m.USE_YN = 'Y'")
     List<DmChatRoomUserInterface> findByDmChatRoomList(@Param("id") String id);
+
+    List<DmChatRoomUser> findAllByDmChatRoom(DmChatRoom dmChatRoom);
 }

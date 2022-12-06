@@ -10,6 +10,9 @@ import java.util.UUID;
 
 import com.api.upstagram.common.vo.CookieInfo;
 import com.api.upstagram.common.vo.FileInfo;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.multipart.MultipartFile;
@@ -106,5 +109,19 @@ public class CommonUtils {
 				.fileOriginName(fileName)
 				.fileExt(contentType)
 				.build();
+	}
+
+	/*
+	* String to Json Object
+	* */
+	public static JSONObject JsonToObjectParser(String jsonStr) {
+		JSONParser parser = new JSONParser();
+		JSONObject obj = null;
+		try {
+			obj = (JSONObject) parser.parse(jsonStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return obj;
 	}
 }
