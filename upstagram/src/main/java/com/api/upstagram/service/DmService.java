@@ -133,4 +133,11 @@ public class DmService {
 
         return dmChatRepository.save(dmChat);
     }
+
+    /*
+     * Dm 채팅방 유저목록 조회
+     * */
+    public List<DmChatRoomUser> selectDmChatRoomUser(DmChatRoom dmChatRoom) {
+        return dmChatRoomUserRepository.findAllByDmChatRoom(dmChatRoom);
+    }
 }
