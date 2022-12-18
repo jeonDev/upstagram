@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.api.upstagram.common.vo.ResponseVO;
 import com.api.upstagram.common.vo.Token;
-import com.api.upstagram.domain.MemberInfo.MemberInfo;
 import com.api.upstagram.service.LoginService;
 import com.api.upstagram.vo.MemberInfo.MemberInfoPVO;
 import com.api.upstagram.vo.MemberInfo.MemberInfoRVO;

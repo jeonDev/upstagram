@@ -1,7 +1,6 @@
 package com.api.upstagram.controller;
 
 import com.api.upstagram.common.vo.ResponseVO;
-import com.api.upstagram.domain.CommonCode.CommonCode;
 import com.api.upstagram.service.CommonService;
 import com.api.upstagram.vo.CommonCode.CommonCodePVO;
 import com.api.upstagram.vo.CommonCode.CommonCodeRVO;

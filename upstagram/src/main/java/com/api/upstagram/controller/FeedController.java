@@ -2,7 +2,7 @@ package com.api.upstagram.controller;
 
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
-import com.api.upstagram.domain.Feed.Feed;
+import com.api.upstagram.domain.Feed.Entity.Feed;
 import com.api.upstagram.service.FeedService;
 import com.api.upstagram.vo.Feed.*;
 import lombok.extern.slf4j.Slf4j;

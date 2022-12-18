@@ -2,7 +2,6 @@ package com.api.upstagram.common.interceptor;
 
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.util.StringUtils;
-import com.api.upstagram.domain.MemberInfo.LoginHistory;
 import com.api.upstagram.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
 
 @Slf4j
 @RequiredArgsConstructor

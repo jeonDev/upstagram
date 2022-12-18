@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.Response;
-import com.api.upstagram.domain.FollowUser.FollowUser;
-import com.api.upstagram.domain.FollowUser.FollowUserRepository;
-import com.api.upstagram.domain.MemberInfo.MemberInfo;
+import com.api.upstagram.domain.FollowUser.Entity.FollowUser;
+import com.api.upstagram.domain.FollowUser.Repository.FollowUserRepository;
+import com.api.upstagram.domain.MemberInfo.Entity.MemberInfo;
 import com.api.upstagram.vo.FollowUser.FollowUserPVO;
 
 import lombok.RequiredArgsConstructor;

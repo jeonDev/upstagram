@@ -2,7 +2,6 @@ package com.api.upstagram.service;
 
 import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.vo.Response;
-import com.api.upstagram.domain.MemberInfo.MemberInfo;
 import com.api.upstagram.vo.Search.SearchPVO;
 import com.api.upstagram.vo.Search.SearchRVO;
 import lombok.RequiredArgsConstructor;

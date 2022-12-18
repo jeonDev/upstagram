@@ -2,9 +2,9 @@ package com.api.upstagram.common.socket;
 
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.util.StringUtils;
-import com.api.upstagram.domain.Dm.DmChat;
-import com.api.upstagram.domain.Dm.DmChatRoom;
-import com.api.upstagram.domain.Dm.DmChatRoomUser;
+import com.api.upstagram.domain.Dm.Entity.DmChat;
+import com.api.upstagram.domain.Dm.Entity.DmChatRoom;
+import com.api.upstagram.domain.Dm.Entity.DmChatRoomUser;
 import com.api.upstagram.service.DmService;
 import com.api.upstagram.vo.Dm.DmChatPVO;
 import lombok.extern.slf4j.Slf4j;

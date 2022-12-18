@@ -2,9 +2,9 @@ package com.api.upstagram.service;
 
 import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.vo.Response;
-import com.api.upstagram.domain.CommonCode.CommonCode;
-import com.api.upstagram.domain.CommonCode.CommonCodeId;
-import com.api.upstagram.domain.CommonCode.CommonCodeRepository;
+import com.api.upstagram.domain.CommonCode.Entity.CommonCode;
+import com.api.upstagram.domain.CommonCode.Entity.CommonCodeId;
+import com.api.upstagram.domain.CommonCode.Repository.CommonCodeRepository;
 import com.api.upstagram.vo.CommonCode.CommonCodePVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

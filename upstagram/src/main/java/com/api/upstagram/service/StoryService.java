@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.api.upstagram.common.vo.FileInfo;
 import com.api.upstagram.vo.Story.*;
@@ -16,13 +15,13 @@ import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.util.StringUtils;
 import com.api.upstagram.common.vo.Response;
-import com.api.upstagram.domain.Story.Story;
-import com.api.upstagram.domain.Story.StoryReaction;
-import com.api.upstagram.domain.Story.StoryReactionRepository;
-import com.api.upstagram.domain.Story.StoryRepository;
-import com.api.upstagram.domain.Story.StoryWatching;
-import com.api.upstagram.domain.Story.StoryWatchingRepository;
-import com.api.upstagram.domain.MemberInfo.MemberInfo;
+import com.api.upstagram.domain.Story.Entity.Story;
+import com.api.upstagram.domain.Story.Entity.StoryReaction;
+import com.api.upstagram.domain.Story.Repository.StoryReactionRepository;
+import com.api.upstagram.domain.Story.Repository.StoryRepository;
+import com.api.upstagram.domain.Story.Entity.StoryWatching;
+import com.api.upstagram.domain.Story.Repository.StoryWatchingRepository;
+import com.api.upstagram.domain.MemberInfo.Entity.MemberInfo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

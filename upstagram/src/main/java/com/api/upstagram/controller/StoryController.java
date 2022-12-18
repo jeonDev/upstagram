@@ -7,15 +7,12 @@ import java.util.stream.Collectors;
 import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.util.StringUtils;
 import com.api.upstagram.common.vo.Response;
-import com.api.upstagram.domain.Story.StoryReaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
-import com.api.upstagram.domain.Story.Story;
-import com.api.upstagram.domain.Story.StoryWatching;
 import com.api.upstagram.service.StoryService;
 import com.api.upstagram.vo.Story.StoryPVO;
 import com.api.upstagram.vo.Story.StoryRVO;

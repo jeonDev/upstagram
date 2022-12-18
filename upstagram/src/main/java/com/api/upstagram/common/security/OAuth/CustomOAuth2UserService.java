@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.api.upstagram.domain.OauthMemberInfo.OauthMemberInfo;
+import com.api.upstagram.domain.OauthMemberInfo.Entity.OauthMemberInfo;
 
 import lombok.RequiredArgsConstructor;
 
