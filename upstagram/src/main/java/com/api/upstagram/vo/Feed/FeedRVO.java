@@ -1,5 +1,6 @@
 package com.api.upstagram.vo.Feed;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Data;
 
@@ -25,4 +26,24 @@ public class FeedRVO {
     private String feedExts;
     private Long feedKeepNo;
     private Long feedHeartNo;
+
+    @QueryProjection
+    public FeedRVO(Long feedNo, String title, String hashtag, String useYn, String id, String name, String nickname, String sex, String tel, String oauthNo, int feedHeartCnt, int feedCommentCnt, String feedFileNames, String feedExts, Long feedKeepNo, Long feedHeartNo) {
+        this.feedNo = feedNo;
+        this.title = title;
+        this.hashtag = hashtag;
+        this.useYn = useYn;
+        this.id = id;
+        this.name = name;
+        this.nickname = nickname;
+        this.sex = sex;
+        this.tel = tel;
+        this.oauthNo = oauthNo;
+        this.feedHeartCnt = feedHeartCnt;
+        this.feedCommentCnt = feedCommentCnt;
+        this.feedFileNames = feedFileNames;
+        this.feedExts = feedExts;
+        this.feedKeepNo = feedKeepNo;
+        this.feedHeartNo = feedHeartNo;
+    }
 }

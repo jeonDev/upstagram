@@ -30,8 +30,6 @@ public class Feed extends BaseIdEntity {
 
     private String useYn;
 
-    // TODO: 파일 관계 어떻게할지 수정 OneToMany
-
     @Builder
     public Feed(Long feedNo, MemberInfo member, String title, String hashtag, String useYn) {
         this.feedNo = feedNo;
