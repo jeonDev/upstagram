@@ -3,7 +3,7 @@ package com.api.upstagram.common.security.OAuth;
 import java.util.Map;
 
 import com.api.upstagram.common.vo.Role;
-import com.api.upstagram.domain.OauthMemberInfo.OauthMemberInfo;
+import com.api.upstagram.domain.OauthMemberInfo.Entity.OauthMemberInfo;
 
 import lombok.Builder;
 import lombok.Getter;
