@@ -2,12 +2,10 @@ package com.api.upstagram.domain.MemberInfo.Entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.api.upstagram.common.util.StringUtils;
+import com.api.upstagram.domain.FollowUser.Entity.FollowUser;
 import com.api.upstagram.vo.MemberInfo.MemberInfoPVO;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -62,6 +60,12 @@ public class MemberInfo extends BaseEntity {
     private LocalDateTime passwordChgDttm;
 
     private String useYn;
+
+    @OneToOne(mappedBy = "idMember")
+    private FollowUser idUser;
+
+    @OneToOne(mappedBy = "followMember")
+    private FollowUser followUser;
 
     /*
      * MemberInfo 생성

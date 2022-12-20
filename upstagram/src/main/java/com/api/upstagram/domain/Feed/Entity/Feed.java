@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,6 +30,18 @@ public class Feed extends BaseIdEntity {
     private String hashtag;
 
     private String useYn;
+
+    @OneToMany(mappedBy = "feed")
+    private List<FeedFile> feedFile;
+
+    @OneToMany(mappedBy = "feed")
+    private List<FeedHeart> feedHeart;
+
+    @OneToMany(mappedBy = "feed")
+    private List<FeedComment> feedComment;
+
+    @OneToMany(mappedBy = "feed")
+    private List<FeedKeep> feedKeep;
 
     @Builder
     public Feed(Long feedNo, MemberInfo member, String title, String hashtag, String useYn) {

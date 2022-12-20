@@ -30,8 +30,11 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
+    /**
+     * Feed List 조회
+     * */
     public List<FeedRVO> selectFeedList(String id) {
-        List<FeedRVO> list =  jpaQueryFactory
+        return jpaQueryFactory
                 .select(new QFeedRVO(
                         feed.feedNo.longValue(),
                         feed.title.max(),
@@ -48,25 +51,22 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
                         Expressions.stringTemplate("GROUP_CONCAT({0})", feedFile.fileName),
                         Expressions.stringTemplate("GROUP_CONCAT({0})", feedFile.fileExt),
                         feedKeep.feedKeepNo.max().as("feedKeepNo"),
-                        myFeedHeart.feedHeartNo.max().as("feedHeartNo") ))
+                        myFeedHeart.feedHeartNo.max().as("feedHeartNo")))
                 .from(feed)
                 .join(feed.member, memberInfo)
-                    .on(memberInfo.useYn.eq("Y"))          // 작성자 유저 정보 (사용여부 Y인 유저만)
-                .join(followUser.followMember, memberInfo)
+                    .on(memberInfo.useYn.eq("Y"))              // 작성자 유저 정보 (사용여부 Y인 유저만)
+                .join(memberInfo.followUser, followUser)
                     .on(followUser.idMember.id.eq(id))          // 내가 Follow 한 멤버의 Feed
-                .join(feedFile.feed, feed)                      // Upload 파일
-                .leftJoin(feedHeart.feed, feed)                 // Feed 좋아요
-                .leftJoin(myFeedHeart.feed, feed)
-                    .on(myFeedHeart.member.id.eq(id))           // Feed 좋아요 유무 체크
-                .leftJoin(feedComment.feed, feed)               // Feed 댓글 수
-                .leftJoin(feedKeep.feed, feed)
-                    .on(feedKeep.member.id.eq(id))              // Feed Keep 여부 체크
-                .where(feed.useYn.eq("Y"))                 // Feed 사용여부 체크
+                .join(feed.feedFile, feedFile)                      // Upload 파일
+                .leftJoin(feed.feedHeart, feedHeart)                // Feed 좋아요
+                .leftJoin(feed.feedHeart, myFeedHeart)
+                    .on(myFeedHeart.member.id.eq(id))               // Feed 좋아요 유무 체크
+                .leftJoin(feed.feedComment, feedComment)            // Feed 댓글 수
+                .leftJoin(feed.feedKeep, feedKeep)
+                    .on(feedKeep.member.id.eq(id))                  // Feed Keep 여부 체크
+                .where(feed.useYn.eq("Y"))                     // Feed 사용여부 체크
                 .groupBy(feed.feedNo)
-//                .orderBy()
                 .fetch();
-
-        return list;
     }
 
 }
