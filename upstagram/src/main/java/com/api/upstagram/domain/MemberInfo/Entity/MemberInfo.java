@@ -1,6 +1,7 @@
 package com.api.upstagram.domain.MemberInfo.Entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -61,11 +62,11 @@ public class MemberInfo extends BaseEntity {
 
     private String useYn;
 
-    @OneToOne(mappedBy = "idMember")
-    private FollowUser idUser;
+    @OneToMany(mappedBy = "idMember")
+    private List<FollowUser> idUser;
 
-    @OneToOne(mappedBy = "followMember")
-    private FollowUser followUser;
+    @OneToMany(mappedBy = "followMember")
+    private List<FollowUser> followUser;
 
     /*
      * MemberInfo 생성
