@@ -45,6 +45,8 @@ public class FeedService {
 
     private final MemberInfoRepository memberInfoRepository;
 
+    private final FeedDslRepository feedDslRepository;
+
     @Value("${resource-path}")
     private String resourePath;
 
@@ -131,26 +133,7 @@ public class FeedService {
      * Feed List 조회
      * */
     public List<FeedRVO> selectFeedList(FeedPVO pvo){
-        return feedRepository.selectFeedList(pvo.getId()).stream()
-                .map(m -> FeedRVO.builder()
-                        .feedNo(m.getFeedNo())
-                        .title(m.getTitle())
-                        .hashtag(m.getHashtag())
-                        .useYn(m.getUseYn())
-                        .id(m.getId())
-                        .name(m.getName())
-                        .nickname(m.getNickname())
-                        .sex(m.getSex())
-                        .tel(m.getTel())
-                        .oauthNo(m.getOauthNo())
-                        .feedHeartCnt(m.getFeedHeartCnt())
-                        .feedCommentCnt(m.getFeedCommentCnt())
-                        .feedFileNames(m.getFileNames())
-                        .feedExts(m.getFileExts())
-                        .feedKeepNo(m.getFeedKeepNo())
-                        .feedHeartNo(m.getFeedHeartNo())
-                        .build())
-                .collect(Collectors.toList());
+        return feedDslRepository.selectFeedList(pvo);
     }
 
     /*

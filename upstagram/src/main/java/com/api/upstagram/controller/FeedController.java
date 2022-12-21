@@ -42,12 +42,13 @@ public class FeedController {
      * Feed 조회
      * */
     @GetMapping("/user/feed/list")
-    public ResponseVO<List<FeedRVO>> feedList() {
+    public ResponseVO<List<FeedRVO>> feedList(@RequestParam(required = false) String feedKeepYn) {
         log.info(this.getClass().getName() + " ==> Feed 댓글 좋아요!");
         ResponseVO<List<FeedRVO>> r = new ResponseVO<List<FeedRVO>>();
 
         FeedPVO pvo = new FeedPVO();
         pvo.setId(CommonUtils.getUserId());
+        pvo.setFeedKeepYn(feedKeepYn);
 
         List<FeedRVO> rvo = feedService.selectFeedList(pvo);
 

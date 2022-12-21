@@ -10,6 +10,7 @@ public class FeedPVO {
     private String hashtag;
     private String useYn;
     private String id;
+    private String feedKeepYn;
 
     private List<String> tagId;
 }
