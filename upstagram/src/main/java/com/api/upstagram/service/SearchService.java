@@ -2,6 +2,7 @@ package com.api.upstagram.service;
 
 import com.api.upstagram.common.Exception.CustomException;
 import com.api.upstagram.common.vo.Response;
+import com.api.upstagram.domain.Feed.Repository.FeedDslRepository;
 import com.api.upstagram.vo.Search.SearchPVO;
 import com.api.upstagram.vo.Search.SearchRVO;
 import lombok.RequiredArgsConstructor;
@@ -20,18 +21,18 @@ public class SearchService {
 
     private final LoginService loginService;
 
-    private final FeedService feedService;
+    private final FeedDslRepository feedDslRepository;
     /*
     * 검색
     * */
-    public List<SearchRVO> selectSearchInfoList(SearchPVO pvo) {
+    public List<?> selectSearchInfoList(SearchPVO pvo) {
 
         String searchDivisionCode = pvo.getSearchDivisionCode();
-        List<SearchRVO> list = new ArrayList<>();
+        List<?> list = new ArrayList<>();
 
         // 사용자 조회
         if("1".equals(searchDivisionCode)) {
-            return loginService.selectMemberInfoSearchList(pvo).stream()
+            list = loginService.selectMemberInfoSearchList(pvo).stream()
                     .map(m -> SearchRVO.builder()
                             .id(m.getId())
                             .name(m.getName())
@@ -43,7 +44,7 @@ public class SearchService {
                     .collect(Collectors.toList());
         // 피드 조회 (해시태그)
         } else if ("2".equals(searchDivisionCode)) {
-
+            list = feedDslRepository.selectSearchFeedList(pvo);
         } else {
             throw new CustomException(Response.ARGUMNET_ERROR.getCode(), Response.ARGUMNET_ERROR.getMessage());
         }

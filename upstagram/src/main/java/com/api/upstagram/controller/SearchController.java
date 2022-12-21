@@ -20,21 +20,22 @@ public class SearchController {
     @Autowired
     private SearchService searchService;
 
-    /*
+    /**
     * 검색
+    * searchDivisionCode : 1 (사용자조회 : SearchRVO) / 2 : (피드 해시태그조회 : FeedRVO)
     * */
     @GetMapping("/user/search")
-    public ResponseVO<List<SearchRVO>> selectSearchInfoList(@RequestParam("searchDivisionCode") String searchDivisionCode
+    public ResponseVO<List<?>> selectSearchInfoList(@RequestParam("searchDivisionCode") String searchDivisionCode
             , @RequestParam(value = "searchValue", required = false) String searchValue) {
         log.info(this.getClass().getName() + " ==> 검색정보 조회");
-        ResponseVO<List<SearchRVO>> r = new ResponseVO<List<SearchRVO>>();
+        ResponseVO<List<?>> r = new ResponseVO<List<?>>();
 
         SearchPVO pvo = new SearchPVO();
         pvo.setSearchDivisionCode(searchDivisionCode);
         pvo.setSearchValue(searchValue);
         pvo.setId(CommonUtils.getUserId());
 
-        List<SearchRVO> rvo = searchService.selectSearchInfoList(pvo);
+        List<?> rvo = searchService.selectSearchInfoList(pvo);
         
         r.setData(rvo);
 

@@ -7,6 +7,7 @@ import com.api.upstagram.domain.MemberInfo.Entity.QMemberInfo;
 import com.api.upstagram.vo.Feed.FeedPVO;
 import com.api.upstagram.vo.Feed.FeedRVO;
 import com.api.upstagram.vo.Feed.QFeedRVO;
+import com.api.upstagram.vo.Search.SearchPVO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -83,4 +84,52 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
                 .fetch();
     }
 
+
+    /**
+     * Feed List 조회 (Hashtag)
+     * */
+    public List<FeedRVO> selectSearchFeedList(SearchPVO pvo) {
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+        // Feed 사용여부 체크
+        booleanBuilder.and(feed.useYn.eq("Y"));
+
+        // Feed Hashtag 조회
+        if(!StringUtils.isNotEmpty(pvo.getSearchDivisionCode()) && "2".equals(pvo.getSearchDivisionCode()))
+            booleanBuilder.and(feed.hashtag.eq(pvo.getSearchValue()));      // TODO: 조건 추가 필요 (파라미터.in(해시태그.split("#")))
+
+
+        return jpaQueryFactory
+                .select(new QFeedRVO(
+                        feed.feedNo.longValue(),
+                        feed.title.max(),
+                        feed.hashtag.max(),
+                        feed.useYn.max(),
+                        feed.member.id.max(),
+                        feed.member.name.max(),
+                        feed.member.nickname.max(),
+                        feed.member.sex.max(),
+                        feed.member.tel.max(),
+                        feed.member.oauthNo.max(),
+                        feedHeart.feedHeartNo.count().intValue(),
+                        feedComment.feedCommentNo.count().intValue(),
+                        Expressions.stringTemplate("GROUP_CONCAT({0})", feedFile.fileName),
+                        Expressions.stringTemplate("GROUP_CONCAT({0})", feedFile.fileExt),
+                        feedKeep.feedKeepNo.max().as("feedKeepNo"),
+                        myFeedHeart.feedHeartNo.max().as("feedHeartNo")))
+                .from(feed)
+                .join(feed.member, memberInfo)
+                    .on(memberInfo.useYn.eq("Y"))                  // 작성자 유저 정보 (사용여부 Y인 유저만)
+                .join(feed.feedFile, feedFile)                          // Upload 파일
+                .leftJoin(feed.feedHeart, feedHeart)                    // Feed 좋아요
+                .leftJoin(feed.feedHeart, myFeedHeart)
+                    .on(myFeedHeart.member.id.eq(pvo.getId()))          // Feed 좋아요 유무 체크
+                .leftJoin(feed.feedComment, feedComment)                // Feed 댓글 수
+                .leftJoin(feed.feedKeep, feedKeep)
+                    .on(feedKeep.member.id.eq(pvo.getId()))             // Feed Keep 여부 체크
+                .where(booleanBuilder)
+                .groupBy(feed.feedNo)
+                .fetch();
+    }
 }
