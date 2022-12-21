@@ -1,8 +1,10 @@
 import httpRequest from "../config/httpRequest";
 
 // Feed 조회
-export async function selectFeedList () {
-    return await httpRequest.get('user/feed/list')
+export async function selectFeedList (param) {
+    return await httpRequest.get('user/feed/list', {
+        params : param
+    })
         .then( (response) => {
             return response.data;
         })

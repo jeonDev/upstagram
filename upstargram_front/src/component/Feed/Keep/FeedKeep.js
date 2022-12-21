@@ -7,7 +7,8 @@ const FeedKeep = () => {
     const [feedList, setFeedList] = useState([]);
 
     const searchFeedKeepList = async () => {
-        const result = await selectFeedList();
+        const param = {feedKeepYn : 'Y'}
+        const result = await selectFeedList(param);
         
         if(result.code === 200) {
             setFeedList(result.data);
