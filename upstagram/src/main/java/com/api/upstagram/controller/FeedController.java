@@ -191,6 +191,7 @@ public class FeedController {
 
         FeedPVO pvo = new FeedPVO();
         pvo.setId(CommonUtils.getUserId());
+        pvo.setFeedKeepYn("Y");
 
         List<FeedRVO> rvo = feedService.selectFeedKeepList(pvo);
 

@@ -47,6 +47,8 @@ public class FeedService {
 
     private final FeedDslRepository feedDslRepository;
 
+    private final FeedHashtagRepository feedHashtagRepository;
+
     @Value("${resource-path}")
     private String resourePath;
 
@@ -64,7 +66,6 @@ public class FeedService {
         Feed feed = Feed.builder()
                 .member(memberInfo)
                 .title(pvo.getTitle())
-                .hashtag(pvo.getHashtag())
                 .useYn(pvo.getUseYn() != null ? pvo.getUseYn() : "Y")
                 .build();
 
@@ -75,6 +76,9 @@ public class FeedService {
 
         // 3. Feed Tag 추가
         this.feedTagSaveAll(pvo, feed);
+
+        // 4. Feed Hashtag 추가
+        this.feedHashtagSaveAll(pvo, feed);
 
         return feed;
     }
@@ -127,6 +131,31 @@ public class FeedService {
 
         if(feedTags.size() > 0)
             feedTagRepository.saveAll(feedTags);
+    }
+
+    /*
+    * Feed Hashtag 등록
+    * */
+    public void feedHashtagSaveAll(FeedPVO pvo, Feed feed) {
+        // 등록된 해시태그가 없을 경우 return
+        if(StringUtils.isNotEmpty(pvo.getHashtag())) return;
+
+        List<FeedHashtag> hashtagList = new ArrayList<FeedHashtag>();
+
+        for(String hashtag : pvo.getHashtag().split("#")) {
+
+            if(StringUtils.isNotEmpty(hashtag)) continue;
+
+            FeedHashtag feedHashtag = FeedHashtag.builder()
+                    .feed(feed)
+                    .hashtag(hashtag.trim())
+                    .build();
+
+            hashtagList.add(feedHashtag);
+        }
+
+        if(hashtagList.size() > 0)
+            feedHashtagRepository.saveAll(hashtagList);
     }
 
     /*
@@ -271,30 +300,7 @@ public class FeedService {
     * Feed 보관내역 조회
     * */
     public List<FeedRVO> selectFeedKeepList(FeedPVO pvo) {
-        return feedKeepRepository.selectFeedKeepList(pvo.getId()).stream()
-                .map(m -> FeedRVO.builder()
-                        .feedNo(m.getFeedNo())
-                        .title(m.getTitle())
-                        .hashtag(m.getHashtag())
-                        .useYn(m.getUseYn())
-                        .id(m.getId())
-                        .name(m.getName())
-                        .nickname(m.getNickname())
-                        .sex(m.getSex())
-                        .tel(m.getTel())
-                        .oauthNo(m.getOauthNo())
-                        .feedHeartCnt(m.getFeedHeartCnt())
-                        .feedCommentCnt(m.getFeedCommentCnt())
-                        .feedFileNames(m.getFileNames())
-                        .build())
-                .collect(Collectors.toList());
+        return feedDslRepository.selectFeedList(pvo);
     }
 
-    /*
-    * Feed Hashtag 조회
-    * */
-    public List<String> selectSearchHashtagList(SearchPVO pvo){
-        List<String> list = feedRepository.selectSearchHashtagList(pvo.getSearchValue());
-        return null;
-    }
 }

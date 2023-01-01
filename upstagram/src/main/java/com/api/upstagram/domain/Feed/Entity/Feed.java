@@ -27,12 +27,13 @@ public class Feed extends BaseIdEntity {
 
     private String title;
 
-    private String hashtag;
-
     private String useYn;
 
     @OneToMany(mappedBy = "feed")
     private List<FeedFile> feedFile;
+
+    @OneToMany(mappedBy = "feed")
+    private List<FeedHashtag> feedHashtags;
 
     @OneToMany(mappedBy = "feed")
     private List<FeedHeart> feedHeart;
@@ -44,11 +45,10 @@ public class Feed extends BaseIdEntity {
     private List<FeedKeep> feedKeep;
 
     @Builder
-    public Feed(Long feedNo, MemberInfo member, String title, String hashtag, String useYn) {
+    public Feed(Long feedNo, MemberInfo member, String title, String useYn) {
         this.feedNo = feedNo;
         this.member = member;
         this.title = title;
-        this.hashtag = hashtag;
         this.useYn = useYn;
     }
 
@@ -57,7 +57,6 @@ public class Feed extends BaseIdEntity {
         return FeedRVO.builder()
                 .feedNo(this.feedNo)
                 .title(this.title)
-                .hashtag(this.hashtag)
                 .useYn(this.useYn)
                 .id(this.member.getId())
                 .name(this.member.getName())

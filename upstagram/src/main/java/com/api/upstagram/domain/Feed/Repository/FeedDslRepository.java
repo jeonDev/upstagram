@@ -11,12 +11,14 @@ import com.api.upstagram.vo.Search.SearchPVO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+@Slf4j
 public class FeedDslRepository extends QuerydslRepositorySupport {
 
     private final JPAQueryFactory jpaQueryFactory;
@@ -28,6 +30,7 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
     private QFeedHeart myFeedHeart = QFeedHeart.feedHeart;
     private QFeedComment feedComment = QFeedComment.feedComment;
     private QFeedKeep feedKeep = QFeedKeep.feedKeep;
+    private QFeedHashtag feedHashtag = QFeedHashtag.feedHashtag;
 
     public FeedDslRepository(JPAQueryFactory jpaQueryFactory) {
         super(Feed.class);
@@ -53,7 +56,7 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
                 .select(new QFeedRVO(
                         feed.feedNo.longValue(),
                         feed.title.max(),
-                        feed.hashtag.max(),
+                        Expressions.stringTemplate("GROUP_CONCAT({0}, '#')", feedHashtag.hashtag),
                         feed.useYn.max(),
                         feed.member.id.max(),
                         feed.member.name.max(),
@@ -79,6 +82,7 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
                 .leftJoin(feed.feedComment, feedComment)                // Feed 댓글 수
                 .leftJoin(feed.feedKeep, feedKeep)
                     .on(feedKeep.member.id.eq(pvo.getId()))             // Feed Keep 여부 체크
+                .leftJoin(feed.feedHashtags, feedHashtag)               // Feed Hashtag
                 .where(booleanBuilder)
                 .groupBy(feed.feedNo)
                 .fetch();
@@ -96,15 +100,16 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
         booleanBuilder.and(feed.useYn.eq("Y"));
 
         // Feed Hashtag 조회
-        if(!StringUtils.isNotEmpty(pvo.getSearchDivisionCode()) && "2".equals(pvo.getSearchDivisionCode()))
-            booleanBuilder.and(feed.hashtag.eq(pvo.getSearchValue()));      // TODO: 조건 추가 필요 (파라미터.in(해시태그.split("#")))
+        if(!StringUtils.isNotEmpty(pvo.getSearchDivisionCode()) && "2".equals(pvo.getSearchDivisionCode())){
+            booleanBuilder.and(feedHashtag.hashtag.in(pvo.getSearchValue()));
+        }
 
 
         return jpaQueryFactory
                 .select(new QFeedRVO(
                         feed.feedNo.longValue(),
                         feed.title.max(),
-                        feed.hashtag.max(),
+                        Expressions.stringTemplate("GROUP_CONCAT({0}, '#')", feedHashtag.hashtag),
                         feed.useYn.max(),
                         feed.member.id.max(),
                         feed.member.name.max(),
@@ -128,6 +133,7 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
                 .leftJoin(feed.feedComment, feedComment)                // Feed 댓글 수
                 .leftJoin(feed.feedKeep, feedKeep)
                     .on(feedKeep.member.id.eq(pvo.getId()))             // Feed Keep 여부 체크
+                .leftJoin(feed.feedHashtags, feedHashtag)               // Feed Hashtag
                 .where(booleanBuilder)
                 .groupBy(feed.feedNo)
                 .fetch();
