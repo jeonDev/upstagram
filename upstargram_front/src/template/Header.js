@@ -32,6 +32,11 @@ const Header = () => {
                 </div>
                 <div>
                     <span className="p-3">
+                        <Link to='/feed/register'>
+                            <img className="" alt="등록" width={'30px;'} src={'/images/regist.png'}/>
+                        </Link>
+                    </span>
+                    <span className="p-3">
                         <Link to='/main'>
                             <img className="" alt="메인" width={'30px;'} src={'/images/home.png'}/>
                         </Link>
