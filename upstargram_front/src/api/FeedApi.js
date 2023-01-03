@@ -38,3 +38,17 @@ export async function feedHeartSave(feedNo) {
         return Promise.reject(error);
     })
 }
+
+// Feed 등록
+export async function feedRegister(data) {
+    return await httpRequest.post('user/feed/regist', data,
+    {
+        headers : {"Content-Type" : "multipart/form-data"}
+    })
+    .then( (response) => {
+        return response.data;
+    })
+    .catch( (error) => {
+        return Promise.reject(error);
+    })
+}
