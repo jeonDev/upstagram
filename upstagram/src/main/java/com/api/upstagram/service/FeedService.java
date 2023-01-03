@@ -138,11 +138,11 @@ public class FeedService {
     * */
     public void feedHashtagSaveAll(FeedPVO pvo, Feed feed) {
         // 등록된 해시태그가 없을 경우 return
-        if(StringUtils.isNotEmpty(pvo.getHashtag())) return;
+        if(pvo.getHashtag() == null || pvo.getHashtag().size() == 0) return;
 
         List<FeedHashtag> hashtagList = new ArrayList<FeedHashtag>();
 
-        for(String hashtag : pvo.getHashtag().split("#")) {
+        for(String hashtag : pvo.getHashtag()) {
 
             if(StringUtils.isNotEmpty(hashtag)) continue;
 

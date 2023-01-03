@@ -7,10 +7,10 @@ import java.util.List;
 @Data
 public class FeedPVO {
     private String title;
-    private String hashtag;
     private String useYn;
     private String id;
     private String feedKeepYn;
 
+    private List<String> hashtag;
     private List<String> tagId;
 }
