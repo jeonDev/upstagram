@@ -22,15 +22,6 @@ import java.util.List;
 public class FeedDslRepository extends QuerydslRepositorySupport {
 
     private final JPAQueryFactory jpaQueryFactory;
-    private QFeed feed = QFeed.feed;
-    private QFollowUser followUser = QFollowUser.followUser;
-    private QMemberInfo memberInfo = QMemberInfo.memberInfo;
-    private QFeedFile feedFile = QFeedFile.feedFile;
-    private QFeedHeart feedHeart = QFeedHeart.feedHeart;
-    private QFeedHeart myFeedHeart = QFeedHeart.feedHeart;
-    private QFeedComment feedComment = QFeedComment.feedComment;
-    private QFeedKeep feedKeep = QFeedKeep.feedKeep;
-    private QFeedHashtag feedHashtag = QFeedHashtag.feedHashtag;
 
     public FeedDslRepository(JPAQueryFactory jpaQueryFactory) {
         super(Feed.class);
@@ -41,6 +32,16 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
      * Feed List 조회
      * */
     public List<FeedRVO> selectFeedList(FeedPVO pvo) {
+
+        QFeed feed = QFeed.feed;
+        QFollowUser followUser = QFollowUser.followUser;
+        QMemberInfo memberInfo = QMemberInfo.memberInfo;
+        QFeedFile feedFile = QFeedFile.feedFile;
+        QFeedHeart feedHeart = QFeedHeart.feedHeart;
+        QFeedHeart myFeedHeart = QFeedHeart.feedHeart;
+        QFeedComment feedComment = QFeedComment.feedComment;
+        QFeedKeep feedKeep = QFeedKeep.feedKeep;
+        QFeedHashtag feedHashtag = QFeedHashtag.feedHashtag;
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
@@ -93,6 +94,15 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
      * Feed List 조회 (Hashtag)
      * */
     public List<FeedRVO> selectSearchFeedList(SearchPVO pvo) {
+
+        QFeed feed = QFeed.feed;
+        QMemberInfo memberInfo = QMemberInfo.memberInfo;
+        QFeedFile feedFile = QFeedFile.feedFile;
+        QFeedHeart feedHeart = QFeedHeart.feedHeart;
+        QFeedHeart myFeedHeart = QFeedHeart.feedHeart;
+        QFeedComment feedComment = QFeedComment.feedComment;
+        QFeedKeep feedKeep = QFeedKeep.feedKeep;
+        QFeedHashtag feedHashtag = QFeedHashtag.feedHashtag;
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
