@@ -66,7 +66,7 @@ public class FeedService {
         Feed feed = Feed.builder()
                 .member(memberInfo)
                 .title(pvo.getTitle())
-                .useYn(pvo.getUseYn() != null ? pvo.getUseYn() : "Y")
+                .useYn(!StringUtils.isNotEmpty(pvo.getUseYn()) ? pvo.getUseYn() : "Y")
                 .build();
 
         feed = feedRepository.save(feed);
