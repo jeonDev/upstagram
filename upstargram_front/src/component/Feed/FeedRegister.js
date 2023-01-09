@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
+import { Card } from "react-bootstrap";
 import { feedRegister } from "../../api/FeedApi";
 import "../../assets/css/Main.css";
 
@@ -24,26 +25,21 @@ const FeedRegister = () => {
     }
 
     // 이미지 등록
-    const onImageData = async (e) => {
+    const onImageData = (e) => {
         const fileList = e.target.files;
         const fileSize = fileList?.length;
+        let data = [...imageFile];
 
-        const data = [];
         for(let i = 0; i < fileSize; i++) {
-            const reader = new FileReader();
-            reader.readAsDataURL(fileList[i]);
-            reader.onloadend = async () => {
-                console.log(reader.result)
-                await setImageFile([
-                    ...imageFile,
-                    {
-                        file : fileList[i],
-                        viewImage : reader.result,
-                        type : fileList[i].type.slice(0, 5)
-                    }
-                ]);
-            }
+            const currentImageUrl = URL.createObjectURL(fileList[i]);
+
+            data.push({
+                file : fileList[i],
+                viewImage : currentImageUrl,
+                type : fileList[i].type.slice(0, 5)
+            })
         }
+        setImageFile(data);
     }
 
     // 피드 등록
@@ -92,15 +88,15 @@ const FeedRegister = () => {
 
     // 이미지 이동
     const moveImage = (divisionCode) => {
-        const maxSize = imageFile.length;
+        const maxSize = imageFile.length - 1;
         
-        // <
-        if(divisionCode == 0) {
-            if(0 == curImageIdx) setCurImageIdx(maxSize);
+        // Prev
+        if(divisionCode === 'prev') {
+            if(0 === curImageIdx) setCurImageIdx(maxSize);
             else setCurImageIdx(curImageIdx - 1);
-        // >
-        } else if(divisionCode == 1) {
-            if(maxSize == curImageIdx) setCurImageIdx(0);
+        // Next
+        } else if(divisionCode === 'next') {
+            if(maxSize === curImageIdx) setCurImageIdx(0);
             else setCurImageIdx(curImageIdx + 1);
         }
         
@@ -117,66 +113,59 @@ const FeedRegister = () => {
                 <hr/>
 
                 {/* 이미지 */}
-                <div>
-                    <div
-                        id="feed-image-list"
-                        className="carousel slide carousel-fade"
-                        // data-mdb-ride="carousel"
-                    >
-                        <div className="carousel-indicators">
-
-                        {
-                            imageFile.map((item, idx) => (
-                                <button
-                                    key={idx}
-                                    type="button"
-                                    data-mdb-target="#feed-image-list"
-                                    data-mdb-slide-to={idx}
-                                    className={curImageIdx === idx ? 'active' : ''}
-                                    aria-current="true"
-                                    aria-label={"Slide " + (idx + 1)}
-                                />
-                            ))
-                        }
+                <Card style={{height: '400px'}}>
+                    {
+                        imageFile.length === 0 
+                        &&
+                        <div className="w-100 h-100 bg-white card-body d-flex justify-content-center align-items-center">
+                            <h2>
+                                이미지를 등록하세요.
+                            </h2>
                         </div>
+                    }
+                    {
+                        imageFile.length > 0
+                        &&
+                        <div
+                            id="feed-image-list"
+                            className="carousel slide carousel-fade card-body"
+                            data-bs-touch="false"
+                            data-bs-interval="false"
+                        >
+                            <div className="carousel-inner">
+                                {
+                                    imageFile.map((item, idx) => (
+                                        <div key={idx} className={curImageIdx === idx ? 'carousel-item active' : 'carousel-item'}>
+                                            <img
+                                                src={item.viewImage}
+                                                className="d-block w-100 h-100"
+                                                alt="Feed Images"
+                                            />
+                                        </div>
+                                    ))
+                                }
+                                
+                            </div>
 
-                        <div className="carousel-inner">
-                            {
-                                imageFile.map((item, idx) => (
-                                    <div key={idx} className={curImageIdx === idx ? 'carousel-item active' : 'carousel-item'}>
-                                        <img
-                                            src={item.viewImage}
-                                            className="d-block w-100"
-                                            alt="Feed Images"
-                                        />
-                                    </div>
-                                ))
-                            }
-                            
+                            <button
+                                className="carousel-control-prev"
+                                type="button"
+                                onClick={ (divisionCode)=>{moveImage('prev')}}
+                            >
+                                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span className="visually-hidden">Previous</span>
+                            </button>
+                            <button
+                                className="carousel-control-next"
+                                type="button"
+                                onClick={ (divisionCode)=>{moveImage('next')}}
+                            >
+                                <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span className="visually-hidden">Next</span>
+                            </button>
                         </div>
-
-                        <button
-                            className="carousel-control-prev"
-                            type="button"
-                            onClick={ (divisionCode)=>{moveImage(0)}}
-                            // data-mdb-target="#carouselBasicExample"
-                            // data-mdb-slide="prev"
-                        >
-                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">Previous</span>
-                        </button>
-                        <button
-                            className="carousel-control-next"
-                            type="button"
-                            onClick={ (divisionCode)=>{moveImage(1)}}
-                            // data-mdb-target="#carouselBasicExample"
-                            // data-mdb-slide="next"
-                        >
-                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">Next</span>
-                        </button>
-                    </div>
-                </div>
+                    }
+                </Card>
                 <div>
                     <textarea 
                         className="form-control"
