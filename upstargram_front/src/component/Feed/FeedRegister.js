@@ -108,7 +108,6 @@ const FeedRegister = () => {
             <div>
                 <div className="m-3">
                     <h2>게시글 등록</h2>
-                    {imageFile.length}
                 </div>
                 <hr/>
 
@@ -128,14 +127,17 @@ const FeedRegister = () => {
                         &&
                         <div
                             id="feed-image-list"
-                            className="carousel slide carousel-fade card-body"
+                            className="carousel slide carousel-fade card-body p-0 h-100"
                             data-bs-touch="false"
                             data-bs-interval="false"
                         >
-                            <div className="carousel-inner">
+                            <div className="carousel-inner h-100">
                                 {
                                     imageFile.map((item, idx) => (
-                                        <div key={idx} className={curImageIdx === idx ? 'carousel-item active' : 'carousel-item'}>
+                                        <div key={idx} className={curImageIdx === idx ? 'carousel-item h-100 active' : 'carousel-item h-100'}>
+                                            <div className="position-absolute w-100 d-flex justify-content-end p-2" >
+                                                <h2 style={{zIndex: '5'}}>X</h2>
+                                            </div>
                                             <img
                                                 src={item.viewImage}
                                                 className="d-block w-100 h-100"
@@ -171,6 +173,7 @@ const FeedRegister = () => {
                         className="form-control"
                         placeholder="게시글 작성" 
                         name="title" 
+                        rows={10}
                         value={feed.title} 
                         onChange={handleData}
                         style={{resize:"none"}}
