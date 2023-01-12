@@ -1,4 +1,3 @@
-//import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import OAuth2CallbackGoogle from './oauth/OAuth2CallbackGoogle';
@@ -12,8 +11,8 @@ import { setUserInfo } from './config/action';
 import Mypage from './component/Login/Mypage';
 import Search from "./component/Search/Search";
 import FeedKeep from './component/Feed/Keep/FeedKeep';
-import { useEffect, useRef, useState } from 'react';
 import FeedRegister from './component/Feed/FeedRegister';
+import Login from './component/Login/Login';
 
 function App() {
   
@@ -27,7 +26,7 @@ function App() {
     dispatch(setUserInfo(result.data));
   }
   
-  loginUserInfo();
+  if(window.location.pathname !== '/login') loginUserInfo();
 
   return (
     <div className="App">
@@ -41,6 +40,7 @@ function App() {
 
               {/* Login */}
               <Route path='/join' element={<Join/>}/>
+              <Route path='/login' element={<Login/>}/>
               <Route path='/login/callback/' element={<OAuth2CallbackGoogle/>}/>
               <Route path='/mypage' element={<Mypage/>}/>
 

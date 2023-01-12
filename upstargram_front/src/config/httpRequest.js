@@ -38,6 +38,7 @@ httpRequest.interceptors.response.use(
             const accessToken = localStorage.getItem("Authorization");
             if(!accessToken) {
                 alert("로그인 후 이용해주세요.");
+                window.location.href = '/login';
                 return false;
             }
 
@@ -56,6 +57,8 @@ httpRequest.interceptors.response.use(
             } else {
                 localStorage.removeItem("Authorization");
             }
+        } else {
+            window.location.href = '/login';
         }
         return Promise.reject(error);
     }
