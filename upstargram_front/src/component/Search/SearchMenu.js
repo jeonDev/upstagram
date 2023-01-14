@@ -2,7 +2,7 @@ import {Card} from "react-bootstrap";
 import { selectSearchList } from "../../api/SearchApi";
 
 const SearchMenu = (props) => {
-    const {searchInfo, setSearchInfo, setSearchInfoList} = props;
+    const {searchInfo, setSearchInfo, searchInfoList, setSearchInfoList} = props;
 
     // 값 변경
     const handleData = (e) => {
@@ -14,17 +14,20 @@ const SearchMenu = (props) => {
 
     // Enter 이벤트
     const onKeyEnter = async (e) => {
-        if(e.key == 'Enter') {
+        if(e.key === 'Enter') {
             search();
         }
     }
 
     // 검색
     const search = async () => {
+
         const result = await selectSearchList(searchInfo.searchDivisionCode, searchInfo.searchValue);
-        
+
         if(result.code === 200) {
-            console.log(result);
+            setSearchInfoList(result.data);
+        } else {
+            alert(result.message);
         }
     }
 

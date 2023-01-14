@@ -8,10 +8,10 @@ export async function selectSearchList (searchDivisionCode, searchValue) {
             searchValue : searchValue
         }
     })
-        .then( (response) => {
-            return response.data;
-        })
-        .catch( (error) => {
-            return Promise.reject(error);
-        })
+    .then( (response) => {
+        return response.data;
+    })
+    .catch( (error) => {
+        return error.response;
+    })
 }

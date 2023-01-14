@@ -13,11 +13,6 @@ const Search = (props) => {
 
     const [searchInfoList, setSearchInfoList] = useState([]);     // 검색결과
 
-    // 정보 조회
-    const selectSearchInfo = async () => {
-
-    }
-
     useEffect(() => {
         setSearchInfo({
             ...searchInfo,
@@ -32,11 +27,13 @@ const Search = (props) => {
                 <SearchMenu
                     searchInfo={searchInfo}
                     setSearchInfo={setSearchInfo}
+                    searchInfoList={searchInfoList}
                     setSearchInfoList={setSearchInfoList}
                 />
             </div>
             <div>
                 <SearchInfoList
+                    searchInfo={searchInfo}
                     searchInfoList={searchInfoList}
                 />
             </div>
