@@ -12,10 +12,11 @@ const FeedRegister = () => {
     const fileInput = useRef("");
     const [feed, setFeed] = useState({
        title    : '',
-       hashtag  : '',
        useYn    : 'Y',
+       hashtag  : [],
        tagId    : []
     });
+    const [insertClick, setInsertClick] = useState(false);
     const [imageFile, setImageFile] = useState([]);
     const [curImageIdx, setCurImageIdx] = useState(0);
 
@@ -45,9 +46,9 @@ const FeedRegister = () => {
         setImageFile(data);
     }
 
-    // 피드 등록
-    const registerFeed = async () => {
-
+    // Feed 등록 Click
+    const insertClickCheck = () => {
+        // 1. 입력값 체크
         if(imageFile.length === 0) {
             alert("이미지를 등록하세요.");
             return;
@@ -57,20 +58,29 @@ const FeedRegister = () => {
             return;
         }
 
+        // 2. insert
+        setInsertClick(true);
+        
+        // 3. 해시태그 추출 (set Hashtag)
+        extraHashtags(feed.title);
+    }
+
+    // Feed 등록
+    const registerFeed = async () => {
         let formData = new FormData();
-
-        const hashtag = extraHashtags(feed.title);
-        setFeed({
-            ...feed,
-            hashtag : hashtag
-        });
-
+        
+        // 1. 이미지 세팅
         for(let i = 0; i < imageFile.length; i++) {
             formData.append('files', imageFile[i].file);
         }
-        formData.append('pvo', new Blob([JSON.stringify(feed)], {type: "application/json"}));
 
+        // 2. 입력값 세팅
+        formData.append('pvo', new Blob([JSON.stringify(feed)], {type: "application/json"}));
+        
+        // 3. 입력
         const result = await feedRegister(formData);
+
+        // 4. 결과
         if(result.code === 200) {
             alert(result.message);
             navigate('/main');
@@ -97,7 +107,10 @@ const FeedRegister = () => {
             hashtag.push(str);
         }
 
-        return hashtag;
+        setFeed({
+            ...feed,
+            hashtag : hashtag
+        });
     }
 
     // 이미지 이동
@@ -116,7 +129,13 @@ const FeedRegister = () => {
         
     }
 
-
+    // useState setter 비동기로 인해 useEffect 사용.
+    useEffect(() => {
+        if(!insertClick) return;
+        setInsertClick(false);
+        registerFeed();
+    }, [feed]);
+    
     return (
         <div className={"container bg-light p-2 mt-3"}>
             <div>
@@ -208,8 +227,8 @@ const FeedRegister = () => {
                     />
                 </div>
                 {/* TODO: tagId */}
-                <div>
-                    <button className="btn btn-outline-primary" onClick={registerFeed}>피드 등록</button>
+                <div className="m-2">
+                    <button className="btn btn-outline-primary" onClick={insertClickCheck}>피드 등록</button>
                 </div>
             </div>
         </div>
