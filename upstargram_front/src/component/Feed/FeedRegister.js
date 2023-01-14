@@ -1,10 +1,13 @@
 import React, {useEffect, useRef, useState} from "react";
 import { Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { feedRegister } from "../../api/FeedApi";
 import "../../assets/css/Main.css";
 
 
 const FeedRegister = () => {
+
+    const navigate = useNavigate();
 
     const fileInput = useRef("");
     const [feed, setFeed] = useState({
@@ -28,7 +31,7 @@ const FeedRegister = () => {
     const onImageData = (e) => {
         const fileList = e.target.files;
         const fileSize = fileList?.length;
-        let data = [...imageFile];
+        let data = [];
 
         for(let i = 0; i < fileSize; i++) {
             const currentImageUrl = URL.createObjectURL(fileList[i]);
@@ -44,6 +47,16 @@ const FeedRegister = () => {
 
     // 피드 등록
     const registerFeed = async () => {
+
+        if(imageFile.length === 0) {
+            alert("이미지를 등록하세요.");
+            return;
+        }
+        if(feed.title.length === 0) {
+            alert("게시글을 입력하세요.");
+            return;
+        }
+
         let formData = new FormData();
 
         const hashtag = extraHashtags(feed.title);
@@ -58,10 +71,11 @@ const FeedRegister = () => {
         formData.append('pvo', new Blob([JSON.stringify(feed)], {type: "application/json"}));
 
         const result = await feedRegister(formData);
-
         if(result.code === 200) {
             alert(result.message);
+            navigate('/main');
         } else {
+            console.log(result);
             alert(result.message);
         }
     }
@@ -116,7 +130,7 @@ const FeedRegister = () => {
                     {
                         imageFile.length === 0 
                         &&
-                        <div className="w-100 h-100 bg-white card-body d-flex justify-content-center align-items-center">
+                        <div className="w-100 h-100 bg-white card-body d-flex justify-content-center align-items-center" onClick={() => fileInput.current.click()}>
                             <h2>
                                 이미지를 등록하세요.
                             </h2>
@@ -135,9 +149,6 @@ const FeedRegister = () => {
                                 {
                                     imageFile.map((item, idx) => (
                                         <div key={idx} className={curImageIdx === idx ? 'carousel-item h-100 active' : 'carousel-item h-100'}>
-                                            <div className="position-absolute w-100 d-flex justify-content-end p-2" >
-                                                <h2 style={{zIndex: '5'}}>X</h2>
-                                            </div>
                                             <img
                                                 src={item.viewImage}
                                                 className="d-block w-100 h-100"
@@ -168,6 +179,12 @@ const FeedRegister = () => {
                         </div>
                     }
                 </Card>
+                <div className="m-2">
+                {
+                    imageFile.length > 0 &&
+                    <button className="btn btn-outline-dark" onClick={() => fileInput.current.click()}>파일재등록</button>
+                }
+                </div>
                 <div>
                     <textarea 
                         className="form-control"
@@ -189,7 +206,6 @@ const FeedRegister = () => {
                         onChange={onImageData} 
                         style={{display:"none"}}
                     />
-                    <button className="btn btn-outline-dark" onClick={() => fileInput.current.click()}>파일업로드</button>
                 </div>
                 {/* TODO: tagId */}
                 <div>

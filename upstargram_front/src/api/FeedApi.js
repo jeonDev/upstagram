@@ -49,6 +49,6 @@ export async function feedRegister(data) {
         return response.data;
     })
     .catch( (error) => {
-        return Promise.reject(error);
+        return error.response.data;
     })
 }
