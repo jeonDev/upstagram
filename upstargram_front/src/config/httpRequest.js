@@ -57,7 +57,8 @@ httpRequest.interceptors.response.use(
             } else {
                 localStorage.removeItem("Authorization");
             }
-        } else {
+        } else if(error.response.status === 401) {
+            alert("로그인 후 이용해주세요.")
             window.location.href = '/login';
         }
         return Promise.reject(error);
