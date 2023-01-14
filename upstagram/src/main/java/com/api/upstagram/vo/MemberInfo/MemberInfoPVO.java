@@ -13,6 +13,6 @@ public class MemberInfoPVO {
     private String sex;
     private String tel;
     private String useYn;
-
     private String role;
+    private String profileImage;
 }

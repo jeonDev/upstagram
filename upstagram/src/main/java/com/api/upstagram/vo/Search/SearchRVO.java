@@ -11,4 +11,5 @@ public class SearchRVO {
     private String nickname;
     private String sex;
     private String tel;
+    private String profileImage;
 }

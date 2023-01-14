@@ -39,6 +39,7 @@ public class SearchService {
                             .nickname(m.getNickname())
                             .sex(m.getSex())
                             .tel(m.getTel())
+                            .profileImage((m.getProfileImage()))
                             .build()
                     )
                     .collect(Collectors.toList());

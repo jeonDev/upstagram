@@ -12,4 +12,5 @@ public class MemberInfoRVO {
     private String sex;
     private String tel;
     private String oauthNo;
+    private String profileImage;
 }

@@ -62,6 +62,8 @@ public class MemberInfo extends BaseEntity {
 
     private String useYn;
 
+    private String profileImage;
+
     @OneToMany(mappedBy = "idMember")
     private List<FollowUser> idUser;
 
@@ -74,7 +76,7 @@ public class MemberInfo extends BaseEntity {
     @Builder
     public MemberInfo(String id, String oauthNo, String password, String name, String nickname, String sex,
             String tel, String role, String pushViewYn, String tagAllowYn, LocalDateTime joinDttm, LocalDateTime lastLoginDttm,
-            int wrongPasswordNumber, LocalDateTime passwordChgDttm, String useYn) {
+            int wrongPasswordNumber, LocalDateTime passwordChgDttm, String useYn, String profileImage) {
         this.id = id;
         this.oauthNo = oauthNo;
         this.password = password;
@@ -90,6 +92,7 @@ public class MemberInfo extends BaseEntity {
         this.wrongPasswordNumber = wrongPasswordNumber;
         this.passwordChgDttm = passwordChgDttm;
         this.useYn = useYn;
+        this.profileImage = profileImage;
     }
     
     /* 로그인 성공 */
@@ -113,6 +116,7 @@ public class MemberInfo extends BaseEntity {
         if(!StringUtils.isNotEmpty(pvo.getTel())) this.tel = pvo.getTel();
         if(!StringUtils.isNotEmpty(pvo.getRole())) this.role = pvo.getRole();
         if(!StringUtils.isNotEmpty(pvo.getUseYn())) this.useYn = pvo.getUseYn();
+        if(!StringUtils.isNotEmpty(pvo.getProfileImage())) this.profileImage = pvo.getProfileImage();
         return this;
     }
 
@@ -124,6 +128,7 @@ public class MemberInfo extends BaseEntity {
                 .oauthNo(this.getOauthNo())
                 .sex(this.getSex())
                 .tel(this.getTel())
+                .profileImage(this.profileImage)
                 .build();
     }
 }
