@@ -303,4 +303,11 @@ public class FeedService {
         return feedDslRepository.selectFeedList(pvo);
     }
 
+    /**
+     * Hashtag 검색
+     * */
+    public List<FeedHashtagRVO> selectFeedHashtagList(SearchPVO pvo) {
+        return feedDslRepository.selectSearchHashtagList(pvo);
+    }
+
 }

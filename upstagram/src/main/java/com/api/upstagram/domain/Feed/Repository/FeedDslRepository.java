@@ -4,9 +4,7 @@ import com.api.upstagram.common.util.StringUtils;
 import com.api.upstagram.domain.Feed.Entity.*;
 import com.api.upstagram.domain.FollowUser.Entity.QFollowUser;
 import com.api.upstagram.domain.MemberInfo.Entity.QMemberInfo;
-import com.api.upstagram.vo.Feed.FeedPVO;
-import com.api.upstagram.vo.Feed.FeedRVO;
-import com.api.upstagram.vo.Feed.QFeedRVO;
+import com.api.upstagram.vo.Feed.*;
 import com.api.upstagram.vo.Search.SearchPVO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.Expressions;
@@ -89,6 +87,34 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
                 .fetch();
     }
 
+    /**
+     * Hashtag 조회
+     * */
+    public List<FeedHashtagRVO> selectSearchHashtagList(SearchPVO pvo) {
+        QFeedHashtag feedHashtag = QFeedHashtag.feedHashtag;
+        QFeed feed = QFeed.feed;
+        QMemberInfo memberInfo = QMemberInfo.memberInfo;
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+        if("2".equals(pvo.getSearchDivisionCode()) && !StringUtils.isNotEmpty(pvo.getSearchValue()))
+            booleanBuilder.and(feedHashtag.hashtag.contains(pvo.getSearchValue()));
+
+        return jpaQueryFactory
+                .select(new QFeedHashtagRVO(
+                        feedHashtag.hashtag,
+                        feedHashtag.hashtagNo.count().intValue()
+                ))
+                .from(feedHashtag)
+                .join(feedHashtag.feed, feed)
+                    .on(feed.useYn.eq("Y"))
+                .join(feed.member, memberInfo)
+                    .on(memberInfo.useYn.eq("Y"))
+                .where(booleanBuilder)
+                .groupBy(feedHashtag.hashtag)
+                .orderBy(feedHashtag.hashtagNo.count().desc())
+                .fetch();
+    }
 
     /**
      * Feed List 조회 (Hashtag)

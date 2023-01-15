@@ -12,8 +12,10 @@ import com.api.upstagram.domain.MemberInfo.Entity.LoginHistory;
 import com.api.upstagram.domain.MemberInfo.Entity.MemberInfo;
 import com.api.upstagram.domain.MemberInfo.Entity.MemberInfoHistory;
 import com.api.upstagram.domain.MemberInfo.Repository.LoginHistoryRepository;
+import com.api.upstagram.domain.MemberInfo.Repository.MemberInfoDslRepository;
 import com.api.upstagram.domain.MemberInfo.Repository.MemberInfoHistoryRepository;
 import com.api.upstagram.domain.MemberInfo.Repository.MemberInfoRepository;
+import com.api.upstagram.vo.MemberInfo.MemberInfoRVO;
 import com.api.upstagram.vo.Search.SearchPVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -40,6 +42,8 @@ public class LoginService {
     private final MemberInfoRepository memberInfoRepository;
 
     private final MemberInfoHistoryRepository memberInfoHistoryRepository;
+
+    private final MemberInfoDslRepository memberInfoDslRepository;
 
     private final LoginHistoryRepository loginHistoryRepository;
 
@@ -283,9 +287,8 @@ public class LoginService {
     /*
     * 회원정보 조회
     *  */
-    public List<MemberInfo> selectMemberInfoSearchList(SearchPVO pvo) {
-        List<MemberInfo> list = memberInfoRepository.selectSearchMemberInfoList(pvo.getId(), pvo.getSearchValue());
-        return list;
+    public List<MemberInfoRVO> selectMemberInfoSearchList(SearchPVO pvo) {
+        return memberInfoDslRepository.selectSearchMemberInfoList(pvo);
     }
 
 }
