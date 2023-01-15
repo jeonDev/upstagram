@@ -23,3 +23,16 @@ export async function insertFollowUser (followId) {
         return error.response;
     })
 }
+
+// Follow 취소
+export async function deleteFollowUser (followNo) {
+    return await httpRequest.post('user/follow/delete', {
+        followNo: followNo
+    })
+    .then( (response) => {
+        return response.data;
+    })
+    .catch( (error) => {
+        return error.response;
+    })
+}
