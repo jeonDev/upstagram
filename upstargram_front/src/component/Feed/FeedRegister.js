@@ -3,6 +3,9 @@ import { Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { feedRegister } from "../../api/FeedApi";
 import "../../assets/css/Main.css";
+import SearchInfoList from "../Search/SearchInfoList";
+import SearchMenu from "../Search/SearchMenu";
+import Modal from "../../template/Modal";
 
 
 const FeedRegister = () => {
@@ -19,6 +22,35 @@ const FeedRegister = () => {
     const [insertClick, setInsertClick] = useState(false);
     const [imageFile, setImageFile] = useState([]);
     const [curImageIdx, setCurImageIdx] = useState(0);
+    const [searchInfo, setSearchInfo] = useState({      // 검색어
+        searchDivisionCode : '1',        // 1 : 사용자, 2 : 해시태그, 3 : ?
+        searchValue : ''
+    });
+    const [searchInfoList, setSearchInfoList] = useState([]);
+    const [tagModal, setTagModal] = useState(false);
+
+    // Feed Tag Modal open & close
+    const feedTagModal = () => {
+        setTagModal(true);
+    };
+    const closeFeedTagModal = () => {
+        setTagModal(false);
+    };
+
+    // feed tag 사용자 클릭
+    const userInfoDetail = (item) => {
+        let data = [...feed.tagId];
+        if(data.includes(item.id)) {
+            alert("이미 선택된 사용자입니다.");
+            return;
+        };
+
+        data.push(item.id);
+        setFeed({
+            ...feed,
+            tagId : data
+        });
+    }
 
     // 값 변경
     const handleData = (e) => {
@@ -204,6 +236,21 @@ const FeedRegister = () => {
                     <button className="btn btn-outline-dark" onClick={() => fileInput.current.click()}>파일재등록</button>
                 }
                 </div>
+
+                {/* File */}
+                <div className="m-2">
+                    <input 
+                        type="file" 
+                        ref={fileInput} 
+                        className="form-control" 
+                        multiple={true} 
+                        name="files" 
+                        onChange={onImageData} 
+                        style={{display:"none"}}
+                    />
+                </div>
+
+                {/* Title */}
                 <div>
                     <textarea 
                         className="form-control"
@@ -215,18 +262,45 @@ const FeedRegister = () => {
                         style={{resize:"none"}}
                     />
                 </div>
-                <div>
-                    <input 
-                        type="file" 
-                        ref={fileInput} 
-                        className="form-control" 
-                        multiple={true} 
-                        name="files" 
-                        onChange={onImageData} 
-                        style={{display:"none"}}
-                    />
+
+                {/* Tag */}
+                <div className="m-2">
+                    {/* Modal Open */}
+                    <div>
+                        <button className="btn btn-outline-primary" onClick={feedTagModal}>태그</button>
+                    </div>
+
+                    {/* Feed Tag List */}
+                    <div>
+                        {/* TODO: TagId Css & nickname으로 출력 */}
+                        {feed.tagId.map((item, idx) => (
+                            <div>
+                                {item}
+                            </div>
+                        ))}
+                    </div>
+                    <Modal open={tagModal} close={closeFeedTagModal} header="Feed Tags">
+                        <div className="p-3">
+                            <SearchMenu
+                                searchInfo={searchInfo}
+                                setSearchInfo={setSearchInfo}
+                                searchInfoList={searchInfoList}
+                                setSearchInfoList={setSearchInfoList}
+                            />
+                        </div>
+                        <div>
+                            <SearchInfoList
+                                searchInfo={searchInfo}
+                                searchInfoList={searchInfoList}
+                                followYn={'N'}
+                                userDetailClick={(item) => userInfoDetail(item)}
+                                hashtagDetailClick={null}
+                            />
+                        </div>
+                    </Modal>
                 </div>
-                {/* TODO: tagId */}
+
+                {/* 등록 */}
                 <div className="m-2">
                     <button className="btn btn-outline-primary" onClick={insertClickCheck}>피드 등록</button>
                 </div>
