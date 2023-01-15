@@ -2,20 +2,13 @@ import {Card} from "react-bootstrap";
 import FollowCard from "../Follow/FollowCard";
 
 const SearchInfoList = (props) => {
-    const {searchInfo, searchInfoList} = props;
-
-    // 사용자 상세조회(Mypage)
-    const userInfoDetail = (id) => {
-        // TODO: navigate
-        console.log(id);
-    }
-
-    // 해시태그 상세조회(Feed)
-    const hashtagDetail = (hashtag) => {
-        // TODO: navigate
-        console.log(hashtag);
-    }
-
+    const {searchInfo           // 검색조건
+        , searchInfoList        // 결과값
+        , followYn              // 팔로우버튼 활성화 유무
+        , userDetailClick       // 사용자조회 클릭 이벤트
+        , hashtagDetailClick    // 해시태그조회 클릭 이벤트
+        } = props;
+    
     return (
         <Card>
             <div>
@@ -33,9 +26,9 @@ const SearchInfoList = (props) => {
                     searchInfoList.map((item, idx) => (
                         <div key={idx} className="m-2">
                             <FollowCard
-                                followYn={'Y'}
+                                followYn={followYn}
                                 memberInfo={item}
-                                onclickEvent={() => userInfoDetail(item.id)}
+                                onclickEvent={() => userDetailClick(item)}
                             />
                         </div>
                     ))
@@ -55,7 +48,7 @@ const SearchInfoList = (props) => {
                     :
                     searchInfoList.map((item, idx) => (
                         <div key={idx}>
-                            <Card className="m-2" onClick={() => hashtagDetail(item.hashtag)}>
+                            <Card className="m-2" onClick={() => hashtagDetailClick(item)}>
                                 <div className="row">
                                     <div className="col-sm-2 align-self-center pointer text-center">
                                         <img alt="이미지" width={'30px;'} src="/images/hashtag.png"/>
