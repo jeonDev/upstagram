@@ -19,11 +19,10 @@ const Search = () => {
                     사용자조회
                 </button>
                 <button type="button" className={searchDivisionCode === '2' ? "btn btn-light w-100 active" : "btn btn-light w-100"} onClick={() => handleData('2')}>
-                    피드 조회
+                    해시태그 조회
                 </button>
             </div>
 
-            {/* TODO: 버튼 클릭하면 구분 변경되게*/}
             <SearchDivision
                 searchDivisionCode={searchDivisionCode}
             />
