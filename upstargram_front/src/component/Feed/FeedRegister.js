@@ -19,6 +19,7 @@ const FeedRegister = () => {
        hashtag  : [],
        tagId    : []
     });
+    const [tagUser, setTagUser] = useState([])
     const [insertClick, setInsertClick] = useState(false);
     const [imageFile, setImageFile] = useState([]);
     const [curImageIdx, setCurImageIdx] = useState(0);
@@ -39,17 +40,22 @@ const FeedRegister = () => {
 
     // feed tag 사용자 클릭
     const userInfoDetail = (item) => {
-        let data = [...feed.tagId];
-        if(data.includes(item.id)) {
-            alert("이미 선택된 사용자입니다.");
-            return;
-        };
 
-        data.push(item.id);
-        setFeed({
-            ...feed,
-            tagId : data
-        });
+        setTagUser([
+            ...tagUser,
+            {
+                id : item.id,
+                name : item.name,
+                nickname : item.nickname
+            }
+        ]);
+
+    }
+
+    // feed tag 사용자 제거
+    const deleteTagId = (item) => {
+        const data = [...tagUser];
+        setTagUser(data.filter((tag) => tag !== item))
     }
 
     // 값 변경
@@ -167,6 +173,20 @@ const FeedRegister = () => {
         setInsertClick(false);
         registerFeed();
     }, [feed]);
+
+    useEffect(() => {
+
+        let data = [];
+
+        for(let i=0; i < tagUser.length; i++) {
+            data.push(tagUser[i].id);
+        }
+
+        setFeed({
+            ...feed,
+            tagId : data
+        });
+    }, [tagUser])
     
     return (
         <div className={"container bg-light p-2 mt-3"}>
@@ -271,14 +291,20 @@ const FeedRegister = () => {
                     </div>
 
                     {/* Feed Tag List */}
-                    <div>
-                        {/* TODO: TagId Css & nickname으로 출력 */}
-                        {feed.tagId.map((item, idx) => (
-                            <div>
-                                {item}
+                    <div className="d-flex justify-content-start">
+                        {tagUser.map((item, idx) => (
+                            <div className="m-1" key={idx}>
+                                <Card className="border border-primary rounded-pill p-2">
+                                    <span>
+                                        <span className="h5 blockquote">{item.nickname}({item.name})</span>
+                                        <span className="p-2 pointer" onClick={() => deleteTagId(item)}>X</span>
+                                    </span>
+                                </Card>
                             </div>
                         ))}
                     </div>
+
+                    {/* Tag Id 조회 Modal */}
                     <Modal open={tagModal} close={closeFeedTagModal} header="Feed Tags">
                         <div className="p-3">
                             <SearchMenu
@@ -288,7 +314,7 @@ const FeedRegister = () => {
                                 setSearchInfoList={setSearchInfoList}
                             />
                         </div>
-                        <div>
+                        <div style={{ maxHeight: 'calc(100vh - 400px)', overflowY: 'auto' }}>
                             <SearchInfoList
                                 searchInfo={searchInfo}
                                 searchInfoList={searchInfoList}
