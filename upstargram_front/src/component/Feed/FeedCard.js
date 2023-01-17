@@ -10,8 +10,7 @@ const FeedCard = (props) => {
     const [feedKeepYn, setFeedKeepYn] = useState( !utils.isNotEmpty(feed.feedKeepNo));
     const [feedHeartYn, setFeedHeartYn] = useState (!utils.isNotEmpty(feed.feedHeartNo));
 
-    useEffect( () => {
-        
+    useEffect( () => { 
         const feedFileNames = feed.feedFileNames.split(',');
         const feedFileExts = feed.feedExts.split(',');
 
@@ -24,7 +23,7 @@ const FeedCard = (props) => {
                 }
             ]);
         }
-    }, []);
+    }, [feed]);
 
     // 피드 좋아요
     const saveFeedHeart = async () => {
@@ -69,11 +68,11 @@ const FeedCard = (props) => {
                     {
                         feedFile.map((item, idx) => {
                             if(item.feedExt.split('/')[0] === 'image'){
-                                <img src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName}/>
+                                return <img src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName}/>;
                             } else if (item.feedExt.split('/')[0] === 'video'){
-                                <video autoplay>
-                                    <source src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName} type={item.feedExt}/>
-                                </video>
+                                return  <video autoplay>
+                                            <source src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName} type={item.feedExt}/>
+                                        </video>;
                             }
                         })
                     }
