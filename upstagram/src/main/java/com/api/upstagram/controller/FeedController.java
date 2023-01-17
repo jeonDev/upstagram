@@ -57,6 +57,21 @@ public class FeedController {
     }
 
     /*
+    * Feed Tag 조회
+    * */
+    @GetMapping("/user/feed/tag/list")
+    public ResponseVO<List<FeedTagRVO>> feedTagList(@RequestParam Long feedNo) {
+        log.info(this.getClass().getName() + " ==> Feed Tag List 조회" + feedNo);
+        ResponseVO<List<FeedTagRVO>> r = new ResponseVO<List<FeedTagRVO>>();
+
+        List<FeedTagRVO> rvo = feedService.selectFeedTagList(feedNo);
+
+        r.setData(rvo);
+
+        return r;
+    }
+
+    /*
     * Feed 수정
     * */
     @PostMapping("/user/feed/update")

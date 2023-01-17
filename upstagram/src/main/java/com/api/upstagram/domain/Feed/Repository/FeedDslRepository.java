@@ -80,8 +80,7 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
                         Expressions.stringTemplate("GROUP_CONCAT({0})", feedFile.fileName),
                         Expressions.stringTemplate("GROUP_CONCAT({0})", feedFile.fileExt),
                         feedKeep.feedKeepNo.max(),
-                        myFeedHeart.feedHeartNo.max(),
-                        Expressions.stringTemplate("GROUP_CONCAT({0})", tagMemberInfo.id)))
+                        myFeedHeart.feedHeartNo.max()))
                 .from(feed)
                 .join(feed.member, memberInfo)
                     .on(memberInfo.useYn.eq("Y"))                  // 작성자 유저 정보 (사용여부 Y인 유저만)
@@ -94,8 +93,6 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
                 .leftJoin(feed.feedComment, feedComment)                // Feed 댓글 수
                 .leftJoin(feed.feedKeep, feedKeep)
                     .on(feedKeep.member.id.eq(pvo.getId()))             // Feed Keep 여부 체크
-                .leftJoin(feed.feedTag, feedTag)                        // Feed Tag
-                .leftJoin(feedTag.member, tagMemberInfo)                // Feed Tag Id 정보
                 .leftJoin(feed.feedHashtags, feedHashtag)               // Feed Hashtag
                 .where(booleanBuilder)
                 .groupBy(feed.feedNo)

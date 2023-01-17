@@ -323,4 +323,21 @@ public class FeedService {
         return feedDslRepository.selectSearchHashtagList(pvo);
     }
 
+    /**
+     * Feed Tag List 조회
+     * */
+    public List<FeedTagRVO> selectFeedTagList(Long feedNo) {
+        return feedTagRepository.selectFeedTagList(feedNo).stream()
+                .map(m -> FeedTagRVO.builder()
+                        .feedTagNo(m.getFeedTagNo())
+                        .feedNo(m.getFeed().getFeedNo())
+                        .id(m.getMember().getId())
+                        .name(m.getMember().getName())
+                        .nickname(m.getMember().getNickname())
+                        .oauthNo(m.getMember().getOauthNo())
+                        .tel(m.getMember().getTel())
+                        .sex(m.getMember().getSex())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }
