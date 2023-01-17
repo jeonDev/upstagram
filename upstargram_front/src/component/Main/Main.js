@@ -14,7 +14,9 @@ const Main = () => {
 
     // Feed 조회
     const feedSearch = async () => {
-        await selectFeedList()
+        await selectFeedList({
+            feedDivisionCode : '1'
+        })
             .then((response) => {
                 setFeedList(response.data);
             })
