@@ -31,8 +31,8 @@ public class SearchService {
         String searchDivisionCode = pvo.getSearchDivisionCode();
         List<?> list = new ArrayList<>();
 
-        if("1".equals(searchDivisionCode)) list = loginService.selectMemberInfoSearchList(pvo);         // 사용자 조회
-        else if ("2".equals(searchDivisionCode)) list = feedService.selectFeedHashtagList(pvo);         // 피드 조회 (해시태그)
+        if("1".equals(searchDivisionCode) || "3".equals(searchDivisionCode)) list = loginService.selectMemberInfoSearchList(pvo); // 사용자 조회 & 태그 사용자 조회
+        else if ("2".equals(searchDivisionCode)) list = feedService.selectFeedHashtagList(pvo); // 피드 조회 (해시태그)
         else throw new CustomException(Response.ARGUMNET_ERROR.getCode(), Response.ARGUMNET_ERROR.getMessage());
 
         return list;

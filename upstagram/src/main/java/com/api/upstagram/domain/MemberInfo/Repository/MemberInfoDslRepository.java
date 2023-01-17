@@ -1,5 +1,6 @@
 package com.api.upstagram.domain.MemberInfo.Repository;
 
+import com.api.upstagram.common.util.StringUtils;
 import com.api.upstagram.domain.FollowUser.Entity.QFollowUser;
 import com.api.upstagram.domain.MemberInfo.Entity.MemberInfo;
 import com.api.upstagram.domain.MemberInfo.Entity.QMemberInfo;
@@ -7,7 +8,6 @@ import com.api.upstagram.vo.MemberInfo.MemberInfoRVO;
 import com.api.upstagram.vo.MemberInfo.QMemberInfoRVO;
 import com.api.upstagram.vo.Search.SearchPVO;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -35,6 +35,9 @@ public class MemberInfoDslRepository extends QuerydslRepositorySupport {
         booleanBuilder.and(memberInfo.id.ne(pvo.getId()));
         booleanBuilder.and(memberInfo.name.contains(pvo.getSearchValue())
                 .or(memberInfo.nickname.contains(pvo.getSearchValue())));
+
+        if(!StringUtils.isNotEmpty(pvo.getSearchDivisionCode()) && "3".equals(pvo.getSearchDivisionCode()))
+            booleanBuilder.and(memberInfo.tagAllowYn.eq("Y"));
 
         return jpaQueryFactory
                 .select(new QMemberInfoRVO(
