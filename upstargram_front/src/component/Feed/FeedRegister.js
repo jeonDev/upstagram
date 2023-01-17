@@ -24,7 +24,7 @@ const FeedRegister = () => {
     const [imageFile, setImageFile] = useState([]);
     const [curImageIdx, setCurImageIdx] = useState(0);
     const [searchInfo, setSearchInfo] = useState({      // 검색어
-        searchDivisionCode : '1',        // 1 : 사용자, 2 : 해시태그, 3 : ?
+        searchDivisionCode : '3',        // 1 : 사용자, 2 : 해시태그, 3 : 태그 아이디 조회
         searchValue : ''
     });
     const [searchInfoList, setSearchInfoList] = useState([]);

@@ -14,7 +14,9 @@ const SearchInfoList = (props) => {
             <div>
                 {
                 // User 조회
-                searchInfo.searchDivisionCode === '1'
+                (searchInfo.searchDivisionCode === '1'
+                || searchInfo.searchDivisionCode === '3'
+                )
                 &&
                 (
                     searchInfoList.length === 0 
