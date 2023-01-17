@@ -26,9 +26,10 @@ public class FeedRVO {
     private String feedExts;
     private Long feedKeepNo;
     private Long feedHeartNo;
+    private String feedTagIds;
 
     @QueryProjection
-    public FeedRVO(Long feedNo, String title, String hashtag, String useYn, String id, String name, String nickname, String sex, String tel, String oauthNo, int feedHeartCnt, int feedCommentCnt, String feedFileNames, String feedExts, Long feedKeepNo, Long feedHeartNo) {
+    public FeedRVO(Long feedNo, String title, String hashtag, String useYn, String id, String name, String nickname, String sex, String tel, String oauthNo, int feedHeartCnt, int feedCommentCnt, String feedFileNames, String feedExts, Long feedKeepNo, Long feedHeartNo, String feedTagIds) {
         this.feedNo = feedNo;
         this.title = title;
         this.hashtag = hashtag;
@@ -45,5 +46,6 @@ public class FeedRVO {
         this.feedExts = feedExts;
         this.feedKeepNo = feedKeepNo;
         this.feedHeartNo = feedHeartNo;
+        this.feedTagIds = feedTagIds;
     }
 }

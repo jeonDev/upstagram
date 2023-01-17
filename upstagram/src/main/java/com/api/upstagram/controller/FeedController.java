@@ -42,13 +42,12 @@ public class FeedController {
      * Feed 조회
      * */
     @GetMapping("/user/feed/list")
-    public ResponseVO<List<FeedRVO>> feedList(@RequestParam(required = false) String feedKeepYn) {
+    public ResponseVO<List<FeedRVO>> feedList(FeedListPVO pvo) {
         log.info(this.getClass().getName() + " ==> Feed 댓글 좋아요!");
+        log.info(pvo.toString());
         ResponseVO<List<FeedRVO>> r = new ResponseVO<List<FeedRVO>>();
 
-        FeedPVO pvo = new FeedPVO();
         pvo.setId(CommonUtils.getUserId());
-        pvo.setFeedKeepYn(feedKeepYn);
 
         List<FeedRVO> rvo = feedService.selectFeedList(pvo);
 
@@ -146,6 +145,7 @@ public class FeedController {
 
         return r;
     }
+
     /*
      * Feed 댓글 좋아요 기능
      * */
@@ -175,25 +175,6 @@ public class FeedController {
         pvo.setId(CommonUtils.getUserId());
 
         FeedKeepRVO rvo = feedService.feedKeepSave(pvo).feedKeepToRVO();
-
-        r.setData(rvo);
-
-        return r;
-    }
-
-    /*
-    * Feed 보관 내역 조회
-    * */
-    @GetMapping("/user/feed/keep/list")
-    public ResponseVO<List<FeedRVO>> feedKeepList() {
-        log.info(this.getClass().getName() + " ==> Feed 보관내역 조회");
-        ResponseVO<List<FeedRVO>> r = new ResponseVO<List<FeedRVO>>();
-
-        FeedPVO pvo = new FeedPVO();
-        pvo.setId(CommonUtils.getUserId());
-        pvo.setFeedKeepYn("Y");
-
-        List<FeedRVO> rvo = feedService.selectFeedKeepList(pvo);
 
         r.setData(rvo);
 

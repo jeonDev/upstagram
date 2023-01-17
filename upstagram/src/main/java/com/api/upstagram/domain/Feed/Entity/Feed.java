@@ -44,6 +44,9 @@ public class Feed extends BaseIdEntity {
     @OneToMany(mappedBy = "feed")
     private List<FeedKeep> feedKeep;
 
+    @OneToMany(mappedBy = "feed")
+    private List<FeedTag> feedTag;
+
     @Builder
     public Feed(Long feedNo, MemberInfo member, String title, String useYn) {
         this.feedNo = feedNo;

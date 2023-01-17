@@ -131,6 +131,8 @@ public class FeedService {
 
         if(feedTags.size() > 0)
             feedTagRepository.saveAll(feedTags);
+        
+        // TODO: 태그 아이디 알림
     }
 
     /*
@@ -160,8 +162,26 @@ public class FeedService {
 
     /*
      * Feed List 조회
+     * FeedDivisionCode
+     *  1 : 팔로우 Feed
+     *      - loginId
+     *  2 : Keep Feed
+     *      - keepYn : Y
+     *  3 : User Feed
+     *      - writerId
+     *  4 : Tag Feed
+     *      - tagId
+     *      - loginId => writerId
+     *  5 : Hashtag Feed
+     *      - hashtag
      * */
-    public List<FeedRVO> selectFeedList(FeedPVO pvo){
+    public List<FeedRVO> selectFeedList(FeedListPVO pvo){
+
+        if(StringUtils.isNotEmpty(pvo.getFeedDivisionCode())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), Response.ARGUMNET_ERROR.getMessage());
+
+        if("4".equals(pvo.getFeedDivisionCode()) && !StringUtils.isNotEmpty(pvo.getTagId()))
+            pvo.setWriterId(pvo.getId());
+
         return feedDslRepository.selectFeedList(pvo);
     }
 
@@ -294,13 +314,6 @@ public class FeedService {
                     .member(memberInfo)
                     .build());
         }
-    }
-
-    /*
-    * Feed 보관내역 조회
-    * */
-    public List<FeedRVO> selectFeedKeepList(FeedPVO pvo) {
-        return feedDslRepository.selectFeedList(pvo);
     }
 
     /**
