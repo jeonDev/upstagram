@@ -14,4 +14,6 @@ public class FeedHeartRVO {
     private String sex;
     private String tel;
     private String oauthNo;
+
+    private int feedHeartCnt;
 }

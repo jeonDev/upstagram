@@ -201,7 +201,13 @@ public class FeedService {
         if(StringUtils.isNotEmpty(pvo.getId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), "로그인 후에 이용해주세요.");
 
         Optional<FeedHeart> feedHeart = feedHeartRepository.findByFeedAndMember(
-                Feed.builder().feedNo(pvo.getFeedNo()).build(), MemberInfo.builder().id(pvo.getId()).build());
+                    Feed.builder()
+                        .feedNo(pvo.getFeedNo())
+                        .build(),
+                    MemberInfo.builder()
+                        .id(pvo.getId())
+                        .build()
+        );
 
         if(!feedHeart.isPresent()) {
             return feedHeartRepository.save(FeedHeart.builder()
@@ -211,8 +217,15 @@ public class FeedService {
         } else {
             FeedHeart deleteFeedHeart = feedHeart.get();
             feedHeartRepository.delete(deleteFeedHeart);
-            return deleteFeedHeart;
+            return null;
         }
+    }
+
+    /**
+     * Feed 좋아요 갯수 조회
+     * */
+    public int selectFeedHeartCnt(Long feedNo) {
+        return feedHeartRepository.selectFeedHeartCnt(feedNo);
     }
 
     /*

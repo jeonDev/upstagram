@@ -3,6 +3,7 @@ package com.api.upstagram.controller;
 import com.api.upstagram.common.util.CommonUtils;
 import com.api.upstagram.common.vo.ResponseVO;
 import com.api.upstagram.domain.Feed.Entity.Feed;
+import com.api.upstagram.domain.Feed.Entity.FeedHeart;
 import com.api.upstagram.service.FeedService;
 import com.api.upstagram.vo.Feed.*;
 import lombok.extern.slf4j.Slf4j;
@@ -96,8 +97,12 @@ public class FeedController {
 
         pvo.setId(CommonUtils.getUserId());
 
-        FeedHeartRVO rvo = feedService.feedHeartSave(pvo)
-                .feedHeartToRVO();
+        FeedHeart feedHeart = feedService.feedHeartSave(pvo);
+
+        FeedHeartRVO rvo = feedHeart != null ? feedHeart.feedHeartToRVO() : FeedHeartRVO.builder().build();
+
+        int feedHeartCnt = feedService.selectFeedHeartCnt(pvo.getFeedNo());
+        rvo.setFeedHeartCnt(feedHeartCnt);
 
         r.setData(rvo);
 
