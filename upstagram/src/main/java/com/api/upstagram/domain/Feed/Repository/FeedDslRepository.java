@@ -7,6 +7,7 @@ import com.api.upstagram.domain.MemberInfo.Entity.QMemberInfo;
 import com.api.upstagram.vo.Feed.*;
 import com.api.upstagram.vo.Search.SearchPVO;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -36,12 +37,10 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
         QMemberInfo memberInfo = QMemberInfo.memberInfo;
         QFeedFile feedFile = QFeedFile.feedFile;
         QFeedHeart feedHeart = QFeedHeart.feedHeart;
-        QFeedHeart myFeedHeart = QFeedHeart.feedHeart;
         QFeedComment feedComment = QFeedComment.feedComment;
         QFeedKeep feedKeep = QFeedKeep.feedKeep;
         QFeedHashtag feedHashtag = QFeedHashtag.feedHashtag;
         QFeedTag feedTag = QFeedTag.feedTag;
-        QMemberInfo tagMemberInfo = QMemberInfo.memberInfo;
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
@@ -75,12 +74,15 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
                         feed.member.sex.max(),
                         feed.member.tel.max(),
                         feed.member.oauthNo.max(),
-                        feedHeart.feedHeartNo.count().intValue(),
-                        feedComment.feedCommentNo.count().intValue(),
+                        feedHeart.feedHeartNo.countDistinct().intValue(),
+                        feedComment.feedCommentNo.countDistinct().intValue(),
                         Expressions.stringTemplate("GROUP_CONCAT({0})", feedFile.fileName),
                         Expressions.stringTemplate("GROUP_CONCAT({0})", feedFile.fileExt),
                         feedKeep.feedKeepNo.max(),
-                        myFeedHeart.feedHeartNo.max()))
+                        new CaseBuilder()
+                                .when(feedHeart.member.id.eq(pvo.getId())).then(feedHeart.feedHeartNo)
+                                .otherwise(0L).max())               // Feed Heart 좋아요 유무 체크
+                )
                 .from(feed)
                 .join(feed.member, memberInfo)
                     .on(memberInfo.useYn.eq("Y"))                  // 작성자 유저 정보 (사용여부 Y인 유저만)
@@ -88,8 +90,6 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
                     .on(followUser.idMember.id.eq(pvo.getId()))         // 내가 Follow 한 멤버의 Feed
                 .join(feed.feedFile, feedFile)                          // Upload 파일
                 .leftJoin(feed.feedHeart, feedHeart)                    // Feed 좋아요
-                .leftJoin(feed.feedHeart, myFeedHeart)
-                    .on(myFeedHeart.member.id.eq(pvo.getId()))          // Feed 좋아요 유무 체크
                 .leftJoin(feed.feedComment, feedComment)                // Feed 댓글 수
                 .leftJoin(feed.feedKeep, feedKeep)
                     .on(feedKeep.member.id.eq(pvo.getId()))             // Feed Keep 여부 체크
