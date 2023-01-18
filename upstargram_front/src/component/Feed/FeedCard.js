@@ -6,13 +6,16 @@ import utils from "../../config/utils";
 
 const FeedCard = (props) => {
     const {feed} = props;
+    const [onLoad, setOnLoad] = useState(false);
+    const [feedData, setFeedData] = useState(feed);
     const [feedFile, setFeedFile] = useState([]);
     const [feedKeepYn, setFeedKeepYn] = useState( !utils.isNotEmpty(feed.feedKeepNo));
-    const [feedHeartYn, setFeedHeartYn] = useState (!utils.isNotEmpty(feed.feedHeartNo));
 
     useEffect( () => { 
-        const feedFileNames = feed.feedFileNames.split(',');
-        const feedFileExts = feed.feedExts.split(',');
+        if(onLoad) return;
+        setOnLoad(true);
+        const feedFileNames = feedData.feedFileNames.split(',');
+        const feedFileExts = feedData.feedExts.split(',');
 
         for(let i=0; i < feedFileNames.length; i++) {
             setFeedFile([
@@ -23,19 +26,23 @@ const FeedCard = (props) => {
                 }
             ]);
         }
-    }, [feed]);
+    }, [feedData]);
 
     // 피드 좋아요
     const saveFeedHeart = async () => {
-        const result = await feedHeartSave(feed.feedNo);
+        const result = await feedHeartSave(feedData.feedNo);
 
         if(result.code === 200) {
-            setFeedHeartYn(!feedHeartYn);
+            setFeedData({
+                ...feedData,
+                feedHeartNo : result.data.feedHeartNo,
+                feedHeartCnt : result.data.feedHeartCnt
+            });
         }
     }
     // 피드 저장
     const saveFeedKeep = async () => {
-        const result = await feedKeepSave(feed.feedNo);
+        const result = await feedKeepSave(feedData.feedNo);
 
         if(result.code === 200) {
             setFeedKeepYn(!feedKeepYn);
@@ -52,7 +59,7 @@ const FeedCard = (props) => {
                     </div>
                     <div className={"col-sm-8 text-left"}>
                         <div>
-                            <span className="pointer p-2">{feed.nickname}</span>
+                            <span className="pointer p-2">{feedData.nickname}</span>
                             <span className="pointer p-2">팔로우</span>
                         </div>
                     </div>
@@ -64,18 +71,26 @@ const FeedCard = (props) => {
 
             {/* 이미지 및 동영상 */}
             <Card variant="outlined" className="mt-2">
-                <div className={"row bg-white m-auto"} style={style}>
-                    {
-                        feedFile.map((item, idx) => {
-                            if(item.feedExt.split('/')[0] === 'image'){
-                                return <img src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName}/>;
-                            } else if (item.feedExt.split('/')[0] === 'video'){
-                                return  <video autoplay>
-                                            <source src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName} type={item.feedExt}/>
-                                        </video>;
-                            }
-                        })
-                    }
+                <div
+                    id="feed-image-list"
+                    className="carousel slide carousel-fade card-body p-0 h-100"
+                    data-bs-touch="false"
+                    data-bs-interval="false"
+                    // style={style}
+                    >
+                        <div className="carousel-inner h-100">
+                        {
+                            feedFile.map((item, idx) => {
+                                if(item.feedExt.split('/')[0] === 'image'){
+                                    return <img src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName} key={idx}/>;
+                                } else if (item.feedExt.split('/')[0] === 'video'){
+                                    return  <video autoplay key={idx}>
+                                                <source src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName} type={item.feedExt}/>
+                                            </video>;
+                                }
+                            })
+                        }
+                        </div>
                 </div>
             </Card>
             
@@ -83,7 +98,7 @@ const FeedCard = (props) => {
             <div className="d-flex justify-content-between p-2">
                 <div>
                     <span className="pointer p-1" onClick={saveFeedHeart}>
-                        <img alt="좋아요" width={'30px;'} src={ feedHeartYn ? '/images/feed_heart_n.png' : '/images/feed_heart_y.png'}/>
+                        <img alt="좋아요" width={'30px;'} src={ utils.isNotEmpty(feedData.feedHeartNo) ? '/images/feed_heart_n.png' : '/images/feed_heart_y.png'}/>
                     </span>
                     <span className="pointer p-1">
                         <img alt="댓글" width={'30px;'} src={'/images/comment.png'}/>
@@ -102,16 +117,16 @@ const FeedCard = (props) => {
             {/* 좋아요, 게시글, 댓글 확인 */}
             <Card variant="outlined">
                 <div className="row p-2">
-                    <div className="pointer text-left">{'좋아요 : ' + feed.feedHeartCnt + '개'}</div>
+                    <div className="pointer text-left">{'좋아요 : ' + feedData.feedHeartCnt + '개'}</div>
                 </div>
                 <div className="row p-2">
                     <div className="text-left">
-                        <span className="pointer">{feed.nickname} </span> 
-                        <span className="pointer">{feed.title}</span>
+                        <span className="pointer">{feedData.nickname} </span> 
+                        <span className="pointer">{feedData.title}</span>
                     </div>
                 </div>
                 <div className="row pointer p-2">
-                    <div className="pointer text-left">{'댓글 ' + feed.feedCommentCnt + '건 더 보기'}</div>
+                    <div className="pointer text-left">{'댓글 ' + feedData.feedCommentCnt + '건 더 보기'}</div>
                 </div>
             </Card>
             
