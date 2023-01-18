@@ -81,7 +81,7 @@ public class FeedDslRepository extends QuerydslRepositorySupport {
                         feedKeep.feedKeepNo.max(),
                         new CaseBuilder()
                                 .when(feedHeart.member.id.eq(pvo.getId())).then(feedHeart.feedHeartNo)
-                                .otherwise(0L).max())               // Feed Heart 좋아요 유무 체크
+                                .otherwise(Expressions.nullExpression()).max())               // Feed Heart 좋아요 유무 체크
                 )
                 .from(feed)
                 .join(feed.member, memberInfo)
