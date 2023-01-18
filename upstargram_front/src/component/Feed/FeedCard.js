@@ -98,7 +98,7 @@ const FeedCard = (props) => {
             <div className="d-flex justify-content-between p-2">
                 <div>
                     <span className="pointer p-1" onClick={saveFeedHeart}>
-                        <img alt="좋아요" width={'30px;'} src={ utils.isNotEmpty(feedData.feedHeartNo) ? '/images/feed_heart_n.png' : '/images/feed_heart_y.png'}/>
+                        <img alt="좋아요" width={'30px;'} src={ utils.isNotEmpty(feedData.feedHeartNo) || feedData.feedHeartNo === 0 ? '/images/feed_heart_n.png' : '/images/feed_heart_y.png'}/>
                     </span>
                     <span className="pointer p-1">
                         <img alt="댓글" width={'30px;'} src={'/images/comment.png'}/>
