@@ -10,22 +10,22 @@ const FeedCard = (props) => {
     const [feedData, setFeedData] = useState(feed);
     const [feedFile, setFeedFile] = useState([]);
     const [feedKeepYn, setFeedKeepYn] = useState( !utils.isNotEmpty(feed.feedKeepNo));
+    const [curImageIdx, setCurImageIdx] = useState(0);
 
     useEffect( () => { 
         if(onLoad) return;
         setOnLoad(true);
         const feedFileNames = feedData.feedFileNames.split(',');
         const feedFileExts = feedData.feedExts.split(',');
+        let data = [];
 
         for(let i=0; i < feedFileNames.length; i++) {
-            setFeedFile([
-                ...feedFile,
-                {
-                    'feedFileName': feedFileNames[i],
-                    'feedExt': feedFileExts[i]
-                }
-            ]);
+            data.push({
+                'feedFileName': feedFileNames[i],
+                'feedExt': feedFileExts[i]
+            })
         }
+        setFeedFile(data);
     }, [feedData]);
 
     // 피드 좋아요
@@ -49,6 +49,22 @@ const FeedCard = (props) => {
         }
     }
 
+    // 이미지 이동
+    const moveImage = (divisionCode) => {
+        const maxSize = feedFile.length - 1;
+        
+        // Prev
+        if(divisionCode === 'prev') {
+            if(0 === curImageIdx) setCurImageIdx(maxSize);
+            else setCurImageIdx(curImageIdx - 1);
+        // Next
+        } else if(divisionCode === 'next') {
+            if(maxSize === curImageIdx) setCurImageIdx(0);
+            else setCurImageIdx(curImageIdx + 1);
+        }
+        
+    }
+
     return (
         <div className={"container bg-light p-2 mt-3"} style={feedCard}>
             {/* 사용자 정보 */}
@@ -70,7 +86,7 @@ const FeedCard = (props) => {
             </Card>
 
             {/* 이미지 및 동영상 */}
-            <Card variant="outlined" className="mt-2">
+            <Card variant="outlined" className="mt-2" style={{height: '400px'}}>
                 <div
                     id="feed-image-list"
                     className="carousel slide carousel-fade card-body p-0 h-100"
@@ -80,17 +96,43 @@ const FeedCard = (props) => {
                     >
                         <div className="carousel-inner h-100">
                         {
-                            feedFile.map((item, idx) => {
-                                if(item.feedExt.split('/')[0] === 'image'){
-                                    return <img src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName} key={idx}/>;
-                                } else if (item.feedExt.split('/')[0] === 'video'){
-                                    return  <video autoplay key={idx}>
-                                                <source src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName} type={item.feedExt}/>
-                                            </video>;
-                                }
-                            })
+                            feedFile.map((item, idx) => (
+                                <div key={idx} className={curImageIdx === idx ? 'carousel-item h-100 active' : 'carousel-item h-100'}>
+                                    {
+                                    item.feedExt.split('/')[0] === 'image'
+                                    ?
+                                         (<img className="d-block w-100 h-100" src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName}/>)
+                                    :
+                                    item.feedExt.split('/')[0] === 'video'
+                                    ?
+                                         (
+                                         <video className="d-block w-100 h-100" loop>
+                                            <source src={process.env.REACT_APP_SERVER_FILE_URL + item.feedFileName} type={item.feedExt}/>
+                                        </video>
+                                         )
+                                    :
+                                         (<div className="d-block w-100 h-100"></div>)
+                                    }
+                                </div>
+                            ))
                         }
                         </div>
+                        <button
+                            className="carousel-control-prev"
+                            type="button"
+                            onClick={ (divisionCode)=>{moveImage('prev')}}
+                        >
+                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span className="visually-hidden">Previous</span>
+                        </button>
+                        <button
+                            className="carousel-control-next"
+                            type="button"
+                            onClick={ (divisionCode)=>{moveImage('next')}}
+                        >
+                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span className="visually-hidden">Next</span>
+                        </button>
                 </div>
             </Card>
             
