@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import "../../assets/css/Main.css";
-import {feedHeartSave, feedKeepSave} from "../../api/FeedApi";
+import {feedCommentRegister, feedHeartSave, feedKeepSave} from "../../api/FeedApi";
 import utils from "../../config/utils";
 
 const FeedCard = (props) => {
@@ -11,6 +11,9 @@ const FeedCard = (props) => {
     const [feedFile, setFeedFile] = useState([]);
     const [feedKeepYn, setFeedKeepYn] = useState( !utils.isNotEmpty(feed.feedKeepNo));
     const [curImageIdx, setCurImageIdx] = useState(0);
+
+    // 댓글
+    const [feedComment, setFeedComment] = useState('');
 
     useEffect( () => { 
         if(onLoad) return;
@@ -40,7 +43,32 @@ const FeedCard = (props) => {
             });
         }
     }
-    // 피드 저장
+    
+    // 피드 댓글 onchange
+    const onChangeComment = (e) => {
+        setFeedComment(e.target.value);
+    }
+
+    const handleOnKeyPress = (e) => {
+        if(e.key === 'Enter') {
+            saveFeedComment();
+        }
+    }
+
+    // 피드 댓글 등록
+    const saveFeedComment = async () => {
+        const result = await feedCommentRegister({feedComment: feedComment, feedNo : feedData.feedNo});
+
+        if(result.code === 200) {
+            setFeedData({
+                ...feedData,
+                feedCommentCnt : result.data.feedCommentCnt,
+            });
+            setFeedComment('');
+        }
+    }
+
+    // 피드 Keep 저장
     const saveFeedKeep = async () => {
         const result = await feedKeepSave(feedData.feedNo);
 
@@ -61,8 +89,7 @@ const FeedCard = (props) => {
         } else if(divisionCode === 'next') {
             if(maxSize === curImageIdx) setCurImageIdx(0);
             else setCurImageIdx(curImageIdx + 1);
-        }
-        
+        }        
     }
 
     return (
@@ -176,10 +203,17 @@ const FeedCard = (props) => {
             <Card variant="outlined">
                 <div className="row p-2">
                     <div className="col-sm-9">
-                        <input type="text" className="form-control" placeholder="댓글달기"/>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            value={feedComment}
+                            onChange={onChangeComment}
+                            onKeyPress={handleOnKeyPress} // Enter 입력 이벤트 함수
+                            placeholder="댓글달기"
+                            />
                     </div>
                     <div className="col-sm-3">
-                        <button className="btn btn-outline-primary w-100">게시</button>
+                        <button className="btn btn-outline-primary w-100" onClick={saveFeedComment}>게시</button>
                     </div>
                 </div>
             </Card>
@@ -188,11 +222,6 @@ const FeedCard = (props) => {
 }
 
 export default FeedCard;
-
-const style={
-    width:'100%',
-    height:'300px'
-}
 
 const feedCard={
     width: '500px'

@@ -52,3 +52,14 @@ export async function feedRegister(data) {
         return error.response.data;
     })
 }
+
+// Feed 댓글 등록
+export async function feedCommentRegister(data) {
+    return await httpRequest.post('user/feed/comment/regist', data)
+    .then( (response) => {
+        return response.data;
+    })
+    .catch( (error) => {
+        return error.response.data;
+    })
+}
