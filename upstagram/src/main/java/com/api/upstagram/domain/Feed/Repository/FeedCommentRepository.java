@@ -32,4 +32,13 @@ public interface FeedCommentRepository extends JpaRepository<FeedComment, Long> 
             "   AND fc.useYn = 'Y'" +
             " GROUP BY fc.feedCommentNo")
     List<FeedCommentInterface> selectFeedCommentList(@Param("feedNo") Long feedNo);
+
+    @Query(value =
+            "SELECT COUNT(fc)" +
+            "  FROM FeedComment fc" +
+            "  JOIN MemberInfo m ON fc.member = m.id" +
+            "   AND m.useYn = 'Y'" +
+            " WHERE fc.useYn ='Y'" +
+            "   AND fc.feed.feedNo = :feedNo")
+    int selectFeedCommnetCnt(@Param("feedNo") Long feedNo);
 }

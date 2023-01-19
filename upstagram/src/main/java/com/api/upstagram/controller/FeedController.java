@@ -133,7 +133,7 @@ public class FeedController {
     /*
     * Feed 댓글 작성
     * */
-    @PostMapping("/user/feed/comment")
+    @PostMapping("/user/feed/comment/regist")
     public ResponseVO<FeedCommentRVO> writeFeedComment(@RequestBody FeedCommentPVO pvo) {
         log.info(this.getClass().getName() + " ==> Feed 댓글 등록!");
         ResponseVO<FeedCommentRVO> r = new ResponseVO<FeedCommentRVO>();
@@ -142,6 +142,8 @@ public class FeedController {
 
         FeedCommentRVO rvo = feedService.writeFeedComment(pvo)
                 .feedCommentToRVO();
+        
+        rvo.setFeedCommentCnt(feedService.selectFeedCommnetCnt(pvo.getFeedNo()));   // 댓글 수
 
         r.setData(rvo);
 

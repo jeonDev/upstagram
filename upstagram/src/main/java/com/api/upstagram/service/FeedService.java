@@ -256,6 +256,13 @@ public class FeedService {
 
         return feedCommentRepository.save(feedComment);
     }
+    
+    /**
+     * Feed 댓글 개수 조회
+     * */
+    public int selectFeedCommnetCnt(Long feedNo) {
+        return feedCommentRepository.selectFeedCommnetCnt(feedNo);
+    }
 
     /*
      * Feed Comment 조회

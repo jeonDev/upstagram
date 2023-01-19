@@ -23,4 +23,6 @@ public class FeedCommentRVO {
 
     private Long feedCommentHeartNo;
     private String commentHeartId;
+
+    private int feedCommentCnt;
 }
