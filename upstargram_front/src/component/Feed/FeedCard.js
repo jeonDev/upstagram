@@ -93,7 +93,7 @@ const FeedCard = (props) => {
     }
 
     return (
-        <div className={"container bg-light p-2 mt-3"} style={feedCard}>
+        <div className={"container bg-light p-2 mt-3 feed-card"}>
             {/* 사용자 정보 */}
             <Card variant="outlined" className="mt-2">
                 <div className="row p-2">
@@ -144,22 +144,31 @@ const FeedCard = (props) => {
                             ))
                         }
                         </div>
-                        <button
-                            className="carousel-control-prev"
-                            type="button"
-                            onClick={ (divisionCode)=>{moveImage('prev')}}
-                        >
-                            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">Previous</span>
-                        </button>
-                        <button
-                            className="carousel-control-next"
-                            type="button"
-                            onClick={ (divisionCode)=>{moveImage('next')}}
-                        >
-                            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span className="visually-hidden">Next</span>
-                        </button>
+                        
+                        {
+                            feedFile.length > 1
+                            &&
+                            <div>
+                                <button
+                                    className="carousel-control-prev"
+                                    type="button"
+                                    onClick={ (divisionCode)=>{moveImage('prev')}}
+                                >
+                                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span className="visually-hidden">Previous</span>
+                                </button>
+                                <button
+                                    className="carousel-control-next"
+                                    type="button"
+                                    onClick={ (divisionCode)=>{moveImage('next')}}
+                                >
+                                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span className="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        }
+                        
+                        
                 </div>
             </Card>
             
@@ -190,8 +199,8 @@ const FeedCard = (props) => {
                 </div>
                 <div className="row p-2">
                     <div className="text-left">
-                        <span className="pointer">{feedData.nickname} </span> 
-                        <span className="pointer">{feedData.title}</span>
+                        <span className="pointer p-1"><strong>{feedData.nickname}</strong></span> 
+                        <span className="pointer feed-title">{feedData.title}</span>
                     </div>
                 </div>
                 <div className="row pointer p-2">
@@ -222,7 +231,3 @@ const FeedCard = (props) => {
 }
 
 export default FeedCard;
-
-const feedCard={
-    width: '500px'
-}

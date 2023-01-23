@@ -72,3 +72,13 @@
 .friend-text-container > div:last-child {
   border-radius: 0.5rem 0.2rem 0.5rem 1rem;
 }
+
+/* Feed */
+.feed-title {
+  white-space: pre-line;
+  font-family: serif;
+}
+
+.feed-card {
+  width: calc(100vh - 125px)
+}
