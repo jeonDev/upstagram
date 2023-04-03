@@ -7,7 +7,7 @@ export async function selectDmChatRoomList () {
             return response.data;
         })
         .catch( (error) => {
-            return Promise.reject(error);
+            return error.response;
         })
 }
 
@@ -18,7 +18,7 @@ export async function createDmChatRoom (id) {
             return response.data;
         })
         .catch( (error) => {
-            return Promise.reject(error);
+            return error.response;
         })
 }
 
@@ -33,7 +33,7 @@ export async function sendDmChat(message, dmChatRoomNo, receiveId) {
             return response.data;
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return error.response;
         })
 }
 
@@ -44,6 +44,6 @@ export async function selectDmChatList (dmChatRoom) {
             return response.data;
         })
         .catch( (error) => {
-            return Promise.reject(error);
+            return error.response;
         })
 }

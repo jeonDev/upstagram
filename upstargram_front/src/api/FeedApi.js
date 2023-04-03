@@ -9,7 +9,7 @@ export async function selectFeedList (param) {
             return response.data;
         })
         .catch( (error) => {
-            return Promise.reject(error);
+            return error.response;
         })
 }
 
@@ -22,7 +22,7 @@ export async function feedKeepSave(feedNo) {
             return response.data
         })
         .catch( (error) => {
-            return Promise.reject(error);
+            return error.response;
         })
 }
 
@@ -35,7 +35,7 @@ export async function feedHeartSave(feedNo) {
         return response.data
     })
     .catch( (error) => {
-        return Promise.reject(error);
+        return error.response;
     })
 }
 

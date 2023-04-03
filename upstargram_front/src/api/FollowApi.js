@@ -7,7 +7,7 @@ export async function selectFollowList () {
         return response.data;
     })
     .catch( (error) => {
-        return Promise.reject(error);
+        return error.response;
     })
 }
 

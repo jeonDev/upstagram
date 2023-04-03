@@ -7,6 +7,6 @@ export async function selectStoryList () {
             return response.data;
         })
         .catch( (error) => {
-            return Promise.reject(error);
+            return error.response;
         })
 }

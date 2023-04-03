@@ -32,9 +32,10 @@ const Login = (props) => {
                 if(response.code === 200) {
                     const token = response.data.accessToken;
                     localStorage.setItem("Authorization", token);
-                    // alert(response.message);
                     window.location.href = '/main';
                     close();
+                } else {
+                    alert(response.data.message)
                 }
             })
             .catch((error) => {

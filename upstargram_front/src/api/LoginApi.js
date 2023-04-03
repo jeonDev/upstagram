@@ -7,7 +7,7 @@ export async function login (data) {
         return response.data;
     })
     .catch( (error) => {
-        return Promise.reject(error);
+        return error.response;
     })
 }
 
@@ -18,7 +18,7 @@ export async function logout () {
         return response.data;
     })
     .catch( (error) => {
-        return Promise.reject(error);
+        return error.response;
     })
 }
 
@@ -29,7 +29,7 @@ export async function join (data) {
             return response.data;
         })
         .catch( (error) => {
-            return Promise.reject(error);
+            return error.response;
         })
 }
 
@@ -40,7 +40,7 @@ export async function tokenReIssueRequest(){
             return response.data;
         })
         .catch( (error) => {
-            return Promise.reject(error);
+            return error.response;
         })
 }
 
@@ -51,6 +51,6 @@ export async function selectUserInfo() {
         return response.data;
     })
     .catch( (error) => {
-        return Promise.reject(error);
+        return error.response;
     })
 }
