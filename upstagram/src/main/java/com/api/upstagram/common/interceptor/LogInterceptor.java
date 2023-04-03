@@ -21,13 +21,15 @@ public class LogInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("================ Log Interceptor Start! =================");
-        log.info("Request Path URI : " + request.getRequestURI());
         String id = CommonUtils.getUserId();
+
+        log.info("Request Path URI({}) : {}"
+                , StringUtils.isNotEmpty(id) ? "Anonymous" : id
+                , request.getRequestURI());
+
         if( !StringUtils.isNotEmpty(id) ) {
             loginService.loginHistorySave(id, request);
         }
-        log.info("================ Log Interceptor End! =================");
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
