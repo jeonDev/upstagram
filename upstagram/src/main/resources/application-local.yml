@@ -42,7 +42,7 @@ logging:
       hibernate:
         type:
           descriptor:
-            sql: trace  # query의 ?에 어떤 값이 들어가는지 추적할 수 있는 설정입니다. TRACE Log에 값을 보여줍니다.
+            sql: debug  # query의 ?에 어떤 값이 들어가는지 추적할 수 있는 설정입니다. TRACE Log에 값을 보여줍니다.
 
 
 ## Jasypt 암호화 (https://www.devglan.com/online-tools/jasypt-online-encryption-decryption)
