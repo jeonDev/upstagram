@@ -39,14 +39,20 @@ const Main = () => {
     return (
         <div>
             <div>
-                {feedList.map((feed, idx) => (
+                {
+                feedList.length > 0 
+                &&
+                feedList.map((feed, idx) => (
                     <div key={idx}>
                     <FeedCard
                         feed={feed}
                     />
                     </div>
                 ))}
-                {storyList.map(story => (
+                {
+                storyList.length > 0
+                    &&
+                storyList.map(story => (
                     <div>닉네임 : {story.nickname}</div>
                 ))}
             </div>
