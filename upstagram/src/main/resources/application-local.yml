@@ -63,4 +63,4 @@ upload-path: /upstagram-upload/**
 # Windows 파일 저장 경로
 #resource-path: C:/project/upstagram-upload/
 # Mac 파일 저장 경로
-resource-path: /Users/jjh/project/upstagram-upload
+resource-path: /Users/jjh/project/upstagram-upload/
