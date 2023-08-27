@@ -9,7 +9,6 @@ const Main = () => {
 
     useEffect(() => {
         feedSearch();
-        storySearch();
     }, [])
 
     // Feed 조회
@@ -19,6 +18,7 @@ const Main = () => {
         })
             .then((response) => {
                 setFeedList(response.data);
+                storySearch();
             })
             .catch((error) => {
                 console.log(error.response.data.message);
