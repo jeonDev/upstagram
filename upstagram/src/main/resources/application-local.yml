@@ -5,7 +5,7 @@ spring:
   ## MySQL 접속정보
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/upstagram?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/upstagram?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
     username: ENC(9n8E0nUSDuIUuagawbGIY0jwIItivkDg)
     password: ENC(MhLMhBdGGKfjXjsA8/siWGdxironRVct)
 
@@ -35,7 +35,7 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 1GB
-        
+
 logging:
   level:
     org:
@@ -60,4 +60,7 @@ cors:
   url: http://localhost:8098
 
 upload-path: /upstagram-upload/**
-resource-path: C:/project/upstagram-upload/
+# Windows 파일 저장 경로
+#resource-path: C:/project/upstagram-upload/
+# Mac 파일 저장 경로
+resource-path: /Users/jjh/project/upstagram-upload
