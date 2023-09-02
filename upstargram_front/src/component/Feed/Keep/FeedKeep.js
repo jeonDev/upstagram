@@ -6,31 +6,36 @@ const FeedKeep = () => {
     
     const [feedList, setFeedList] = useState([]);
 
-    const searchFeedKeepList = async () => {
-        const param = {feedKeepYn : 'Y', feedDivisionCode : '2'}
-        const result = await selectFeedList(param);
-        
-        if(result.code === 200) {
-            setFeedList(result.data);
-        }
+    // Feed 조회
+    const feedSearch = async () => {
+        await selectFeedList({
+            feedDivisionCode : '2'
+        })
+            .then((response) => {
+                setFeedList(response.data);
+            })
+            .catch((error) => {
+                console.log(error.response.data.message);
+            });
     }
 
     useEffect(() => {
-        searchFeedKeepList();
+        feedSearch();
     }, [])
 
     return (
         <div>
             <div>
-                {
-                    feedList.map((feed, idx) => (
-                        <div key={idx}>
-                            <FeedCard
-                                feed={feed}
-                            />
-                        </div>
-                    ))
-                }
+            {
+                feedList.length > 0 
+                &&
+                feedList.map((feed, idx) => (
+                    <div key={idx}>
+                        <FeedCard
+                            feed={feed}
+                        />
+                    </div>
+            ))}
             </div>
         </div>
     )

@@ -44,7 +44,7 @@ public class FeedController {
      * */
     @GetMapping("/user/feed/list")
     public ResponseVO<List<FeedRVO>> feedList(FeedListPVO pvo) {
-        log.info(this.getClass().getName() + " ==> Feed 댓글 좋아요!");
+        log.info(this.getClass().getName() + " ==> Feed List 조회");
         log.info(pvo.toString());
         ResponseVO<List<FeedRVO>> r = new ResponseVO<List<FeedRVO>>();
 

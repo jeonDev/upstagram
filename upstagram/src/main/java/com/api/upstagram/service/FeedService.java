@@ -179,10 +179,36 @@ public class FeedService {
 
         if(StringUtils.isNotEmpty(pvo.getFeedDivisionCode())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), Response.ARGUMNET_ERROR.getMessage());
 
-        if("4".equals(pvo.getFeedDivisionCode()) && !StringUtils.isNotEmpty(pvo.getTagId()))
-            pvo.setWriterId(pvo.getId());
+        List<FeedRVO> list = new ArrayList<>();
+        switch (pvo.getFeedDivisionCode()) {
+            case "1" : // Follow Feed
+                list = feedDslRepository.selectFollowFeedList(pvo);
+                break;
+            case "2" :
+                pvo.setFeedKeepYn("Y");
+                list = feedDslRepository.selectFeedList(pvo);
+                break;
+            case "3" : // User Feed
+                if(StringUtils.isNotEmpty(pvo.getWriterId())) pvo.setWriterId(pvo.getId());
+                list = feedDslRepository.selectFeedList(pvo);
+                break;
+            case "4" : // Tag Feed
+                if(StringUtils.isNotEmpty(pvo.getTagId())) throw new CustomException(Response.ARGUMNET_ERROR.getCode(), Response.ARGUMNET_ERROR.getMessage());
+                pvo.setWriterId(pvo.getId());
+                list = feedDslRepository.selectFeedList(pvo);
+                break;
+            case "5" :
+                break;
+            case "6" :
+                pvo.setFeedHeartYn("Y");
+                list = feedDslRepository.selectFeedList(pvo);
+                break;
+            default:
+                throw new CustomException(Response.ARGUMNET_ERROR.getCode(), Response.ARGUMNET_ERROR.getMessage());
+        }
 
-        return feedDslRepository.selectFeedList(pvo);
+
+        return list;
     }
 
     /*
